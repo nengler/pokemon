@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id   Int    @id @default(autoincrement())
+  Game Game[]
+}
+
+model Game {
+  id           Int           @id @default(autoincrement())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       Int
+  round        Int           @default(1)
+  state        Int
+  gold         Int
+  lives        Int
+  GamePokemon  GamePokemon[]
+  ShopPokemon  ShopPokemon[]
+  Battle1      Battle[]      @relation("game1")
+  Battle2      Battle[]      @relation("game2")
+  BattleWinner Battle[]      @relation("winner")
+  BattleTeam   BattleTeam[]
+}
+
+model ShopPokemon {
+  id        Int     @id @default(autoincrement())
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  game      Game    @relation(fields: [gameId], references: [id])
+  gameId    Int
+  level     Int
+  isShiny   Boolean
+}
+
+model Type {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  PokemonType PokemonType[]
+}
+
+model Pokemon {
+  id                Int                @id @default(autoincrement())
+  name              String
+  baseHp            Int
+  baseAttack        Int
+  baseDefense       Int
+  roundPurchaseable Int
+  pokedexId         Int                @unique
+  pokemonTypes      PokemonType[]
+  GamePokemon       GamePokemon[]
+  ShopPokemon       ShopPokemon[]
+  EvolutionFrom     PokemonEvolution[] @relation("PokemonEvolutionFrom")
+  EvolutionTo       PokemonEvolution[] @relation("PokemonEvolutionTo")
+  BattleTeam        BattleTeam[]
+}
+
+model PokemonEvolution {
+  id             Int     @id @default(autoincrement())
+  evolutionLevel Int
+  evolvesFromId  Int
+  EvolvesFrom    Pokemon @relation("PokemonEvolutionFrom", fields: [evolvesFromId], references: [id])
+  evolvesToId    Int
+  EvolvesTo      Pokemon @relation("PokemonEvolutionTo", fields: [evolvesToId], references: [id])
+}
+
+model PokemonType {
+  id        Int     @id @default(autoincrement())
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  type      Type    @relation(fields: [typeId], references: [id])
+  typeId    Int
+}
+
+model GamePokemon {
+  id        Int     @id @default(autoincrement())
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  nickname  String?
+  hp        Int
+  attack    Int
+  defense   Int
+  orderNum  Int
+  game      Game    @relation(fields: [gameId], references: [id])
+  gameId    Int
+  level     Int
+  isShiny   Boolean
+}
+
+model Battle {
+  id           Int          @id @default(autoincrement())
+  game1        Game         @relation("game1", fields: [game1Id], references: [id])
+  game1Id      Int
+  game2        Game?        @relation("game2", fields: [game2Id], references: [id])
+  game2Id      Int?
+  createdAt    DateTime     @default(now())
+  winner       Game?        @relation("winner", fields: [winnerId], references: [id])
+  winnerId     Int?
+  isSearching  Boolean      @default(true)
+  isBattleOver Boolean      @default(false)
+  BattleTeam   BattleTeam[]
+}
+
+model BattleTeam {
+  id        Int     @id @default(autoincrement())
+  battle    Battle  @relation(fields: [battleId], references: [id])
+  battleId  Int
+  game      Game?   @relation(fields: [gameId], references: [id])
+  gameId    Int?
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  hp        Int
+  attack    Int
+  defense   Int
+  orderNum  Int
+  level     Int
+  isShiny   Boolean
+}

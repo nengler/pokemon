@@ -1,0 +1,35 @@
+STEEL = https://bulbapedia.bulbagarden.net/wiki/Flash_Cannon_(move)
+
+
+COULD USE VISUALLY EFFECTS OF GETTING HIT FOR ALL
+
+GRASS: GOOD
+
+FIRE: GOOD, fix on opposite side
+
+BUG: GOOD
+
+POISON: Good
+
+NORMAL: good
+
+Psychic: GOOD
+
+ELECTRIC: good
+
+WATER: good
+
+ROCK: good base, need better svg eventually
+
+FIGHTING: good, add better hit animation
+
+DRAGON: GOOD
+
+GROUND: OK
+
+ICE: decent, could be better? https://bulbapedia.bulbagarden.net/wiki/Blizzard_(move)
+
+FLYING: switch to https://bulbapedia.bulbagarden.net/wiki/Aeroblast_(move)
+https://archives.bulbagarden.net/media/upload/archive/e/e1/20111207012845%21Aeroblast_IV.png
+
+GHOST: NEED SVG DONE

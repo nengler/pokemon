@@ -1,0 +1,134 @@
+import { motion } from "framer-motion";
+
+const animationDuration = 0.5;
+const heightMinifyDelay = 0.4;
+const balls = [
+  { top: 114, left: 0 },
+  { top: 50, left: -40 },
+  { top: 60, left: -99 },
+  { top: 130, left: -55 },
+  { top: 80, left: -12 },
+  { top: 140, left: -65 },
+  { top: 55, left: -88 },
+];
+
+export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
+  if (teamLocation === undefined || enemyTeamLocation === undefined) {
+    return;
+  }
+
+  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
+  const myCoordinates = getMyCoordinates(teamLocation);
+
+  if (enemyCoordinates === undefined || myCoordinates === undefined) {
+    return null;
+  }
+
+  const yStartingPosition = 90;
+
+  const distanceToMove =
+    myCoordinates.left + 48 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+
+  let styles = {
+    top: yStartingPosition,
+    width: `${Math.abs(distanceToMove)}px`,
+  };
+
+  if (teamLocation.dataset.myTeam === "true") {
+    styles.right = `-${Math.abs(distanceToMove) / 2}px`;
+  } else {
+    styles.left = `-${Math.abs(distanceToMove) / 2}px`;
+  }
+
+  return (
+    <>
+      {balls.map((ball, index) => {
+        const ballStyles = {
+          top: `${ball.top}px`,
+        };
+
+        if (teamLocation.dataset.myTeam === "true") {
+          ballStyles.right = `${ball.left}px`;
+        } else {
+          ballStyles.left = `${ball.left}px`;
+        }
+
+        const ballOffset = teamLocation.dataset.myTeam === "true" ? ball.left : ball.left * -1;
+        const ballDistance = distanceToMove / 2 + ballOffset;
+
+        const delay = index * 0.075;
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 1, 0], x: ballDistance }}
+            transition={{
+              x: { duration: animationDuration, delay: delay },
+              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.8, 1] },
+            }}
+            style={ballStyles}
+            key={index}
+            className="w-2 h-2 rounded-full absolute border bg-[#ffe5f1] border-[#ff52a0]"
+          />
+        );
+      })}
+      <div className="absolute z-10 overflow-hidden h-6" style={styles}>
+        <motion.div
+          className="absolute w-full"
+          initial={{ right: distanceToMove }}
+          animate={{ right: [distanceToMove, 0, 0, distanceToMove * -1] }}
+          transition={{ duration: animationDuration, times: [0, 0.2, 0.85, 1] }}
+        >
+          <Beam yAxis="Top" xAxis={teamLocation.dataset.myTeam === "true" ? "Left" : "Right"} />
+          <div className="bg-[#ffebf4] w-full h-2" />
+          <Beam yAxis="Bottom" xAxis={teamLocation.dataset.myTeam === "true" ? "Left" : "Right"} />
+        </motion.div>
+      </div>
+    </>
+  );
+}
+
+function Beam({ yAxis, xAxis }) {
+  const border = `border${yAxis}${xAxis}Radius`;
+
+  const roundedCorner = getTailwindRoundedClass(yAxis, xAxis);
+
+  return (
+    <motion.div
+      className={`w-full h-2 ${roundedCorner} bg-gradient-to-b from-[#ffb8d8] to-[#ff52a0]`}
+      initial={{ [border]: "10%" }}
+      animate={{ [border]: ["10%", "30%", "50%"] }}
+      transition={{
+        [border]: {
+          duration: animationDuration,
+          type: "tween",
+          ease: "linear",
+          delay: animationDuration / 2,
+        },
+      }}
+    />
+  );
+}
+
+const getTailwindRoundedClass = (yAxis, xAxis) => {
+  if (yAxis === "Top" && xAxis === "Right") {
+    return "rounded-tl-[100%]";
+  } else if (yAxis === "Top" && xAxis === "Left") {
+    return "rounded-tr-[100%]";
+  } else if (yAxis === "Bottom" && xAxis === "Right") {
+    return "rounded-bl-[100%]";
+  } else if (yAxis === "Bottom" && xAxis === "Left") {
+    return "rounded-br-[100%]";
+  }
+};
+
+const getEnemyCoordinates = (enemyTeamLocation) => {
+  const currentEnemyDiv = enemyTeamLocation.children[0];
+  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
+  return currentEnemyImg?.getBoundingClientRect();
+};
+
+const getMyCoordinates = (teamLocation) => {
+  const myCurrentDiv = teamLocation.children[0];
+  const myCurrentImg = myCurrentDiv?.querySelector("img");
+  return myCurrentImg?.getBoundingClientRect();
+};
