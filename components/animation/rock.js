@@ -1,23 +1,10 @@
-import useInterval from "components/useInterval";
 import { motion } from "framer-motion";
-import RockIcon from "public/assets/rock";
-import { useState } from "react";
+import RockIcon from "public/assets/newRock";
 
 const animationDuration = 0.35;
-const getRandomDiviation = () => Math.floor(Math.random() * 50) + 15;
-
 const locations = [50, 45, 60, 50, 20, 64, 40];
 
 export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
-  const [rocks, setRocks] = useState([locations[0]]);
-
-  useInterval(
-    () => {
-      setRocks([...rocks, locations[rocks.length]]);
-    },
-    rocks.length < 6 ? 70 : null
-  );
-
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
@@ -33,23 +20,27 @@ export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
 
   return (
     <>
-      {rocks.map((rock, index) => {
+      {locations.map((rock, index) => {
         let styles = {
           left: `${rock}px`,
           top: `${yStartingPosition}px`,
         };
 
+        const delay = index * 0.07;
+
         return (
           <motion.div
             animate={{
-              opacity: 0,
+              opacity: [0, 1, 1, 0],
               y: index % 2 === 1 ? [0, 100, 75] : [0, 100, 85],
             }}
             transition={{
-              y: { duration: animationDuration, times: [0, 0.75, 1] },
-              opacity: { delay: animationDuration, duration: 0 },
+              y: { delay: delay, duration: animationDuration, times: [0, 0.75, 1] },
+              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
             }}
-            className={`absolute ${index % 2 === 1 ? "h-8 w-6" : "h-10 w-8"} z-10`}
+            className={`fill-[#be8b3f] stroke-rock-secondary opacity-0 absolute ${
+              index % 2 === 1 ? "h-8 w-6" : "h-10 w-8"
+            } z-10`}
             key={index}
             style={styles}
           >

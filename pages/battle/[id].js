@@ -12,6 +12,7 @@ import NormalAnimation from "components/animation/normal";
 import PoisonAnimation from "components/animation/poison";
 import PsychicAnimation from "components/animation/psychic";
 import RockAnimation from "components/animation/rock";
+import SteelAnimation from "components/animation/steel";
 import WaterAnimation from "components/animation/water";
 import Pokemon from "components/pokemon";
 import useInterval from "components/useInterval";
@@ -266,6 +267,9 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
       )}
       {attackAnimation.type === "Ground" && (
         <GroundAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+      )}
+      {attackAnimation.type === "Steel" && (
+        <SteelAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       <div
         className={`absolute -bottom-12 whitespace-nowrap ${showAnimation ? "opacity-100" : "opacity-0"} transition`}

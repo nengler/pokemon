@@ -19,7 +19,7 @@ module.exports = {
         poison: { primary: "#A040A0", secondary: "#fef0fe" },
         psychic: { primary: "#F85888", secondary: "#4d0017" },
         rock: { primary: "#B8A038", secondary: "#392f05" },
-        steel: { primary: "#B8B8D0", secondary: "#39397f" },
+        steel: { primary: "#B8B8D0", secondary: "#39397f", tertiary: "#e5e7eb" },
         water: { primary: "#6890F0", secondary: "#001a57" },
       },
     },

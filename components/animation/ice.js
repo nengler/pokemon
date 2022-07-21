@@ -1,23 +1,11 @@
 import { motion } from "framer-motion";
-import Icicle from "public/assets/icicle";
-import BigIcicle from "public/assets/bigIcicle";
-import { Fragment } from "react";
+import AuroraCircle from "public/assets/auroraCircle";
 
-const animationDuration = 0.25;
-const getRandomDiviation = () => Math.floor(Math.random() * 180) - 90;
 const xFactor = 50;
-
-const icicles = [
-  getRandomDiviation(),
-  null,
-  getRandomDiviation(),
-  null,
-  getRandomDiviation(),
-  null,
-  getRandomDiviation(),
-];
-
-const bodyIcicles = [null, null, null, null];
+const beams = Array(10).fill(null);
+const animationDuration = 0.3;
+const animationDelay = 0.05;
+const yStartingPosition = 80;
 
 export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -32,101 +20,41 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   }
 
   const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xFactor;
-  const topYStartingPosition = 118;
-  const bottomYStartingPosition = 70;
-  const bigYStartingPosition = 90;
 
   const distanceToMove =
     myCoordinates.left + xFactor - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
 
   return (
     <>
-      {icicles.map((icicle, index) => {
-        let topStyles = {
-          left: `${xStartingPosition}px`,
-          top: `${topYStartingPosition}px`,
-        };
-
-        let bottomStyles = {
-          left: `${xStartingPosition}px`,
-          top: `${bottomYStartingPosition}px`,
-        };
-
-        let bigStyles = {
+      {beams.map((_beam, index) => {
+        let styles = {
           left: `${xStartingPosition - 8}px`,
-          top: `${bigYStartingPosition}px`,
+          top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.05;
+        const delay = index * animationDelay;
 
-        return (
-          <Fragment key={index}>
-            {icicle !== null && (
-              <motion.div
-                animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
-                transition={{
-                  x: { type: "tween", ease: "linear", duration: animationDuration, delay: delay },
-                  y: { duration: animationDuration, delay: delay },
-                  opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
-                }}
-                className="absolute"
-                style={bigStyles}
-              >
-                <div style={{ transform: `rotate(${icicle}deg)` }}>
-                  <BigIcicle />
-                </div>
-              </motion.div>
-            )}
-
-            <motion.div
-              animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
-              transition={{
-                x: { type: "tween", ease: "linear", duration: animationDuration, delay: delay },
-                y: { duration: animationDuration, delay: delay },
-                opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
-              }}
-              className="absolute"
-              style={topStyles}
-            >
-              <Icicle />
-            </motion.div>
-
-            <motion.div
-              animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
-              transition={{
-                x: { type: "tween", ease: "linear", duration: animationDuration, delay: delay },
-                y: { duration: animationDuration, delay: delay },
-                opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
-              }}
-              className="absolute"
-              style={bottomStyles}
-            >
-              <Icicle />
-            </motion.div>
-          </Fragment>
-        );
-      })}
-
-      {bodyIcicles.map((_icicle, index) => {
-        let top = 110;
-        let left = 60;
-        top -= index * 15;
-        if (index % 2 === 1) {
-          left = 30;
-        }
-        const icicleStyles = {
-          top: `${top}px`,
-          left: `${left}px`,
-        };
         return (
           <motion.div
             key={index}
-            animate={{ opacity: [0, 1, 1, 0] }}
-            transition={{ delay: animationDuration + index * 0.05, duration: 0.3, times: [0, 0.01, 0.9, 1] }}
-            className="absolute z-10"
-            style={icicleStyles}
+            initial={{ scaleX: 0.5 }}
+            animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
+            transition={{
+              x: { duration: animationDuration, delay: delay },
+              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
+            }}
+            className="absolute w-12 opacity-0 z-10"
+            style={styles}
           >
-            <Icicle />
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
+            >
+              <div style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}>
+                <AuroraCircle />
+              </div>
+            </motion.div>
           </motion.div>
         );
       })}

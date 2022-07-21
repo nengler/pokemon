@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 
+const poisonShotDuration = 0.4;
+const poisonOpacityDuration = 0.05;
+const bubbleRisingDuration = 0.2;
 const baseXFactor = 50;
-const bubbles = [55, 40, 72, 30, 45];
+const bubbles = [55, 40, 72];
 
 export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -38,8 +41,8 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
           y: [0, -50, 10],
         }}
         transition={{
-          default: { duration: 0.15 },
-          opacity: { delay: 0.15, duration: 0.05 },
+          default: { duration: poisonShotDuration },
+          opacity: { delay: poisonShotDuration - poisonOpacityDuration, duration: poisonOpacityDuration },
         }}
         className="absolute h-6 w-6 border-4 rounded-full bg-poison-primary border-poison-primary z-10"
         style={styles}
@@ -50,7 +53,7 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = 0.2 + index * 0.075;
+        const delay = poisonShotDuration + index * 0.075;
 
         return (
           <motion.div
@@ -63,9 +66,9 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
               borderLeftColor: "rgb(255, 255, 255)",
             }}
             transition={{
-              y: { duration: 0.25, delay: delay },
+              y: { duration: bubbleRisingDuration, delay: delay },
               default: { delay: delay + 0.15, duration: 0 },
-              opacity: { delay: delay, duration: 0.25, times: [0, 0.01, 0.99, 1] },
+              opacity: { delay: delay, duration: bubbleRisingDuration, times: [0, 0.01, 0.99, 1] },
             }}
             className="absolute h-5 w-5 border-4 opacity-0 rounded-full bg-poison-primary border-poison-primary z-10"
             key={index}

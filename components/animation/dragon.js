@@ -76,7 +76,7 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
           className="absolute w-full"
           initial={{ right: distanceToMove }}
           animate={{ right: [distanceToMove, 0, 0, distanceToMove * -1] }}
-          transition={{ duration: animationDuration, times: [0, 0.2, 0.85, 1] }}
+          transition={{ duration: animationDuration, times: [0, 0.2, 0.75, 1] }}
         >
           <Beam yAxis="Top" xAxis={teamLocation.dataset.myTeam === "true" ? "Left" : "Right"} />
           <div className="bg-[#ffebf4] w-full h-2" />
@@ -94,7 +94,7 @@ function Beam({ yAxis, xAxis }) {
 
   return (
     <motion.div
-      className={`w-full h-2 ${roundedCorner} bg-gradient-to-b from-[#ffb8d8] to-[#ff52a0]`}
+      className={`w-full h-1 ${roundedCorner} bg-gradient-to-b from-[#ffb8d8] to-[#ff52a0]`}
       initial={{ [border]: "10%" }}
       animate={{ [border]: ["10%", "30%", "50%"] }}
       transition={{

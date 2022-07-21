@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import Tornado from "public/assets/tornado";
-
-const yFactor = 30;
-const animationDuration = 0.7;
-const tornados = [null, null];
+import { Fragment } from "react";
+const blades = [10, 120, 75, 300, 150, 100, 70];
+const topYStartingPosition = 100;
+const bottomYStartingPosition = 60;
+const animationDuration = 0.3;
+const animationDelay = 0.07;
 
 export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -17,44 +18,62 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - 64;
+  const xOffset = getXOffset(teamLocation);
+
+  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xOffset;
 
   const distanceToMove =
-    (myCoordinates.left + 64 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) * -1;
+    (myCoordinates.left + xOffset - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) *
+    -1;
 
   return (
     <>
-      {tornados.map((_tornado, index) => {
-        let styles = {
+      {blades.map((blade, index) => {
+        const topStyles = {
           left: `${xStartingPosition}px`,
-          top: `90px`,
+          top: `${topYStartingPosition}px`,
         };
 
+        const bottomStyles = {
+          left: `${xStartingPosition}px`,
+          top: `${bottomYStartingPosition}px`,
+        };
+
+        const delay = index * animationDelay;
+
         return (
-          <motion.div
-            animate={{
-              x: distanceToMove * -1,
-              opacity: 0,
-              rotateY: [0, 0, 360, 360, 0, 0],
-              y: [0, index % 2 === 0 ? yFactor : -yFactor, 0],
-            }}
-            transition={{
-              default: { duration: animationDuration },
-              opacity: { delay: animationDuration, duration: 0 },
-              rotate: { times: [0, 0.1, 0.2, 0.3, 0.6, 1], duration: animationDuration },
-              y: { times: [0, 0.5, 0.8], duration: animationDuration },
-            }}
-            className="absolute h-12 w-12 z-10"
-            key={index}
-            style={styles}
-          >
-            <Tornado />
-          </motion.div>
+          <Fragment key={index}>
+            <BladeDiv distanceToMove={distanceToMove} delay={delay} styles={topStyles} bladeRotation={blade} />
+            <BladeDiv distanceToMove={distanceToMove} delay={delay} styles={bottomStyles} bladeRotation={blade} />
+          </Fragment>
         );
       })}
     </>
   );
 }
+
+function BladeDiv({ distanceToMove, bladeRotation, styles, delay }) {
+  return (
+    <motion.div
+      initial={{ rotate: bladeRotation }}
+      animate={{
+        x: distanceToMove * -1,
+        opacity: [0, 1, 1, 0],
+        rotate: bladeRotation + 360,
+      }}
+      transition={{
+        // rotate: { delay: delay, duration: 0.15, repeat: Infinity },
+        default: { delay: delay, duration: animationDuration },
+        opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.8, 1] },
+      }}
+      className="absolute h-8 w-8 rounded-full border-[#b4b9b9] border-t-8 opacity-0 border-r-8 z-10 
+      after:content-[''] after:-top-1 after:-right-1 after:absolute after:left-0 after:bottom-0 after:border-r-4 after:border-t-4 after:rounded-full"
+      style={styles}
+    />
+  );
+}
+
+const getXOffset = (teamLocation) => (teamLocation.dataset.myTeam === "true" ? 70 : 30);
 
 const getEnemyCoordinates = (enemyTeamLocation) => {
   const currentEnemyDiv = enemyTeamLocation.children[0];

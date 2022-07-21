@@ -2,9 +2,14 @@ import { motion } from "framer-motion";
 import StarIcon from "public/assets/star";
 
 const animationDuration = 0.5;
-const hitTriggerDelay = 0.3;
+const hitTriggerDelay = 0.25;
 
-const hitTriggers = [null, null, null];
+const hitTriggers = [
+  { top: "100px", left: "50px" },
+  { top: "70px", left: "80px" },
+  { top: "50px", left: "30px" },
+];
+
 const stars = [0, 35, -40, 25, 10, -30];
 
 export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
@@ -33,7 +38,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.05;
+        const delay = index * 0.075;
 
         return (
           <motion.div
@@ -41,7 +46,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
             transition={{
               x: { type: "spring", stiffness: 70, duration: animationDuration, delay: delay },
               y: { duration: animationDuration, delay: delay },
-              opacity: { delay: delay, duration: animationDuration },
+              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.5, 1] },
             }}
             className="absolute h-5 w-5 opacity-0"
             key={index}
@@ -54,30 +59,16 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
         );
       })}
 
-      {hitTriggers.map((_hit, index) => {
-        let top = "100px";
-        if (index === 1) {
-          top = "50px";
-        } else if (index === 2) {
-          top = "70px";
-        }
-
-        let left = "50px";
-        if (index === 1) {
-          left = "30px";
-        } else if (index === 2) {
-          left = "80px";
-        }
-
+      {hitTriggers.map((hit, index) => {
         let styles = {
-          top: top,
-          left: left,
+          top: hit.top,
+          left: hit.left,
         };
 
         return (
           <motion.div
             key={index}
-            animate={{ height: [10, 30], width: [10, 30], opacity: [0, 0.5] }}
+            animate={{ height: [10, 30], width: [10, 30], opacity: [0, 0.45] }}
             transition={{
               height: { delay: hitTriggerDelay + index * 0.1, duration: 0.3 },
               width: { delay: hitTriggerDelay + index * 0.1, duration: 0.3 },

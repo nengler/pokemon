@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 const xFactor = 20;
-const animationDuration = 0.3;
+const animationDuration = 0.35;
 const circles = [0, -30, 30, -15, 30, 0];
 
 export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
@@ -31,7 +31,7 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.1;
+        const delay = index * 0.08;
 
         return (
           <motion.div
@@ -44,7 +44,7 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
             }}
             transition={{
               default: { duration: animationDuration, delay: delay },
-              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.99, 1] },
+              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.85, 1] },
             }}
             className="absolute h-12 w-6 border-4 rounded-[50%] border-[#f4bf5d] z-10"
             key={index}
