@@ -108,11 +108,8 @@ export default function MyPokemon({
       return;
     }
 
-    if (gamePokemon.pokemon.EvolutionFrom.length === 1) {
-      evolvePokemon(
-        gamePokemon.id,
-        gamePokemon.pokemon.EvolutionFrom[0].EvolvesTo.id
-      );
+    if (gamePokemon.evolutions.length === 1) {
+      evolvePokemon(gamePokemon.id, gamePokemon.evolutions[0].into);
     } else if (showEvolutions) {
       setShowEvolutionsFalse();
     } else if (!showEvolutions) {

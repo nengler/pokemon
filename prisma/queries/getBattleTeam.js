@@ -1,5 +1,7 @@
+import pokemon from "constants/pokemon";
+
 export async function GetBattleTeam(prisma, battleId, gameId) {
-  return await prisma.battleTeam.findMany({
+  const battlePokemonRecords = await prisma.battleTeam.findMany({
     where: {
       battleId: battleId,
       gameId: gameId,
@@ -7,31 +9,10 @@ export async function GetBattleTeam(prisma, battleId, gameId) {
     orderBy: {
       orderNum: "desc",
     },
-    select: {
-      id: true,
-      hp: true,
-      attack: true,
-      defense: true,
-      level: true,
-      isShiny: true,
-      orderNum: true,
-      gameId: true,
-      pokemon: {
-        select: {
-          id: true,
-          name: true,
-          pokedexId: true,
-          pokemonTypes: {
-            select: {
-              type: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+  });
+
+  return battlePokemonRecords.map((a) => {
+    const { name, types } = pokemon[a.pokemonId];
+    return { ...a, ...name, types };
   });
 }

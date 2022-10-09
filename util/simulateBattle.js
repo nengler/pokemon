@@ -9,18 +9,20 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
   while (!battleOver) {
     const myBattlePokemon = myBattleTeam[0];
     const enemyBattlePokemon = enemyBattleTeam[0];
-    console.log(`current pokemon facing off: ${myBattlePokemon.pokemon.name} vs ${enemyBattlePokemon.pokemon.name}`);
+    console.log(
+      `current pokemon facing off: ${myBattlePokemon.name} vs ${enemyBattlePokemon.name}`
+    );
 
     const calculateMyDamage = await calculateDamage(
       myBattlePokemon.level,
       myBattlePokemon.attack,
       enemyBattlePokemon.defense,
-      myBattlePokemon.pokemon.pokemonTypes,
-      enemyBattlePokemon.pokemon.pokemonTypes
+      myBattlePokemon.types,
+      enemyBattlePokemon.types
     );
 
     console.log(
-      `damage from ${myBattlePokemon.pokemon.name} to ${enemyBattlePokemon.pokemon.name}: ${calculateMyDamage.damageDealt}`
+      `damage from ${myBattlePokemon.name} to ${enemyBattlePokemon.name}: ${calculateMyDamage.damageDealt}`
     );
 
     enemyBattlePokemon.hp -= calculateMyDamage.damageDealt;
@@ -29,17 +31,17 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
       enemyBattlePokemon.level,
       enemyBattlePokemon.attack,
       myBattlePokemon.defense,
-      enemyBattlePokemon.pokemon.pokemonTypes,
-      myBattlePokemon.pokemon.pokemonTypes
+      enemyBattlePokemon.types,
+      myBattlePokemon.types
     );
 
     myBattlePokemon.hp -= calculateEnemyDamage.damageDealt;
     console.log(
-      `damage from ${enemyBattlePokemon.pokemon.name} to ${myBattlePokemon.pokemon.name}: ${calculateEnemyDamage.damageDealt}`
+      `damage from ${enemyBattlePokemon.name} to ${myBattlePokemon.name}: ${calculateEnemyDamage.damageDealt}`
     );
 
     if (myBattlePokemon.hp <= 0) {
-      console.log(`${myBattlePokemon.pokemon.name} Fainted`);
+      console.log(`${myBattlePokemon.name} Fainted`);
       myBattleTeam.shift();
       if (myBattleTeam.length === 0) {
         battleOver = true;
@@ -47,7 +49,7 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
     }
 
     if (enemyBattlePokemon.hp <= 0) {
-      console.log(`${enemyBattlePokemon.pokemon.name} Fainted`);
+      console.log(`${enemyBattlePokemon.name} Fainted`);
       enemyBattleTeam.shift();
       if (enemyBattleTeam.length === 0) {
         battleOver = true;

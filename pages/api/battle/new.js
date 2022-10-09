@@ -3,7 +3,9 @@ import prisma from "lib/prisma";
 export default async function handler(req, res) {
   const body = JSON.parse(req.body);
 
-  const game = await prisma.game.findUnique({ where: { id: parseInt(body.gameId) } });
+  const game = await prisma.game.findUnique({
+    where: { id: parseInt(body.gameId) },
+  });
 
   for await (const myPokemon of body.myPokemonOrder) {
     await prisma.gamePokemon.update({
@@ -26,9 +28,7 @@ export default async function handler(req, res) {
     where: {
       isSearching: true,
       winnerId: null,
-      game1: {
-        round: game.round,
-      },
+      round: game.round,
     },
     select: {
       id: true,
@@ -40,6 +40,7 @@ export default async function handler(req, res) {
     battle = await prisma.battle.create({
       data: {
         game1Id: game.id,
+        round: game.round,
       },
     });
 

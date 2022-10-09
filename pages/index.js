@@ -223,6 +223,7 @@ export default function Home(props) {
         <div>Gold: {game.gold}</div>
         <div>Round: {game.round}</div>
         <div>lives: {game.lives}</div>
+        <div>wins: {game.wins}</div>
       </div>
 
       <DndProvider backend={HTML5Backend}>
@@ -324,12 +325,7 @@ export async function getServerSideProps() {
 
   const shopPokemon = transformShopPokemonRecords(shopPokemonRecords);
 
-  console.log(shopPokemon);
-
   const myPokemonRecords = await GetGamePokemon(prisma, game.id);
-
-  console.log(myPokemonRecords);
-  console.log(myPokemonRecords[0].evolutions);
 
   return { props: { game, shopPokemon, myPokemonRecords } };
 }

@@ -16,6 +16,7 @@ import SteelAnimation from "components/animation/steel";
 import WaterAnimation from "components/animation/water";
 import Pokemon from "components/pokemon";
 import useInterval from "components/useInterval";
+import pokemon from "constants/pokemon";
 import prisma from "lib/prisma";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
@@ -24,7 +25,9 @@ import calculateDamage from "util/calculateDamage";
 let intervalIteration = 0;
 
 export default function Battle(props) {
-  const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
+  const [myBattlePokemon, setMyBattlePokemon] = useState(
+    props.battlePokemon.filter((b) => b.gameId === props.game.id)
+  );
   const [enemyBattlePokemon, setEnemyBattlePokemon] = useState(
     props.battlePokemon.filter((b) => b.gameId !== props.game.id)
   );
@@ -37,7 +40,9 @@ export default function Battle(props) {
   const handlePokemonLogic = async () => {
     const myFightingPokemon = myBattlePokemon.filter((p) => p.tempHp > 0)[0];
 
-    const enemyFightingPokemon = enemyBattlePokemon.filter((p) => p.tempHp > 0)[0];
+    const enemyFightingPokemon = enemyBattlePokemon.filter(
+      (p) => p.tempHp > 0
+    )[0];
 
     if (myFightingPokemon === undefined || enemyFightingPokemon === undefined) {
       setIsFighting(false);
@@ -48,35 +53,43 @@ export default function Battle(props) {
       myFightingPokemon.level,
       myFightingPokemon.attack,
       enemyFightingPokemon.defense,
-      myFightingPokemon.pokemon.pokemonTypes,
-      enemyFightingPokemon.pokemon.pokemonTypes
+      myFightingPokemon.types,
+      enemyFightingPokemon.types
     );
 
     const calculateEnemyAttack = await calculateDamage(
       enemyFightingPokemon.level,
       enemyFightingPokemon.attack,
       myFightingPokemon.defense,
-      enemyFightingPokemon.pokemon.pokemonTypes,
-      myFightingPokemon.pokemon.pokemonTypes
+      enemyFightingPokemon.types,
+      myFightingPokemon.types
     );
 
     const myNewHp = myFightingPokemon.tempHp - calculateEnemyAttack.damageDealt;
-    const enemyNewHp = enemyFightingPokemon.tempHp - calculateMyAttack.damageDealt;
+    const enemyNewHp =
+      enemyFightingPokemon.tempHp - calculateMyAttack.damageDealt;
 
-    // console.log(`${myFightingPokemon.pokemon.name} took ${calculateEnemyAttack.damageDealt} Damage`);
-    // console.log(`${enemyFightingPokemon.pokemon.name} took ${calculateMyAttack.damageDealt} Damage`);
+    // console.log(`${myFightingPokemon.name} took ${calculateEnemyAttack.damageDealt} Damage`);
+    // console.log(`${enemyFightingPokemon.name} took ${calculateMyAttack.damageDealt} Damage`);
 
     setFightingAnimations([
-      { ...calculateMyAttack, time: new Date(), pokemonId: enemyFightingPokemon.id },
-      { ...calculateEnemyAttack, time: new Date(), pokemonId: myFightingPokemon.id },
+      {
+        ...calculateMyAttack,
+        time: new Date(),
+        pokemonId: enemyFightingPokemon.id,
+      },
+      {
+        ...calculateEnemyAttack,
+        time: new Date(),
+        pokemonId: myFightingPokemon.id,
+      },
     ]);
 
-    return;
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
         if (p.id === myFightingPokemon.id) {
           if (p.tempHp <= 0) {
-            console.log(`${myFightingPokemon.pokemon.name} fainted`);
+            console.log(`${myFightingPokemon.name} fainted`);
           }
           return { ...p, tempHp: myNewHp };
         } else {
@@ -89,7 +102,7 @@ export default function Battle(props) {
       pokemon.map((p) => {
         if (p.id === enemyFightingPokemon.id) {
           if (p.tempHp <= 0) {
-            console.log(`${enemyFightingPokemon.pokemon.name} fainted`);
+            console.log(`${enemyFightingPokemon.name} fainted`);
           }
           return { ...p, tempHp: enemyNewHp };
         } else {
@@ -138,7 +151,11 @@ export default function Battle(props) {
   return (
     <>
       <div className="flex gap-8 mt-10 h-80">
-        <div ref={myTeamRef} data-my-team="true" className="w-full flex justify-end ">
+        <div
+          ref={myTeamRef}
+          data-my-team="true"
+          className="w-full flex justify-end "
+        >
           {myBattlePokemon
             .filter((p) => p.hasFainted !== true)
             .map((m, index) => (
@@ -149,7 +166,9 @@ export default function Battle(props) {
               >
                 <BattlePokemon
                   battlePokemon={m}
-                  attackAnimation={fightingAnimations.filter((f) => f.pokemonId === m.id)[0]}
+                  attackAnimation={
+                    fightingAnimations.filter((f) => f.pokemonId === m.id)[0]
+                  }
                   teamLocation={myTeamRef.current}
                   enemyTeamLocation={enemyTeamRef.current}
                   flip={true}
@@ -169,7 +188,9 @@ export default function Battle(props) {
               >
                 <BattlePokemon
                   battlePokemon={m}
-                  attackAnimation={fightingAnimations.filter((f) => f.pokemonId === m.id)[0]}
+                  attackAnimation={
+                    fightingAnimations.filter((f) => f.pokemonId === m.id)[0]
+                  }
                   enemyTeamLocation={myTeamRef.current}
                   teamLocation={enemyTeamRef.current}
                 />
@@ -224,55 +245,105 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
   return (
     <>
       {attackAnimation.type === "Fire" && (
-        <FireAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <FireAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Water" && (
-        <WaterAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <WaterAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Grass" && (
-        <GrassAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <GrassAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Psychic" && (
-        <PsychicAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <PsychicAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Poison" && (
-        <PoisonAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <PoisonAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Bug" && (
-        <BugAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <BugAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Normal" && (
-        <NormalAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <NormalAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Flying" && (
-        <FlyingAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <FlyingAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Fighting" && (
-        <FightingAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <FightingAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Dragon" && (
-        <DragonAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <DragonAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Ghost" && (
-        <GhostAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <GhostAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Ice" && (
-        <IceAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <IceAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Rock" && (
-        <RockAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <RockAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Electric" && (
-        <ElectricAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <ElectricAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Ground" && (
-        <GroundAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <GroundAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       {attackAnimation.type === "Steel" && (
-        <SteelAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
+        <SteelAnimation
+          teamLocation={teamLocation}
+          enemyTeamLocation={enemyTeamLocation}
+        />
       )}
       <div
-        className={`absolute -bottom-12 whitespace-nowrap ${showAnimation ? "opacity-100" : "opacity-0"} transition`}
+        className={`absolute -bottom-12 whitespace-nowrap ${
+          showAnimation ? "opacity-100" : "opacity-0"
+        } transition`}
       >
         <div className="">-{attackAnimation.damageDealt}</div>
         <div className={effectColor}>{attackAnimation.effect}</div>
@@ -281,7 +352,13 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
   );
 }
 
-function BattlePokemon({ flip = false, battlePokemon, attackAnimation, teamLocation, enemyTeamLocation }) {
+function BattlePokemon({
+  flip = false,
+  battlePokemon,
+  attackAnimation,
+  teamLocation,
+  enemyTeamLocation,
+}) {
   return (
     <div className="text-center">
       {attackAnimation !== undefined && (
@@ -294,14 +371,14 @@ function BattlePokemon({ flip = false, battlePokemon, attackAnimation, teamLocat
       )}
       <Pokemon
         level={battlePokemon.level}
-        name={battlePokemon.pokemon.name}
-        pokedexId={battlePokemon.pokemon.pokedexId}
+        name={battlePokemon.name}
+        pokedexId={battlePokemon.pokemonId}
         isShiny={battlePokemon.isShiny}
         tempHp={battlePokemon.tempHp}
         hp={battlePokemon.hp}
         attack={battlePokemon.attack}
         defense={battlePokemon.defense}
-        pokemonTypes={battlePokemon.pokemon.pokemonTypes}
+        pokemonTypes={battlePokemon.types}
         flip={flip}
       />
     </div>
@@ -338,40 +415,17 @@ export async function getServerSideProps(context) {
     orderBy: {
       orderNum: "desc",
     },
-    select: {
-      id: true,
-      battleId: true,
-      gameId: true,
-      hp: true,
-      attack: true,
-      defense: true,
-      orderNum: true,
-      level: true,
-      isShiny: true,
-      pokemon: {
-        select: {
-          name: true,
-          pokedexId: true,
-          pokemonTypes: {
-            select: {
-              type: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
   });
 
   battlePokemon = await Promise.all(
     battlePokemon.map(async (p) => {
+      const { name, types } = pokemon[p.pokemonId];
       return {
         ...p,
         tempHp: p.hp,
         hasFainted: false,
+        name,
+        types,
       };
     })
   );

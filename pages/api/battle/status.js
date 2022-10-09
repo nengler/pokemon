@@ -1,11 +1,13 @@
+import Pokemon from "constants/pokemon";
+import pokemonByShopLevel from "constants/pokemonByShopLevel";
 import prisma from "lib/prisma";
-import { GetNewShopPokemon } from "prisma/methods/createNewShopPokemon";
+import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
 import DeleteCurrentShop from "prisma/queries/deleteCurrentShop";
 import { GetBattleTeam } from "prisma/queries/getBattleTeam";
-import GetRandomPokemon from "prisma/queries/getRandomPokemon";
 import GetHp from "util/getHp";
 import GetNotHpStat from "util/getNotHpStat";
 import GetPokemonLevelRange from "util/getPokemonLevelRange";
+import GetRandomElement from "util/getRandomElement";
 import isShiny from "util/isShiny";
 import { simulateBattle } from "util/simulateBattle";
 
@@ -29,7 +31,7 @@ export default async function handler(req, res) {
       },
     });
 
-    await getRandomTeam(battle.id);
+    await getRandomTeam(battle.id, battle.round);
 
     const enemyBattleTeam = await GetBattleTeam(prisma, battle.id, null);
     const myBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game1Id);
@@ -55,6 +57,8 @@ export default async function handler(req, res) {
 
     if (battleWinner === null) {
       updateData.lives = { decrement: 1 };
+    } else {
+      updateData.wins = { increment: 1 };
     }
 
     const game = await prisma.game.update({
@@ -65,7 +69,7 @@ export default async function handler(req, res) {
     });
 
     await DeleteCurrentShop(prisma, game.id);
-    await GetNewShopPokemon(prisma, game.id, game.round, 3);
+    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
 
     res.status(200).json({ battle, enemyBattleTeam, battleWinner });
   } else if (battle.isSearching) {
@@ -75,23 +79,28 @@ export default async function handler(req, res) {
   }
 }
 
-async function getRandomTeam(battleId) {
+async function getRandomTeam(battleId, currentRound) {
   const teamSize = [0, 1, 2];
 
   const levelRange = GetPokemonLevelRange(1);
 
+  const availablePokemon = Object.keys(pokemonByShopLevel)
+    .filter((round) => parseInt(round) <= currentRound)
+    .map((round) => pokemonByShopLevel[round])
+    .flat();
+
   const pokemonData = await Promise.all(
     teamSize.map(async (order) => {
-      const randomPokemonArray = await GetRandomPokemon(prisma);
-      const randomPokemon = randomPokemonArray[0];
+      const randomPokemonId = GetRandomElement(availablePokemon);
       const level = levelRange[Math.floor(Math.random() * levelRange.length)];
+      const randomPokemon = Pokemon[randomPokemonId];
 
       return {
-        pokemonId: randomPokemon.id,
+        pokemonId: randomPokemonId,
         battleId: battleId,
-        hp: GetHp(randomPokemon.baseHp, level),
-        attack: GetNotHpStat(randomPokemon.baseAttack, level),
-        defense: GetNotHpStat(randomPokemon.baseDefense, level),
+        hp: GetHp(randomPokemon.baseStats.hp, level),
+        attack: GetNotHpStat(randomPokemon.baseStats.attack, level),
+        defense: GetNotHpStat(randomPokemon.baseStats.defense, level),
         orderNum: order,
         level: level,
         isShiny: isShiny(),

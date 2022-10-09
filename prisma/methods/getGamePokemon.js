@@ -1,5 +1,4 @@
-import pokemon from "constants/pokemon";
-import pokemonEvolution from "constants/pokemonEvolution";
+import TransformGamePokemonRecord from "./transformGamePokemonRecord";
 
 export default async function GetGamePokemon(prisma, gameId) {
   const gamePokemon = await prisma.gamePokemon.findMany({
@@ -8,14 +7,5 @@ export default async function GetGamePokemon(prisma, gameId) {
     },
   });
 
-  return gamePokemon.map((g) => {
-    const { name, types } = pokemon[g.pokemonId];
-
-    return {
-      ...g,
-      evolutions: pokemonEvolution[g.pokemonId] || [],
-      name,
-      types,
-    };
-  });
+  return gamePokemon.map((g) => TransformGamePokemonRecord(g));
 }
