@@ -33,7 +33,6 @@ model Game {
 
 model ShopPokemon {
   id        Int     @id @default(autoincrement())
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
   pokemonId Int
   game      Game    @relation(fields: [gameId], references: [id])
   gameId    Int
@@ -41,47 +40,8 @@ model ShopPokemon {
   isShiny   Boolean
 }
 
-model Type {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  PokemonType PokemonType[]
-}
-
-model Pokemon {
-  id            Int                @id @default(autoincrement())
-  name          String
-  baseHp        Int
-  baseAttack    Int
-  baseDefense   Int
-  pokedexId     Int                @unique
-  pokemonTypes  PokemonType[]
-  GamePokemon   GamePokemon[]
-  ShopPokemon   ShopPokemon[]
-  EvolutionFrom PokemonEvolution[] @relation("PokemonEvolutionFrom")
-  EvolutionTo   PokemonEvolution[] @relation("PokemonEvolutionTo")
-  BattleTeam    BattleTeam[]
-}
-
-model PokemonEvolution {
-  id             Int     @id @default(autoincrement())
-  evolutionLevel Int
-  evolvesFromId  Int
-  EvolvesFrom    Pokemon @relation("PokemonEvolutionFrom", fields: [evolvesFromId], references: [id])
-  evolvesToId    Int
-  EvolvesTo      Pokemon @relation("PokemonEvolutionTo", fields: [evolvesToId], references: [id])
-}
-
-model PokemonType {
-  id        Int     @id @default(autoincrement())
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
-  pokemonId Int
-  type      Type    @relation(fields: [typeId], references: [id])
-  typeId    Int
-}
-
 model GamePokemon {
   id        Int     @id @default(autoincrement())
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
   pokemonId Int
   nickname  String?
   hp        Int
@@ -114,7 +74,6 @@ model BattleTeam {
   battleId  Int
   game      Game?   @relation(fields: [gameId], references: [id])
   gameId    Int?
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
   pokemonId Int
   hp        Int
   attack    Int

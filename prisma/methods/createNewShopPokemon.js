@@ -3,7 +3,7 @@ import GetPokemonLevelRange from "util/getPokemonLevelRange";
 import pokemonByShopLevel from "constants/pokemonByShopLevel";
 import GetRandomElement from "util/getRandomElement";
 
-export async function GetNewShopPokemon(
+export default async function CreateNewShopPokemon(
   prisma,
   gameId,
   currentRound,

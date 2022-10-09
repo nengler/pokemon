@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = module.exports = {
   1: [
     {
       into: 2,

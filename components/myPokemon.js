@@ -19,7 +19,10 @@ export default function MyPokemon({
   const evolveButtonRef = useRef();
 
   const handleOutsideClicks = (event) => {
-    if (!clickOutside.current?.contains(event.target) && evolveButtonRef.current !== event.target) {
+    if (
+      !clickOutside.current?.contains(event.target) &&
+      evolveButtonRef.current !== event.target
+    ) {
       setShowEvolutions(false);
       document.removeEventListener("mousedown", handleOutsideClicks);
     }
@@ -37,16 +40,19 @@ export default function MyPokemon({
     document.removeEventListener("mousedown", handleOutsideClicks);
   };
 
-  const pokemonDropped = ({ shopPokemonid }) => {
+  const pokemonDropped = ({ shopPokemonId }) => {
     if (gamePokemon === undefined) {
-      buyNewPokemon(order, shopPokemonid);
+      buyNewPokemon(order, shopPokemonId);
     } else {
-      upgradePokemon(gamePokemon.id, shopPokemonid);
+      upgradePokemon(gamePokemon.id, shopPokemonId);
     }
   };
 
   const pokemonCanDrop = ({ pokemonId }) => {
-    return gold >= 3 && (gamePokemon === undefined || pokemonId === gamePokemon.pokemon.id);
+    return (
+      gold >= 3 &&
+      (gamePokemon === undefined || pokemonId === gamePokemon.pokemonId)
+    );
   };
 
   const gamePokemonDropped = ({ gamePokemonId, originalSpot }) => {
@@ -103,7 +109,10 @@ export default function MyPokemon({
     }
 
     if (gamePokemon.pokemon.EvolutionFrom.length === 1) {
-      evolvePokemon(gamePokemon.id, gamePokemon.pokemon.EvolutionFrom[0].EvolvesTo.id);
+      evolvePokemon(
+        gamePokemon.id,
+        gamePokemon.pokemon.EvolutionFrom[0].EvolvesTo.id
+      );
     } else if (showEvolutions) {
       setShowEvolutionsFalse();
     } else if (!showEvolutions) {
@@ -116,16 +125,16 @@ export default function MyPokemon({
     setShowEvolutionsFalse();
   };
 
-  const canEvolve =
-    gamePokemon !== undefined &&
-    gamePokemon.pokemon.EvolutionFrom.filter((e) => e.evolutionLevel <= gamePokemon.level).length > 0;
+  const canEvolveInto =
+    gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level)
+      .length > 0;
 
   return (
     <div
       ref={gamePokemonDrop}
-      className={`h-64 transition-colors ${dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""} ${
-        collectables.isOver ? "bg-green-500" : ""
-      }`}
+      className={`h-64 transition-colors ${
+        dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
+      } ${collectables.isOver ? "bg-green-500" : ""}`}
     >
       <div
         ref={drop}
@@ -138,15 +147,15 @@ export default function MyPokemon({
             <Pokemon
               connectDragSource={preview}
               pokemonRef={drag}
-              name={gamePokemon.pokemon.name}
+              name={gamePokemon.name}
               level={gamePokemon.level}
               hp={gamePokemon.hp}
               tempHp={gamePokemon.hp}
               attack={gamePokemon.attack}
               defense={gamePokemon.defense}
-              pokedexId={gamePokemon.pokemon.pokedexId}
+              pokedexId={gamePokemon.pokemonId}
               isShiny={gamePokemon.isShiny}
-              pokemonTypes={gamePokemon.pokemon.pokemonTypes}
+              pokemonTypes={gamePokemon.types}
             />
           </div>
         )}
@@ -154,11 +163,14 @@ export default function MyPokemon({
 
       {gamePokemon !== undefined && (
         <div className="flex justify-center mt-2">
-          <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 px-3 rounded-lg h-6">
+          <button
+            onClick={sellGamePokemon}
+            className="bg-red-600 text-red-50 px-3 rounded-lg h-6"
+          >
             Sell
           </button>
 
-          {canEvolve && (
+          {canEvolveInto && (
             <>
               <div className="relative inline-block ml-1">
                 <button
@@ -173,18 +185,24 @@ export default function MyPokemon({
                     ref={clickOutside}
                     className="bg-white shadow-xl p-4 rounded-lg flex gap-2 absolute left-1/2 -translate-x-1/2 top-8"
                   >
-                    {gamePokemon.pokemon.EvolutionFrom.map((e) => (
+                    {canEvolveInto.map((e) => (
                       <div
-                        onClick={() => choseEvolution(e.EvolvesTo.id)}
+                        onClick={() => choseEvolution(e.into)}
                         className="w-32 flex flex-col items-center text-center hover:bg-purple-50 cursor-pointer"
-                        key={e.EvolvesTo.id}
+                        key={e.into}
                       >
                         <Pokemon
                           name={e.EvolvesTo.name}
                           level={gamePokemon.level}
                           hp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}
-                          attack={GetHp(e.EvolvesTo.baseAttack, gamePokemon.level)}
-                          defense={GetHp(e.EvolvesTo.baseDefense, gamePokemon.level)}
+                          attack={GetHp(
+                            e.EvolvesTo.baseAttack,
+                            gamePokemon.level
+                          )}
+                          defense={GetHp(
+                            e.EvolvesTo.baseDefense,
+                            gamePokemon.level
+                          )}
                           pokedexId={e.EvolvesTo.pokedexId}
                           isShiny={gamePokemon.isShiny}
                           tempHp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}

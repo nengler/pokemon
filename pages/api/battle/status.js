@@ -1,5 +1,5 @@
 import prisma from "lib/prisma";
-import { GetNewShopPokemon } from "prisma/methods/getNewShopPokemon";
+import { GetNewShopPokemon } from "prisma/methods/createNewShopPokemon";
 import DeleteCurrentShop from "prisma/queries/deleteCurrentShop";
 import { GetBattleTeam } from "prisma/queries/getBattleTeam";
 import GetRandomPokemon from "prisma/queries/getRandomPokemon";

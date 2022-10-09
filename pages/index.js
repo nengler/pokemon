@@ -7,8 +7,9 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useRouter } from "next/router";
 
-import GamePokemonSelect from "prisma/queries/gamePokemonSelect";
-import { GetNewShopPokemon } from "prisma/methods/getNewShopPokemon";
+import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
+import GetGamePokemon from "prisma/methods/getGamePokemon";
+import transformShopPokemonRecords from "prisma/methods/transformShopPokemonRecords";
 
 const pokemonLength = Array.apply(null, Array(6)).map(function () {});
 
@@ -58,7 +59,7 @@ export default function Home(props) {
       body: JSON.stringify(body),
     });
     const buyData = await buyRes.json();
-    setMyPokemon((pokemonArray) => [...pokemonArray, buyData.gamePokemon]);
+    setMyPokemon(buyData.gamePokemon);
     setGame({ ...game, gold: buyData.gold });
     updateShopPokemon(shopPokemonId);
     allowPerformAction();
@@ -76,21 +77,7 @@ export default function Home(props) {
       body: JSON.stringify(body),
     });
     const upgradeData = await upgradeRes.json();
-    setMyPokemon((pokemonArray) =>
-      pokemonArray.map((p) => {
-        if (p.id === upgradeData.gamePokemon.id) {
-          return {
-            ...p,
-            level: upgradeData.gamePokemon.level,
-            hp: upgradeData.gamePokemon.hp,
-            attack: upgradeData.gamePokemon.attack,
-            defense: upgradeData.gamePokemon.defense,
-          };
-        } else {
-          return p;
-        }
-      })
-    );
+    setMyPokemon(upgradeData.gamePokemon);
     setGame({ ...game, gold: upgradeData.gold });
     updateShopPokemon(shopPokemonId);
     allowPerformAction();
@@ -327,20 +314,22 @@ export async function getServerSideProps() {
     });
   }
 
-  let shopPokemon = await GetShopPokemon(prisma, game.id);
+  let shopPokemonRecords = await GetShopPokemon(prisma, game.id);
 
-  if (shopPokemon.length === 0) {
-    await GetNewShopPokemon(prisma, game.id, game.round, 3);
+  if (shopPokemonRecords.length === 0) {
+    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
 
-    shopPokemon = await GetShopPokemon(prisma, game.id);
+    shopPokemonRecords = await GetShopPokemon(prisma, game.id);
   }
 
-  const myPokemonRecords = await prisma.gamePokemon.findMany({
-    where: {
-      gameId: game.id,
-    },
-    ...GamePokemonSelect(),
-  });
+  const shopPokemon = transformShopPokemonRecords(shopPokemonRecords);
+
+  console.log(shopPokemon);
+
+  const myPokemonRecords = await GetGamePokemon(prisma, game.id);
+
+  console.log(myPokemonRecords);
+  console.log(myPokemonRecords[0].evolutions);
 
   return { props: { game, shopPokemon, myPokemonRecords } };
 }
