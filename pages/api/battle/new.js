@@ -36,6 +36,7 @@ export default async function handler(req, res) {
     },
   });
 
+  // TODO: ddd logic for if the battle does not equal null
   if (battle === null) {
     battle = await prisma.battle.create({
       data: {

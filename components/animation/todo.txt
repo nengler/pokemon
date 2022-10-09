@@ -22,12 +22,12 @@ ICE: Good
 
 STEEL: Good
 
-ROCK: good base, needs better shape
+ROCK: good enough
 
-FIGHTING: good ish?
+FIGHTING: good enough
 
-DRAGON: dont fit?
+DRAGON: good enough
 
-GROUND: https://bulbapedia.bulbagarden.net/wiki/File:Mud_Shot_III.png
+GROUND: meh
 
-GHOST: NEED SVG DONE
+GHOST: meh

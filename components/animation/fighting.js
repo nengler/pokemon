@@ -1,44 +1,3 @@
-// import { motion } from "framer-motion";
-// import Fist from "public/assets/fist";
-// import Pow from "public/assets/pow";
-
-// export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
-//   if (teamLocation === undefined || enemyTeamLocation === undefined) {
-//     return;
-//   }
-
-//   const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-//   const myCoordinates = getMyCoordinates(teamLocation);
-
-//   if (enemyCoordinates === undefined || myCoordinates === undefined) {
-//     return null;
-//   }
-
-//   const xStartingPosition = 35; //(myCoordinates.right - myCoordinates.left) / 2;
-//   const yStartingPosition = 80;
-
-//   let styles = {
-//     left: `${xStartingPosition}px`,
-//     top: `${yStartingPosition}px`,
-//   };
-
-//   return (
-//     <motion.div
-//       animate={{ opacity: [0, 1, 0, 1] }}
-//       transition={{ duration: 0.5 }}
-//       className="absolute w-[57px] h-[47px] flex justify-center items-center opacity-0 z-10"
-//       style={styles}
-//     >
-//       <div className="absolute top-0 z-10">
-//         <Pow />
-//       </div>
-//       <div className="z-10">
-//         <Fist />
-//       </div>
-//     </motion.div>
-//   );
-// }
-
 import { motion } from "framer-motion";
 import HandIcon from "public/assets/hand";
 const animationDuration = 0.5;
@@ -59,7 +18,9 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
     <>
       <motion.div
         animate={{ y: [-20, 90, 70] }}
-        transition={{ y: { duration: animationDuration, times: [0, 0.3, 0.5] } }}
+        transition={{
+          y: { duration: animationDuration, times: [0, 0.3, 0.5] },
+        }}
         className="absolute left-[36px] w-12 flex justify-center items-center z-10"
       >
         <HandIcon flip={teamLocation.dataset.myTeam === "true"} />

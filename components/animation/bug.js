@@ -19,12 +19,19 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 * baseXFactor : 0.5 * baseXFactor;
+  const xFactor =
+    teamLocation.dataset.myTeam === "true"
+      ? 1 * baseXFactor
+      : 0.5 * baseXFactor;
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xFactor;
+  const xStartingPosition =
+    enemyCoordinates.right - myCoordinates.left - xFactor;
 
   const distanceToMove =
-    myCoordinates.left + xFactor - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+    myCoordinates.left +
+    xFactor -
+    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
+      enemyCoordinates.left);
 
   return (
     <>
@@ -49,7 +56,11 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
             }}
             transition={{
               default: { duration: animationDuration, delay: delay },
-              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.99, 1] },
+              opacity: {
+                duration: animationDuration,
+                delay: delay,
+                times: [0, 0.01, 0.9],
+              },
             }}
             className="absolute"
             key={index}

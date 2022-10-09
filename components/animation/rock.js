@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import RockIcon from "public/assets/newRock";
 
 const animationDuration = 0.35;
-const locations = [50, 45, 60, 50, 20, 64, 40];
+const locations = [50, 45, 60, 50, 30, 64];
 
 export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -35,8 +35,16 @@ export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
               y: index % 2 === 1 ? [0, 100, 75] : [0, 100, 85],
             }}
             transition={{
-              y: { delay: delay, duration: animationDuration, times: [0, 0.75, 1] },
-              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
+              y: {
+                delay: delay,
+                duration: animationDuration,
+                times: [0, 0.75, 1],
+              },
+              opacity: {
+                delay: delay,
+                duration: animationDuration,
+                times: [0, 0.01, 0.99, 1],
+              },
             }}
             className={`fill-[#be8b3f] stroke-rock-secondary opacity-0 absolute ${
               index % 2 === 1 ? "h-8 w-6" : "h-10 w-8"

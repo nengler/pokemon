@@ -85,6 +85,8 @@ export default function Battle(props) {
       },
     ]);
 
+    return;
+
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
         if (p.id === myFightingPokemon.id) {

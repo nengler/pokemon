@@ -2,6 +2,8 @@
 // import EarthPower from "public/assets/earthPower";
 // import { Fragment } from "react";
 
+import { motion } from "framer-motion";
+
 // const earthPowers = [null, null];
 // const effects = [-100, -120, -35, -50, -90, -55, -105, -90, -115, -50];
 
@@ -93,10 +95,10 @@
 //   );
 // }
 
-const earthShotWidth = 20;
-const earthShots = Array(6).fill(null);
+const earthShots = Array(3).fill(null);
 const xOffset = 60;
 const yStartingPosition = 90;
+const animationDuration = 0.3;
 export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
@@ -109,21 +111,46 @@ export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xOffset;
+  const xStartingPosition =
+    enemyCoordinates.right - myCoordinates.left - xOffset;
 
   const distanceToMove =
-    (myCoordinates.left + xOffset - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) *
-    -1;
+    myCoordinates.left +
+    xOffset -
+    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
+      enemyCoordinates.left);
 
   return (
     <>
       {earthShots.map((_earthShot, index) => {
-        const offset = (Math.abs(distanceToMove) / earthShots.length) * index;
-        const styles = {
+        let styles = {
+          left: `${xStartingPosition}px`,
           top: `${yStartingPosition}px`,
-          left: `${offset + xStartingPosition}px`,
         };
-        return <div style={styles} key={index} className="absolute w-5 h-5 bg-ground-primary rounded-full"></div>;
+
+        const delay = index * 0.2;
+
+        return (
+          <motion.div
+            animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
+            transition={{
+              x: {
+                ease: "easeOut",
+                duration: animationDuration,
+                delay: delay,
+              },
+              y: { duration: animationDuration, delay: delay },
+              opacity: {
+                duration: animationDuration,
+                delay: delay,
+                times: [0, 0.01, 0.9],
+              },
+            }}
+            className="absolute w-5 h-5 bg-ground-primary rounded-full border border-ground-secondary"
+            key={index}
+            style={styles}
+          />
+        );
       })}
     </>
   );
