@@ -1,17 +1,14 @@
 import prisma from "lib/prisma";
 import MyPokemon from "components/myPokemon";
 import ShopPokemon from "components/shopPokemon";
-import GetRandomPokemon from "prisma/queries/getRandomPokemon";
 import GetShopPokemon from "prisma/queries/getShopPokemon";
 import { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useRouter } from "next/router";
 
-import GetPokemonLevelRange from "util/getPokemonLevelRange";
-import isShiny from "util/isShiny";
 import GamePokemonSelect from "prisma/queries/gamePokemonSelect";
-import { GetNewShopPokemon } from "prisma/queries/getNewShopPokemon";
+import { GetNewShopPokemon } from "prisma/methods/getNewShopPokemon";
 
 const pokemonLength = Array.apply(null, Array(6)).map(function () {});
 
@@ -69,7 +66,11 @@ export default function Home(props) {
 
   const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
     disallowPerformAction();
-    const body = { shopPokemonId: shopPokemonId, gameId: game.id, gamePokemonId: gamePokemonId };
+    const body = {
+      shopPokemonId: shopPokemonId,
+      gameId: game.id,
+      gamePokemonId: gamePokemonId,
+    };
     const upgradeRes = await fetch("/api/shop_pokemon/buy", {
       method: "PATCH",
       body: JSON.stringify(body),
@@ -111,7 +112,8 @@ export default function Home(props) {
   const rearrangeOrder = (gamePokemonId, originalSpot, newOrderCol) => {
     if (myPokemon.filter((p) => p.orderNum === newOrderCol)[0] !== undefined) {
       const pokemonClone = structuredClone(myPokemon);
-      pokemonClone.filter((p) => p.id === gamePokemonId)[0].orderNum = newOrderCol;
+      pokemonClone.filter((p) => p.id === gamePokemonId)[0].orderNum =
+        newOrderCol;
       if (newOrderCol === 5 || newOrderCol === 0) {
         const sort =
           newOrderCol === 5
@@ -123,13 +125,17 @@ export default function Home(props) {
         pokemonClone.forEach((p, index) => {
           if (p.id === gamePokemonId) {
             return;
-          } else if (pokemonClone.filter((po) => po.orderNum === p.orderNum).length === 2) {
+          } else if (
+            pokemonClone.filter((po) => po.orderNum === p.orderNum).length === 2
+          ) {
             pokemonClone[index] = { ...p, orderNum: p.orderNum + direction };
           }
         });
         setMyPokemon(pokemonClone);
       } else if (Math.abs(originalSpot - newOrderCol) === 1) {
-        pokemonClone.filter((p) => p.orderNum === newOrderCol && p.id !== gamePokemonId)[0].orderNum = originalSpot;
+        pokemonClone.filter(
+          (p) => p.orderNum === newOrderCol && p.id !== gamePokemonId
+        )[0].orderNum = originalSpot;
         setMyPokemon(pokemonClone);
       } else {
         const sort =
@@ -237,13 +243,17 @@ export default function Home(props) {
           <h4 className="text-xl">My Pokemon</h4>
           <div className="flex justify-between items-center">
             {pokemonLength.map((_p, index) => {
-              const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
+              const gamePokemon = myPokemon.filter(
+                (pokemon) => pokemon.orderNum === index
+              )[0];
               return (
                 <MyPokemon
                   gold={game.gold}
                   gamePokemon={gamePokemon}
                   order={index}
-                  key={`${index}-${gamePokemon === undefined ? "undefined" : gamePokemon.id}`}
+                  key={`${index}-${
+                    gamePokemon === undefined ? "undefined" : gamePokemon.id
+                  }`}
                   buyNewPokemon={buyNewPokemon}
                   upgradePokemon={upgradePokemon}
                   sellPokemon={sellPokemon}
@@ -261,16 +271,22 @@ export default function Home(props) {
         <div className="flex justify-center gap-8">
           {shopPokemon.map((pokemon, index) => (
             <div
-              key={pokemon?.id ? `shop-${pokemon.id}-${pokemon.pokemonId}` : `shopUndefined-${index}`}
+              key={
+                pokemon?.id
+                  ? `shop-${pokemon.id}-${pokemon.pokemonId}`
+                  : `shopUndefined-${index}`
+              }
               className="h-52 w-32"
             >
-              {Object.keys(pokemon).length !== 0 && <ShopPokemon shopPokemon={pokemon} canDrag={canPerformAction} />}
+              {Object.keys(pokemon).length !== 0 && (
+                <ShopPokemon shopPokemon={pokemon} canDrag={canPerformAction} />
+              )}
             </div>
           ))}
         </div>
       </DndProvider>
       <button
-        disabled={!canPerformAction}
+        disabled={!canPerformAction || game.gold < 1}
         className="bg-gray-100 rounded-lg px-4 h-10 disabled:opacity-30"
         onClick={getNewPokemon}
       >

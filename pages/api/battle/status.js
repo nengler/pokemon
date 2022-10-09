@@ -1,5 +1,6 @@
 import prisma from "lib/prisma";
-import GetNewShop from "prisma/methods/getNewShop";
+import { GetNewShopPokemon } from "prisma/methods/getNewShopPokemon";
+import DeleteCurrentShop from "prisma/queries/deleteCurrentShop";
 import { GetBattleTeam } from "prisma/queries/getBattleTeam";
 import GetRandomPokemon from "prisma/queries/getRandomPokemon";
 import GetHp from "util/getHp";
@@ -63,7 +64,8 @@ export default async function handler(req, res) {
       data: updateData,
     });
 
-    await GetNewShop(prisma, game);
+    await DeleteCurrentShop(prisma, game.id);
+    await GetNewShopPokemon(prisma, game.id, game.round, 3);
 
     res.status(200).json({ battle, enemyBattleTeam, battleWinner });
   } else if (battle.isSearching) {
