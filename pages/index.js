@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import GetPokemonLevelRange from "util/getPokemonLevelRange";
 import isShiny from "util/isShiny";
 import GamePokemonSelect from "prisma/queries/gamePokemonSelect";
+import { GetNewShopPokemon } from "prisma/queries/getNewShopPokemon";
 
 const pokemonLength = Array.apply(null, Array(6)).map(function () {});
 
@@ -313,35 +314,7 @@ export async function getServerSideProps() {
   let shopPokemon = await GetShopPokemon(prisma, game.id);
 
   if (shopPokemon.length === 0) {
-    const pokemon1 = await GetRandomPokemon(prisma);
-    const pokemon2 = await GetRandomPokemon(prisma);
-    const pokemon3 = await GetRandomPokemon(prisma);
-    const levelRange = GetPokemonLevelRange(game.round);
-
-    const shopPokemonData = [
-      {
-        gameId: game.id,
-        pokemonId: pokemon1[0].id,
-        isShiny: isShiny(),
-        level: levelRange[Math.floor(Math.random() * levelRange.length)],
-      },
-      {
-        gameId: game.id,
-        pokemonId: pokemon2[0].id,
-        isShiny: isShiny(),
-        level: levelRange[Math.floor(Math.random() * levelRange.length)],
-      },
-      {
-        gameId: game.id,
-        pokemonId: pokemon3[0].id,
-        isShiny: isShiny(),
-        level: levelRange[Math.floor(Math.random() * levelRange.length)],
-      },
-    ];
-
-    await prisma.shopPokemon.createMany({
-      data: shopPokemonData,
-    });
+    await GetNewShopPokemon(prisma, game.id, game.round, 3);
 
     shopPokemon = await GetShopPokemon(prisma, game.id);
   }

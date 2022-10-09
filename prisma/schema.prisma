@@ -48,19 +48,18 @@ model Type {
 }
 
 model Pokemon {
-  id                Int                @id @default(autoincrement())
-  name              String
-  baseHp            Int
-  baseAttack        Int
-  baseDefense       Int
-  roundPurchaseable Int
-  pokedexId         Int                @unique
-  pokemonTypes      PokemonType[]
-  GamePokemon       GamePokemon[]
-  ShopPokemon       ShopPokemon[]
-  EvolutionFrom     PokemonEvolution[] @relation("PokemonEvolutionFrom")
-  EvolutionTo       PokemonEvolution[] @relation("PokemonEvolutionTo")
-  BattleTeam        BattleTeam[]
+  id            Int                @id @default(autoincrement())
+  name          String
+  baseHp        Int
+  baseAttack    Int
+  baseDefense   Int
+  pokedexId     Int                @unique
+  pokemonTypes  PokemonType[]
+  GamePokemon   GamePokemon[]
+  ShopPokemon   ShopPokemon[]
+  EvolutionFrom PokemonEvolution[] @relation("PokemonEvolutionFrom")
+  EvolutionTo   PokemonEvolution[] @relation("PokemonEvolutionTo")
+  BattleTeam    BattleTeam[]
 }
 
 model PokemonEvolution {

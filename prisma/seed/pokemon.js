@@ -16,7 +16,6 @@ async function main() {
         baseHp: pokemon1.base.HP,
         baseAttack: attack,
         baseDefense: defense,
-        roundPurchaseable: 1,
         pokedexId: pokemon1.id,
       },
     });
