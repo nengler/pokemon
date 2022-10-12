@@ -66,7 +66,6 @@ module.exports = {
       attack: 50,
       defense: 65,
       hp: 44,
-      evolutionLine: [1, 2, 3],
     },
     evolutionLine: [7, 8, 9],
   },
