@@ -7,6 +7,7 @@ module.exports = {
       defense: 65,
       hp: 45,
     },
+    evolutionLine: [1, 2, 3],
   },
   2: {
     name: "Ivysaur",
@@ -16,6 +17,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [1, 2, 3],
   },
   3: {
     name: "Venusaur",
@@ -25,6 +27,7 @@ module.exports = {
       defense: 100,
       hp: 80,
     },
+    evolutionLine: [1, 2, 3],
   },
   4: {
     name: "Charmander",
@@ -34,6 +37,7 @@ module.exports = {
       defense: 50,
       hp: 39,
     },
+    evolutionLine: [4, 5, 6],
   },
   5: {
     name: "Charmeleon",
@@ -43,6 +47,7 @@ module.exports = {
       defense: 65,
       hp: 58,
     },
+    evolutionLine: [4, 5, 6],
   },
   6: {
     name: "Charizard",
@@ -52,6 +57,7 @@ module.exports = {
       defense: 85,
       hp: 78,
     },
+    evolutionLine: [4, 5, 6],
   },
   7: {
     name: "Squirtle",
@@ -60,7 +66,9 @@ module.exports = {
       attack: 50,
       defense: 65,
       hp: 44,
+      evolutionLine: [1, 2, 3],
     },
+    evolutionLine: [7, 8, 9],
   },
   8: {
     name: "Wartortle",
@@ -70,6 +78,7 @@ module.exports = {
       defense: 80,
       hp: 59,
     },
+    evolutionLine: [7, 8, 9],
   },
   9: {
     name: "Blastoise",
@@ -79,6 +88,7 @@ module.exports = {
       defense: 105,
       hp: 79,
     },
+    evolutionLine: [7, 8, 9],
   },
   10: {
     name: "Caterpie",
@@ -88,6 +98,7 @@ module.exports = {
       defense: 35,
       hp: 45,
     },
+    evolutionLine: [10, 11, 12],
   },
   11: {
     name: "Metapod",
@@ -97,6 +108,7 @@ module.exports = {
       defense: 55,
       hp: 50,
     },
+    evolutionLine: [10, 11, 12],
   },
   12: {
     name: "Butterfree",
@@ -106,6 +118,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [10, 11, 12],
   },
   13: {
     name: "Weedle",
@@ -115,6 +128,7 @@ module.exports = {
       defense: 30,
       hp: 40,
     },
+    evolutionLine: [13, 14, 15],
   },
   14: {
     name: "Kakuna",
@@ -124,6 +138,7 @@ module.exports = {
       defense: 50,
       hp: 45,
     },
+    evolutionLine: [13, 14, 15],
   },
   15: {
     name: "Beedrill",
@@ -133,6 +148,7 @@ module.exports = {
       defense: 80,
       hp: 65,
     },
+    evolutionLine: [13, 14, 15],
   },
   16: {
     name: "Pidgey",
@@ -142,6 +158,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
+    evolutionLine: [16, 17, 18],
   },
   17: {
     name: "Pidgeotto",
@@ -151,6 +168,7 @@ module.exports = {
       defense: 55,
       hp: 63,
     },
+    evolutionLine: [16, 17, 18],
   },
   18: {
     name: "Pidgeot",
@@ -160,6 +178,7 @@ module.exports = {
       defense: 75,
       hp: 83,
     },
+    evolutionLine: [16, 17, 18],
   },
   19: {
     name: "Rattata",
@@ -169,6 +188,7 @@ module.exports = {
       defense: 35,
       hp: 30,
     },
+    evolutionLine: [19, 20],
   },
   20: {
     name: "Raticate",
@@ -178,6 +198,7 @@ module.exports = {
       defense: 70,
       hp: 55,
     },
+    evolutionLine: [19, 20],
   },
   21: {
     name: "Spearow",
@@ -187,6 +208,7 @@ module.exports = {
       defense: 31,
       hp: 40,
     },
+    evolutionLine: [21, 22],
   },
   22: {
     name: "Fearow",
@@ -196,6 +218,7 @@ module.exports = {
       defense: 65,
       hp: 65,
     },
+    evolutionLine: [21, 22],
   },
   23: {
     name: "Ekans",
@@ -205,6 +228,7 @@ module.exports = {
       defense: 54,
       hp: 35,
     },
+    evolutionLine: [23, 24],
   },
   24: {
     name: "Arbok",
@@ -214,6 +238,7 @@ module.exports = {
       defense: 79,
       hp: 60,
     },
+    evolutionLine: [23, 24],
   },
   25: {
     name: "Pikachu",
@@ -223,6 +248,7 @@ module.exports = {
       defense: 50,
       hp: 35,
     },
+    evolutionLine: [25, 26],
   },
   26: {
     name: "Raichu",
@@ -232,6 +258,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [25, 26],
   },
   27: {
     name: "Sandshrew",
@@ -241,6 +268,7 @@ module.exports = {
       defense: 85,
       hp: 50,
     },
+    evolutionLine: [27, 28],
   },
   28: {
     name: "Sandslash",
@@ -250,6 +278,7 @@ module.exports = {
       defense: 110,
       hp: 75,
     },
+    evolutionLine: [27, 28],
   },
   29: {
     name: "Nidoran♀",
@@ -259,6 +288,7 @@ module.exports = {
       defense: 52,
       hp: 55,
     },
+    evolutionLine: [29, 30, 31],
   },
   30: {
     name: "Nidorina",
@@ -268,6 +298,7 @@ module.exports = {
       defense: 67,
       hp: 70,
     },
+    evolutionLine: [29, 30, 31],
   },
   31: {
     name: "Nidoqueen",
@@ -277,6 +308,7 @@ module.exports = {
       defense: 87,
       hp: 90,
     },
+    evolutionLine: [29, 30, 31],
   },
   32: {
     name: "Nidoran♂",
@@ -286,6 +318,7 @@ module.exports = {
       defense: 40,
       hp: 46,
     },
+    evolutionLine: [32, 33, 34],
   },
   33: {
     name: "Nidorino",
@@ -295,6 +328,7 @@ module.exports = {
       defense: 57,
       hp: 61,
     },
+    evolutionLine: [32, 33, 34],
   },
   34: {
     name: "Nidoking",
@@ -304,6 +338,7 @@ module.exports = {
       defense: 77,
       hp: 81,
     },
+    evolutionLine: [32, 33, 34],
   },
   35: {
     name: "Clefairy",
@@ -313,6 +348,7 @@ module.exports = {
       defense: 65,
       hp: 70,
     },
+    evolutionLine: [35, 36],
   },
   36: {
     name: "Clefable",
@@ -322,6 +358,7 @@ module.exports = {
       defense: 90,
       hp: 95,
     },
+    evolutionLine: [35, 36],
   },
   37: {
     name: "Vulpix",
@@ -331,6 +368,7 @@ module.exports = {
       defense: 65,
       hp: 38,
     },
+    evolutionLine: [37, 38],
   },
   38: {
     name: "Ninetales",
@@ -340,6 +378,7 @@ module.exports = {
       defense: 100,
       hp: 73,
     },
+    evolutionLine: [37, 38],
   },
   39: {
     name: "Jigglypuff",
@@ -349,6 +388,7 @@ module.exports = {
       defense: 25,
       hp: 115,
     },
+    evolutionLine: [39, 40],
   },
   40: {
     name: "Wigglytuff",
@@ -358,6 +398,7 @@ module.exports = {
       defense: 50,
       hp: 140,
     },
+    evolutionLine: [39, 40],
   },
   41: {
     name: "Zubat",
@@ -367,6 +408,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
+    evolutionLine: [41, 42],
   },
   42: {
     name: "Golbat",
@@ -376,6 +418,7 @@ module.exports = {
       defense: 75,
       hp: 75,
     },
+    evolutionLine: [41, 42],
   },
   43: {
     name: "Oddish",
@@ -385,6 +428,7 @@ module.exports = {
       defense: 65,
       hp: 45,
     },
+    evolutionLine: [43, 44, 45],
   },
   44: {
     name: "Gloom",
@@ -394,6 +438,7 @@ module.exports = {
       defense: 75,
       hp: 60,
     },
+    evolutionLine: [43, 44, 45],
   },
   45: {
     name: "Vileplume",
@@ -403,6 +448,7 @@ module.exports = {
       defense: 90,
       hp: 75,
     },
+    evolutionLine: [43, 44, 45],
   },
   46: {
     name: "Paras",
@@ -412,6 +458,7 @@ module.exports = {
       defense: 55,
       hp: 35,
     },
+    evolutionLine: [46, 47],
   },
   47: {
     name: "Parasect",
@@ -421,6 +468,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [46, 47],
   },
   48: {
     name: "Venonat",
@@ -430,6 +478,7 @@ module.exports = {
       defense: 55,
       hp: 60,
     },
+    evolutionLine: [48, 49],
   },
   49: {
     name: "Venomoth",
@@ -439,6 +488,7 @@ module.exports = {
       defense: 75,
       hp: 70,
     },
+    evolutionLine: [48, 49],
   },
   50: {
     name: "Diglett",
@@ -448,6 +498,7 @@ module.exports = {
       defense: 45,
       hp: 10,
     },
+    evolutionLine: [50, 51],
   },
   51: {
     name: "Dugtrio",
@@ -457,6 +508,7 @@ module.exports = {
       defense: 70,
       hp: 35,
     },
+    evolutionLine: [50, 51],
   },
   52: {
     name: "Meowth",
@@ -466,6 +518,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
+    evolutionLine: [52, 53],
   },
   53: {
     name: "Persian",
@@ -475,6 +528,7 @@ module.exports = {
       defense: 65,
       hp: 65,
     },
+    evolutionLine: [52, 53],
   },
   54: {
     name: "Psyduck",
@@ -484,6 +538,7 @@ module.exports = {
       defense: 50,
       hp: 50,
     },
+    evolutionLine: [54, 55],
   },
   55: {
     name: "Golduck",
@@ -493,6 +548,7 @@ module.exports = {
       defense: 80,
       hp: 80,
     },
+    evolutionLine: [54, 55],
   },
   56: {
     name: "Mankey",
@@ -502,6 +558,7 @@ module.exports = {
       defense: 45,
       hp: 40,
     },
+    evolutionLine: [56, 57],
   },
   57: {
     name: "Primeape",
@@ -511,6 +568,7 @@ module.exports = {
       defense: 70,
       hp: 65,
     },
+    evolutionLine: [56, 57],
   },
   58: {
     name: "Growlithe",
@@ -520,6 +578,7 @@ module.exports = {
       defense: 50,
       hp: 55,
     },
+    evolutionLine: [58, 59],
   },
   59: {
     name: "Arcanine",
@@ -529,6 +588,7 @@ module.exports = {
       defense: 80,
       hp: 90,
     },
+    evolutionLine: [58, 59],
   },
   60: {
     name: "Poliwag",
@@ -538,6 +598,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
+    evolutionLine: [60, 61, 62],
   },
   61: {
     name: "Poliwhirl",
@@ -547,6 +608,7 @@ module.exports = {
       defense: 65,
       hp: 65,
     },
+    evolutionLine: [60, 61, 62],
   },
   62: {
     name: "Poliwrath",
@@ -556,6 +618,7 @@ module.exports = {
       defense: 95,
       hp: 90,
     },
+    evolutionLine: [60, 61, 62],
   },
   63: {
     name: "Abra",
@@ -565,6 +628,7 @@ module.exports = {
       defense: 55,
       hp: 25,
     },
+    evolutionLine: [63, 64, 65],
   },
   64: {
     name: "Kadabra",
@@ -574,6 +638,7 @@ module.exports = {
       defense: 70,
       hp: 40,
     },
+    evolutionLine: [63, 64, 65],
   },
   65: {
     name: "Alakazam",
@@ -583,6 +648,7 @@ module.exports = {
       defense: 95,
       hp: 55,
     },
+    evolutionLine: [63, 64, 65],
   },
   66: {
     name: "Machop",
@@ -592,6 +658,7 @@ module.exports = {
       defense: 50,
       hp: 70,
     },
+    evolutionLine: [66, 67, 68],
   },
   67: {
     name: "Machoke",
@@ -601,6 +668,7 @@ module.exports = {
       defense: 70,
       hp: 80,
     },
+    evolutionLine: [66, 67, 68],
   },
   68: {
     name: "Machamp",
@@ -610,6 +678,7 @@ module.exports = {
       defense: 85,
       hp: 90,
     },
+    evolutionLine: [66, 67, 68],
   },
   69: {
     name: "Bellsprout",
@@ -619,6 +688,7 @@ module.exports = {
       defense: 35,
       hp: 50,
     },
+    evolutionLine: [69, 70, 71],
   },
   70: {
     name: "Weepinbell",
@@ -628,6 +698,7 @@ module.exports = {
       defense: 50,
       hp: 65,
     },
+    evolutionLine: [69, 70, 71],
   },
   71: {
     name: "Victreebel",
@@ -637,6 +708,7 @@ module.exports = {
       defense: 70,
       hp: 80,
     },
+    evolutionLine: [69, 70, 71],
   },
   72: {
     name: "Tentacool",
@@ -646,6 +718,7 @@ module.exports = {
       defense: 100,
       hp: 40,
     },
+    evolutionLine: [72, 73],
   },
   73: {
     name: "Tentacruel",
@@ -655,6 +728,7 @@ module.exports = {
       defense: 120,
       hp: 80,
     },
+    evolutionLine: [72, 73],
   },
   74: {
     name: "Geodude",
@@ -664,6 +738,7 @@ module.exports = {
       defense: 100,
       hp: 40,
     },
+    evolutionLine: [74, 75, 76],
   },
   75: {
     name: "Graveler",
@@ -673,6 +748,7 @@ module.exports = {
       defense: 115,
       hp: 55,
     },
+    evolutionLine: [74, 75, 76],
   },
   76: {
     name: "Golem",
@@ -682,6 +758,7 @@ module.exports = {
       defense: 130,
       hp: 80,
     },
+    evolutionLine: [74, 75, 76],
   },
   77: {
     name: "Ponyta",
@@ -691,6 +768,7 @@ module.exports = {
       defense: 65,
       hp: 50,
     },
+    evolutionLine: [77, 78],
   },
   78: {
     name: "Rapidash",
@@ -700,6 +778,7 @@ module.exports = {
       defense: 80,
       hp: 65,
     },
+    evolutionLine: [77, 78],
   },
   79: {
     name: "Slowpoke",
@@ -709,6 +788,7 @@ module.exports = {
       defense: 65,
       hp: 90,
     },
+    evolutionLine: [79, 80],
   },
   80: {
     name: "Slowbro",
@@ -718,6 +798,7 @@ module.exports = {
       defense: 110,
       hp: 95,
     },
+    evolutionLine: [79, 80],
   },
   81: {
     name: "Magnemite",
@@ -727,6 +808,7 @@ module.exports = {
       defense: 70,
       hp: 25,
     },
+    evolutionLine: [81, 82],
   },
   82: {
     name: "Magneton",
@@ -736,6 +818,7 @@ module.exports = {
       defense: 95,
       hp: 50,
     },
+    evolutionLine: [81, 82],
   },
   83: {
     name: "Farfetch'd",
@@ -745,6 +828,7 @@ module.exports = {
       defense: 62,
       hp: 52,
     },
+    evolutionLine: [83],
   },
   84: {
     name: "Doduo",
@@ -754,6 +838,7 @@ module.exports = {
       defense: 45,
       hp: 35,
     },
+    evolutionLine: [84, 85],
   },
   85: {
     name: "Dodrio",
@@ -763,6 +848,7 @@ module.exports = {
       defense: 70,
       hp: 60,
     },
+    evolutionLine: [84, 85],
   },
   86: {
     name: "Seel",
@@ -772,6 +858,7 @@ module.exports = {
       defense: 70,
       hp: 65,
     },
+    evolutionLine: [86, 87],
   },
   87: {
     name: "Dewgong",
@@ -781,6 +868,7 @@ module.exports = {
       defense: 95,
       hp: 90,
     },
+    evolutionLine: [86, 87],
   },
   88: {
     name: "Grimer",
@@ -790,6 +878,7 @@ module.exports = {
       defense: 50,
       hp: 80,
     },
+    evolutionLine: [88, 89],
   },
   89: {
     name: "Muk",
@@ -799,6 +888,7 @@ module.exports = {
       defense: 100,
       hp: 105,
     },
+    evolutionLine: [88, 89],
   },
   90: {
     name: "Shellder",
@@ -808,6 +898,7 @@ module.exports = {
       defense: 100,
       hp: 30,
     },
+    evolutionLine: [90, 91],
   },
   91: {
     name: "Cloyster",
@@ -817,6 +908,7 @@ module.exports = {
       defense: 180,
       hp: 50,
     },
+    evolutionLine: [90, 91],
   },
   92: {
     name: "Gastly",
@@ -826,6 +918,7 @@ module.exports = {
       defense: 35,
       hp: 30,
     },
+    evolutionLine: [92, 93, 94],
   },
   93: {
     name: "Haunter",
@@ -835,6 +928,7 @@ module.exports = {
       defense: 55,
       hp: 45,
     },
+    evolutionLine: [92, 93, 94],
   },
   94: {
     name: "Gengar",
@@ -844,6 +938,7 @@ module.exports = {
       defense: 75,
       hp: 60,
     },
+    evolutionLine: [92, 93, 94],
   },
   95: {
     name: "Onix",
@@ -853,6 +948,7 @@ module.exports = {
       defense: 160,
       hp: 35,
     },
+    evolutionLine: [95],
   },
   96: {
     name: "Drowzee",
@@ -862,6 +958,7 @@ module.exports = {
       defense: 90,
       hp: 60,
     },
+    evolutionLine: [96, 97],
   },
   97: {
     name: "Hypno",
@@ -871,6 +968,7 @@ module.exports = {
       defense: 115,
       hp: 85,
     },
+    evolutionLine: [96, 97],
   },
   98: {
     name: "Krabby",
@@ -880,6 +978,7 @@ module.exports = {
       defense: 90,
       hp: 30,
     },
+    evolutionLine: [98, 99],
   },
   99: {
     name: "Kingler",
@@ -889,6 +988,7 @@ module.exports = {
       defense: 115,
       hp: 55,
     },
+    evolutionLine: [98, 99],
   },
   100: {
     name: "Voltorb",
@@ -898,6 +998,7 @@ module.exports = {
       defense: 55,
       hp: 40,
     },
+    evolutionLine: [100, 101],
   },
   101: {
     name: "Electrode",
@@ -907,6 +1008,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [100, 101],
   },
   102: {
     name: "Exeggcute",
@@ -916,6 +1018,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
+    evolutionLine: [102, 103],
   },
   103: {
     name: "Exeggutor",
@@ -925,6 +1028,7 @@ module.exports = {
       defense: 85,
       hp: 95,
     },
+    evolutionLine: [102, 103],
   },
   104: {
     name: "Cubone",
@@ -934,6 +1038,7 @@ module.exports = {
       defense: 95,
       hp: 50,
     },
+    evolutionLine: [104, 105],
   },
   105: {
     name: "Marowak",
@@ -943,6 +1048,7 @@ module.exports = {
       defense: 110,
       hp: 60,
     },
+    evolutionLine: [104, 105],
   },
   106: {
     name: "Hitmonlee",
@@ -952,6 +1058,7 @@ module.exports = {
       defense: 110,
       hp: 50,
     },
+    evolutionLine: [106],
   },
   107: {
     name: "Hitmonchan",
@@ -961,6 +1068,7 @@ module.exports = {
       defense: 110,
       hp: 50,
     },
+    evolutionLine: [107],
   },
   108: {
     name: "Lickitung",
@@ -970,6 +1078,7 @@ module.exports = {
       defense: 75,
       hp: 90,
     },
+    evolutionLine: [108],
   },
   109: {
     name: "Koffing",
@@ -979,6 +1088,7 @@ module.exports = {
       defense: 95,
       hp: 40,
     },
+    evolutionLine: [109, 110],
   },
   110: {
     name: "Weezing",
@@ -988,6 +1098,7 @@ module.exports = {
       defense: 120,
       hp: 65,
     },
+    evolutionLine: [109, 110],
   },
   111: {
     name: "Rhyhorn",
@@ -997,6 +1108,7 @@ module.exports = {
       defense: 95,
       hp: 80,
     },
+    evolutionLine: [111, 112],
   },
   112: {
     name: "Rhydon",
@@ -1006,6 +1118,7 @@ module.exports = {
       defense: 120,
       hp: 105,
     },
+    evolutionLine: [111, 112],
   },
   113: {
     name: "Chansey",
@@ -1015,6 +1128,7 @@ module.exports = {
       defense: 105,
       hp: 250,
     },
+    evolutionLine: [113],
   },
   114: {
     name: "Tangela",
@@ -1024,6 +1138,7 @@ module.exports = {
       defense: 115,
       hp: 65,
     },
+    evolutionLine: [114],
   },
   115: {
     name: "Kangaskhan",
@@ -1033,6 +1148,7 @@ module.exports = {
       defense: 80,
       hp: 105,
     },
+    evolutionLine: [115],
   },
   116: {
     name: "Horsea",
@@ -1042,6 +1158,7 @@ module.exports = {
       defense: 70,
       hp: 30,
     },
+    evolutionLine: [116, 117],
   },
   117: {
     name: "Seadra",
@@ -1051,6 +1168,7 @@ module.exports = {
       defense: 95,
       hp: 55,
     },
+    evolutionLine: [116, 117],
   },
   118: {
     name: "Goldeen",
@@ -1060,6 +1178,7 @@ module.exports = {
       defense: 60,
       hp: 45,
     },
+    evolutionLine: [118, 119],
   },
   119: {
     name: "Seaking",
@@ -1069,6 +1188,7 @@ module.exports = {
       defense: 80,
       hp: 80,
     },
+    evolutionLine: [118, 119],
   },
   120: {
     name: "Staryu",
@@ -1078,6 +1198,7 @@ module.exports = {
       defense: 55,
       hp: 30,
     },
+    evolutionLine: [120, 121],
   },
   121: {
     name: "Starmie",
@@ -1087,6 +1208,7 @@ module.exports = {
       defense: 85,
       hp: 60,
     },
+    evolutionLine: [120, 121],
   },
   122: {
     name: "Mr. Mime",
@@ -1096,6 +1218,7 @@ module.exports = {
       defense: 120,
       hp: 40,
     },
+    evolutionLine: [122],
   },
   123: {
     name: "Scyther",
@@ -1105,6 +1228,7 @@ module.exports = {
       defense: 80,
       hp: 70,
     },
+    evolutionLine: [123],
   },
   124: {
     name: "Jynx",
@@ -1114,6 +1238,7 @@ module.exports = {
       defense: 95,
       hp: 65,
     },
+    evolutionLine: [124],
   },
   125: {
     name: "Electabuzz",
@@ -1123,6 +1248,7 @@ module.exports = {
       defense: 85,
       hp: 65,
     },
+    evolutionLine: [125],
   },
   126: {
     name: "Magmar",
@@ -1132,6 +1258,7 @@ module.exports = {
       defense: 85,
       hp: 65,
     },
+    evolutionLine: [126],
   },
   127: {
     name: "Pinsir",
@@ -1141,6 +1268,7 @@ module.exports = {
       defense: 100,
       hp: 65,
     },
+    evolutionLine: [127],
   },
   128: {
     name: "Tauros",
@@ -1150,6 +1278,7 @@ module.exports = {
       defense: 95,
       hp: 75,
     },
+    evolutionLine: [128],
   },
   129: {
     name: "Magikarp",
@@ -1159,6 +1288,7 @@ module.exports = {
       defense: 55,
       hp: 20,
     },
+    evolutionLine: [129, 130],
   },
   130: {
     name: "Gyarados",
@@ -1168,6 +1298,7 @@ module.exports = {
       defense: 100,
       hp: 95,
     },
+    evolutionLine: [129, 130],
   },
   131: {
     name: "Lapras",
@@ -1177,6 +1308,7 @@ module.exports = {
       defense: 95,
       hp: 130,
     },
+    evolutionLine: [131],
   },
   132: {
     name: "Ditto",
@@ -1186,6 +1318,7 @@ module.exports = {
       defense: 48,
       hp: 48,
     },
+    evolutionLine: [132],
   },
   133: {
     name: "Eevee",
@@ -1195,6 +1328,7 @@ module.exports = {
       defense: 65,
       hp: 55,
     },
+    evolutionLine: [133],
   },
   134: {
     name: "Vaporeon",
@@ -1204,6 +1338,7 @@ module.exports = {
       defense: 95,
       hp: 130,
     },
+    evolutionLine: [134, 133],
   },
   135: {
     name: "Jolteon",
@@ -1213,6 +1348,7 @@ module.exports = {
       defense: 95,
       hp: 65,
     },
+    evolutionLine: [135, 133],
   },
   136: {
     name: "Flareon",
@@ -1222,6 +1358,7 @@ module.exports = {
       defense: 110,
       hp: 65,
     },
+    evolutionLine: [136, 133],
   },
   137: {
     name: "Porygon",
@@ -1231,6 +1368,7 @@ module.exports = {
       defense: 75,
       hp: 65,
     },
+    evolutionLine: [137],
   },
   138: {
     name: "Omanyte",
@@ -1240,6 +1378,7 @@ module.exports = {
       defense: 100,
       hp: 35,
     },
+    evolutionLine: [138, 139],
   },
   139: {
     name: "Omastar",
@@ -1249,6 +1388,7 @@ module.exports = {
       defense: 125,
       hp: 70,
     },
+    evolutionLine: [138, 139],
   },
   140: {
     name: "Kabuto",
@@ -1258,6 +1398,7 @@ module.exports = {
       defense: 90,
       hp: 30,
     },
+    evolutionLine: [140, 141],
   },
   141: {
     name: "Kabutops",
@@ -1267,6 +1408,7 @@ module.exports = {
       defense: 105,
       hp: 60,
     },
+    evolutionLine: [140, 141],
   },
   142: {
     name: "Aerodactyl",
@@ -1276,6 +1418,7 @@ module.exports = {
       defense: 75,
       hp: 80,
     },
+    evolutionLine: [142],
   },
   143: {
     name: "Snorlax",
@@ -1285,6 +1428,7 @@ module.exports = {
       defense: 110,
       hp: 160,
     },
+    evolutionLine: [143],
   },
   144: {
     name: "Articuno",
@@ -1294,6 +1438,7 @@ module.exports = {
       defense: 125,
       hp: 90,
     },
+    evolutionLine: [144],
   },
   145: {
     name: "Zapdos",
@@ -1303,6 +1448,7 @@ module.exports = {
       defense: 90,
       hp: 90,
     },
+    evolutionLine: [145],
   },
   146: {
     name: "Moltres",
@@ -1312,6 +1458,7 @@ module.exports = {
       defense: 90,
       hp: 90,
     },
+    evolutionLine: [146],
   },
   147: {
     name: "Dratini",
@@ -1321,6 +1468,7 @@ module.exports = {
       defense: 50,
       hp: 41,
     },
+    evolutionLine: [147, 148, 149],
   },
   148: {
     name: "Dragonair",
@@ -1330,6 +1478,7 @@ module.exports = {
       defense: 70,
       hp: 61,
     },
+    evolutionLine: [147, 148, 149],
   },
   149: {
     name: "Dragonite",
@@ -1339,6 +1488,7 @@ module.exports = {
       defense: 100,
       hp: 91,
     },
+    evolutionLine: [147, 148, 149],
   },
   150: {
     name: "Mewtwo",
@@ -1348,6 +1498,7 @@ module.exports = {
       defense: 90,
       hp: 106,
     },
+    evolutionLine: [150],
   },
   151: {
     name: "Mew",
@@ -1357,5 +1508,6 @@ module.exports = {
       defense: 100,
       hp: 100,
     },
+    evolutionLine: [151],
   },
 };
