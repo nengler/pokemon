@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Game" ALTER COLUMN "gold" SET DEFAULT 10,
+ALTER COLUMN "lives" SET DEFAULT 4;

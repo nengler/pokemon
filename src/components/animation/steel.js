@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import PlusCircle from "public/assets/plusCircle";
+import PlusCircle from "/public/assets/plusCircle";
 
 const xFactor = 50;
 const yStartingPosition = 80;
@@ -18,10 +18,14 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xFactor;
+  const xStartingPosition =
+    enemyCoordinates.right - myCoordinates.left - xFactor;
 
   const distanceToMove =
-    (myCoordinates.left + xFactor - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) *
+    (myCoordinates.left +
+      xFactor -
+      ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
+        enemyCoordinates.left)) *
     -1;
 
   const styles = {
@@ -40,8 +44,15 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
       }}
       transition={{
         scale: { duration: growingDuration, times: [0, 0.8, 1] },
-        x: { delay: growingDuration + 0.1, duration: movingDuration, type: "spring" },
-        opacity: { times: [0, 0.3, 0.8, 1], duration: growingDuration + movingDuration },
+        x: {
+          delay: growingDuration + 0.1,
+          duration: movingDuration,
+          type: "spring",
+        },
+        opacity: {
+          times: [0, 0.3, 0.8, 1],
+          duration: growingDuration + movingDuration,
+        },
         rotate: { delay: growingDuration, duration: 0.25, repeat: Infinity },
       }}
       className="absolute h-12 w-12 rounded-full z-10 opacity-0 flex justify-center items-center text-steel-secondary bg-steel-primary"

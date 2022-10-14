@@ -20,8 +20,8 @@ model Game {
   user         User          @relation(fields: [userId], references: [id])
   userId       Int
   round        Int           @default(1)
-  gold         Int
-  lives        Int
+  gold         Int           @default(10)
+  lives        Int           @default(4)
   wins         Int           @default(0)
   GamePokemon  GamePokemon[]
   ShopPokemon  ShopPokemon[]

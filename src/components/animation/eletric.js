@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ThunderIcon from "public/assets/thunder";
+import ThunderIcon from "/public/assets/thunder";
 import { useState } from "react";
 
 const styles = {
@@ -68,7 +68,9 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
           style={{
             top: isFirstStage ? "50%" : "-14px",
             left: isFirstStage ? "-20px" : "-11px",
-            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
+            transform: isFirstStage
+              ? "translateY(-50%) rotate(90deg)"
+              : "rotate(305deg)",
           }}
           className={`absolute ${fillColor}`}
         >
@@ -79,7 +81,9 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
           style={{
             top: isFirstStage ? "50%" : "-30px",
             left: isFirstStage ? "-40px" : "-26px",
-            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
+            transform: isFirstStage
+              ? "translateY(-50%) rotate(90deg)"
+              : "rotate(305deg)",
           }}
           className={`absolute ${fillColor}`}
         >
@@ -91,7 +95,9 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
             right: isFirstStage ? "-20px" : "-9px",
             top: isFirstStage ? "50%" : "unset",
             bottom: isFirstStage ? "unset" : "-16px",
-            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
+            transform: isFirstStage
+              ? "translateY(-50%) rotate(90deg)"
+              : "rotate(305deg)",
           }}
           className={`absolute  ${fillColor}`}
         >
@@ -103,7 +109,9 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
             right: isFirstStage ? "-40px" : "-24px",
             top: isFirstStage ? "50%" : "unset",
             bottom: isFirstStage ? "unset" : "-34px",
-            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
+            transform: isFirstStage
+              ? "translateY(-50%) rotate(90deg)"
+              : "rotate(305deg)",
           }}
           className={`absolute  ${fillColor}`}
         >

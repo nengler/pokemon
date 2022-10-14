@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import HandIcon from "public/assets/hand";
+import HandIcon from "/public/assets/hand";
 const animationDuration = 0.5;
 
 export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {

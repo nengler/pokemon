@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import AuroraCircle from "public/assets/auroraCircle";
+import AuroraCircle from "/public/assets/auroraCircle";
 
 const xFactor = 50;
 const beams = Array(10).fill(null);
@@ -19,10 +19,14 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xFactor;
+  const xStartingPosition =
+    enemyCoordinates.right - myCoordinates.left - xFactor;
 
   const distanceToMove =
-    myCoordinates.left + xFactor - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+    myCoordinates.left +
+    xFactor -
+    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
+      enemyCoordinates.left);
 
   return (
     <>
@@ -41,7 +45,11 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
             animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
             transition={{
               x: { duration: animationDuration, delay: delay },
-              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.99, 1] },
+              opacity: {
+                delay: delay,
+                duration: animationDuration,
+                times: [0, 0.01, 0.99, 1],
+              },
             }}
             className="absolute w-12 opacity-0 z-10"
             style={styles}
@@ -51,7 +59,9 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
               animate={{ rotate: 360 }}
               transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
             >
-              <div style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}>
+              <div
+                style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}
+              >
                 <AuroraCircle />
               </div>
             </motion.div>

@@ -307,22 +307,13 @@ export async function getServerSideProps() {
     game = await prisma.game.create({
       data: {
         userId: userId,
-        lives: 4,
-        round: 1,
-        state: 1,
-        gold: 10,
       },
     });
+
+    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
   }
 
   let shopPokemonRecords = await GetShopPokemon(prisma, game.id);
-
-  if (shopPokemonRecords.length === 0) {
-    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
-
-    shopPokemonRecords = await GetShopPokemon(prisma, game.id);
-  }
-
   const shopPokemon = transformShopPokemonRecords(shopPokemonRecords);
 
   const myPokemonRecords = await GetGamePokemon(prisma, game.id);

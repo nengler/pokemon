@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import StarIcon from "public/assets/star";
+import StarIcon from "/public/assets/star";
 
 const animationDuration = 0.5;
 const hitTriggerDelay = 0.25;
@@ -28,7 +28,10 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
   const yStartingPosition = 90; //enemyCoordinates.bottom - enemyCoordinates.top / 2;
 
   const distanceToMove =
-    myCoordinates.left + 48 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+    myCoordinates.left +
+    48 -
+    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
+      enemyCoordinates.left);
 
   return (
     <>
@@ -44,9 +47,18 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
           <motion.div
             animate={{ x: distanceToMove, y: star, opacity: [0, 1, 1, 0] }}
             transition={{
-              x: { type: "spring", stiffness: 70, duration: animationDuration, delay: delay },
+              x: {
+                type: "spring",
+                stiffness: 70,
+                duration: animationDuration,
+                delay: delay,
+              },
               y: { duration: animationDuration, delay: delay },
-              opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.5, 1] },
+              opacity: {
+                delay: delay,
+                duration: animationDuration,
+                times: [0, 0.01, 0.5, 1],
+              },
             }}
             className="absolute h-5 w-5 opacity-0"
             key={index}

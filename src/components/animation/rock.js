@@ -1,13 +1,10 @@
 import { motion } from "framer-motion";
-import NeedleIcon from "public/assets/needle";
+import RockIcon from "/public/assets/newRock";
 
-const baseXFactor = 60;
-const animationDuration = 0.4;
-const yStartingPosition = 90;
+const animationDuration = 0.35;
+const locations = [50, 45, 60, 50, 30, 64];
 
-const neeldes = [null, null, null];
-
-export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
+export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
@@ -19,54 +16,43 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xFactor =
-    teamLocation.dataset.myTeam === "true"
-      ? 1 * baseXFactor
-      : 0.5 * baseXFactor;
-
-  const xStartingPosition =
-    enemyCoordinates.right - myCoordinates.left - xFactor;
-
-  const distanceToMove =
-    myCoordinates.left +
-    xFactor -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+  const yStartingPosition = 0;
 
   return (
     <>
-      {neeldes.map((_circle, index) => {
+      {locations.map((rock, index) => {
         let styles = {
-          left: `${xStartingPosition}px`,
+          left: `${rock}px`,
           top: `${yStartingPosition}px`,
         };
 
-        const delay = 0.15 * index;
+        const delay = index * 0.07;
 
         return (
           <motion.div
-            initial={{
-              rotate: teamLocation.dataset.myTeam === "true" ? -45 : 45,
-            }}
             animate={{
-              x: distanceToMove,
               opacity: [0, 1, 1, 0],
-              y: [0, -55, 0],
-              rotate: teamLocation.dataset.myTeam === "true" ? -135 : 135,
+              y: index % 2 === 1 ? [0, 100, 75] : [0, 100, 85],
             }}
             transition={{
-              default: { duration: animationDuration, delay: delay },
-              opacity: {
-                duration: animationDuration,
+              y: {
                 delay: delay,
-                times: [0, 0.01, 0.9],
+                duration: animationDuration,
+                times: [0, 0.75, 1],
+              },
+              opacity: {
+                delay: delay,
+                duration: animationDuration,
+                times: [0, 0.01, 0.99, 1],
               },
             }}
-            className="absolute"
+            className={`fill-[#be8b3f] stroke-rock-secondary opacity-0 absolute ${
+              index % 2 === 1 ? "h-8 w-6" : "h-10 w-8"
+            } z-10`}
             key={index}
             style={styles}
           >
-            <NeedleIcon />
+            <RockIcon />
           </motion.div>
         );
       })}

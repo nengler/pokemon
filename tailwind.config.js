@@ -1,5 +1,8 @@
 module.exports = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -19,10 +22,13 @@ module.exports = {
         poison: { primary: "#A040A0", secondary: "#fef0fe" },
         psychic: { primary: "#F85888", secondary: "#4d0017" },
         rock: { primary: "#B8A038", secondary: "#392f05" },
-        steel: { primary: "#B8B8D0", secondary: "#39397f", tertiary: "#e5e7eb" },
+        steel: {
+          primary: "#B8B8D0",
+          secondary: "#39397f",
+          tertiary: "#e5e7eb",
+        },
         water: { primary: "#6890F0", secondary: "#001a57" },
       },
     },
   },
-  plugins: [],
 };

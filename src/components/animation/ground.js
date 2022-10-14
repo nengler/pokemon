@@ -1,5 +1,5 @@
 // import { motion } from "framer-motion";
-// import EarthPower from "public/assets/earthPower";
+// import EarthPower from "/public/assets/earthPower";
 // import { Fragment } from "react";
 
 import { motion } from "framer-motion";
