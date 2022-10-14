@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
 import GetGamePokemon from "prisma/methods/getGamePokemon";
 import transformShopPokemonRecords from "prisma/methods/transformShopPokemonRecords";
+import RearrangeGamePokemon from "util/rearrangeGamePokemon";
 
 const pokemonLength = Array.apply(null, Array(6)).map(function () {});
 
@@ -97,67 +98,8 @@ export default function Home(props) {
   };
 
   const rearrangeOrder = (gamePokemonId, originalSpot, newOrderCol) => {
-    if (myPokemon.filter((p) => p.orderNum === newOrderCol)[0] !== undefined) {
-      const pokemonClone = structuredClone(myPokemon);
-      pokemonClone.filter((p) => p.id === gamePokemonId)[0].orderNum =
-        newOrderCol;
-      if (newOrderCol === 5 || newOrderCol === 0) {
-        const sort =
-          newOrderCol === 5
-            ? (a, b) => (a.orderNum > b.orderNum ? -1 : 1)
-            : (a, b) => (a.orderNum > b.orderNum ? 1 : -1);
-        pokemonClone.sort(sort);
-        const direction = newOrderCol === 5 ? -1 : 1;
-
-        pokemonClone.forEach((p, index) => {
-          if (p.id === gamePokemonId) {
-            return;
-          } else if (
-            pokemonClone.filter((po) => po.orderNum === p.orderNum).length === 2
-          ) {
-            pokemonClone[index] = { ...p, orderNum: p.orderNum + direction };
-          }
-        });
-        setMyPokemon(pokemonClone);
-      } else if (Math.abs(originalSpot - newOrderCol) === 1) {
-        pokemonClone.filter(
-          (p) => p.orderNum === newOrderCol && p.id !== gamePokemonId
-        )[0].orderNum = originalSpot;
-        setMyPokemon(pokemonClone);
-      } else {
-        const sort =
-          newOrderCol > originalSpot
-            ? (a, b) => (a.orderNum > b.orderNum ? -1 : 1)
-            : (a, b) => (a.orderNum > b.orderNum ? 1 : -1);
-        pokemonClone.sort(sort);
-
-        console.log(JSON.parse(JSON.stringify(pokemonClone)));
-
-        pokemonClone.forEach((p, index) => {
-          if (
-            p.id !== gamePokemonId &&
-            p.orderNum !== 0 &&
-            p.orderNum !== 5 &&
-            pokemonClone.filter((po) => po.orderNum === p.orderNum).length === 2
-          ) {
-            const direction = newOrderCol > originalSpot ? -1 : 1;
-            pokemonClone[index] = { ...p, orderNum: p.orderNum + direction };
-          }
-        });
-
-        setMyPokemon(pokemonClone);
-      }
-    } else {
-      setMyPokemon((pokemon) =>
-        pokemon.map((p) => {
-          if (p.id === gamePokemonId) {
-            return { ...p, orderNum: newOrderCol };
-          } else {
-            return p;
-          }
-        })
-      );
-    }
+    const newPokemonOrder = RearrangeGamePokemon(myPokemon, gamePokemonId, originalSpot, newOrderCol);
+    setMyPokemon(newPokemonOrder);
   };
 
   const evolvePokemon = async (gamePokemonId, newPokemonId) => {
@@ -231,17 +173,13 @@ export default function Home(props) {
           <h4 className="text-xl">My Pokemon</h4>
           <div className="flex justify-between items-center">
             {pokemonLength.map((_p, index) => {
-              const gamePokemon = myPokemon.filter(
-                (pokemon) => pokemon.orderNum === index
-              )[0];
+              const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
               return (
                 <MyPokemon
                   gold={game.gold}
                   gamePokemon={gamePokemon}
                   order={index}
-                  key={`${index}-${
-                    gamePokemon === undefined ? "undefined" : gamePokemon.id
-                  }`}
+                  key={`${index}-${gamePokemon === undefined ? "undefined" : gamePokemon.id}`}
                   buyNewPokemon={buyNewPokemon}
                   upgradePokemon={upgradePokemon}
                   sellPokemon={sellPokemon}
@@ -259,16 +197,10 @@ export default function Home(props) {
         <div className="flex justify-center gap-8">
           {shopPokemon.map((pokemon, index) => (
             <div
-              key={
-                pokemon?.id
-                  ? `shop-${pokemon.id}-${pokemon.pokemonId}`
-                  : `shopUndefined-${index}`
-              }
+              key={pokemon?.id ? `shop-${pokemon.id}-${pokemon.pokemonId}` : `shopUndefined-${index}`}
               className="h-52 w-32"
             >
-              {Object.keys(pokemon).length !== 0 && (
-                <ShopPokemon shopPokemon={pokemon} canDrag={canPerformAction} />
-              )}
+              {Object.keys(pokemon).length !== 0 && <ShopPokemon shopPokemon={pokemon} canDrag={canPerformAction} />}
             </div>
           ))}
         </div>

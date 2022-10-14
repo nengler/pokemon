@@ -19,10 +19,7 @@ export default function MyPokemon({
   const evolveButtonRef = useRef();
 
   const handleOutsideClicks = (event) => {
-    if (
-      !clickOutside.current?.contains(event.target) &&
-      evolveButtonRef.current !== event.target
-    ) {
+    if (!clickOutside.current?.contains(event.target) && evolveButtonRef.current !== event.target) {
       setShowEvolutions(false);
       document.removeEventListener("mousedown", handleOutsideClicks);
     }
@@ -49,10 +46,7 @@ export default function MyPokemon({
   };
 
   const pokemonCanDrop = ({ pokemonId }) => {
-    return (
-      gold >= 3 &&
-      (gamePokemon === undefined || pokemonId === gamePokemon.pokemonId)
-    );
+    return gold >= 3 && (gamePokemon === undefined || gamePokemon?.canAddToSelf?.includes(pokemonId));
   };
 
   const gamePokemonDropped = ({ gamePokemonId, originalSpot }) => {
@@ -122,16 +116,14 @@ export default function MyPokemon({
     setShowEvolutionsFalse();
   };
 
-  const canEvolveInto =
-    gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level)
-      .length > 0;
+  const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level).length > 0;
 
   return (
     <div
       ref={gamePokemonDrop}
-      className={`h-64 transition-colors ${
-        dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
-      } ${collectables.isOver ? "bg-green-500" : ""}`}
+      className={`h-64 transition-colors ${dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""} ${
+        collectables.isOver ? "bg-green-500" : ""
+      }`}
     >
       <div
         ref={drop}
@@ -160,10 +152,7 @@ export default function MyPokemon({
 
       {gamePokemon !== undefined && (
         <div className="flex justify-center mt-2">
-          <button
-            onClick={sellGamePokemon}
-            className="bg-red-600 text-red-50 px-3 rounded-lg h-6"
-          >
+          <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 px-3 rounded-lg h-6">
             Sell
           </button>
 
@@ -192,14 +181,8 @@ export default function MyPokemon({
                           name={e.EvolvesTo.name}
                           level={gamePokemon.level}
                           hp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}
-                          attack={GetHp(
-                            e.EvolvesTo.baseAttack,
-                            gamePokemon.level
-                          )}
-                          defense={GetHp(
-                            e.EvolvesTo.baseDefense,
-                            gamePokemon.level
-                          )}
+                          attack={GetHp(e.EvolvesTo.baseAttack, gamePokemon.level)}
+                          defense={GetHp(e.EvolvesTo.baseDefense, gamePokemon.level)}
                           pokedexId={e.EvolvesTo.pokedexId}
                           isShiny={gamePokemon.isShiny}
                           tempHp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}

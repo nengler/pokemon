@@ -11,16 +11,31 @@ export default async function handler(req, res) {
     where: { id: parseInt(body.gameId) },
   });
 
-  if (!game.gold >= 3) {
+  if (game.gold < 3) {
     res.status(400);
+    return;
   }
 
-  game = await DecreaseGameGold(prisma, game.id);
-
   if (req.method === "POST") {
+    game = await DecreaseGameGold(prisma, game.id);
     await handleNewPokemonPurchase(game, prisma, body);
   } else if (req.method === "PATCH") {
-    await handleUpgradePokemonPurchase(prisma, body);
+    let gamePokemon = await prisma.gamePokemon.findUnique({
+      where: { id: parseInt(body.gamePokemonId) },
+    });
+
+    const shopPokemon = await prisma.shopPokemon.delete({
+      where: { id: parseInt(body.shopPokemonId) },
+    });
+
+    const pokemonConstant = pokemon[gamePokemon.pokemonId];
+
+    if (pokemonConstant.canAddToSelf.includes(shopPokemon.pokemonid)) {
+      res.status(400);
+      return;
+    }
+    game = await DecreaseGameGold(prisma, game.id);
+    await handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant, shopPokemon);
   }
 
   const gamePokemon = await GetGamePokemon(prisma, game.id);
@@ -34,15 +49,13 @@ async function handleNewPokemonPurchase(game, prisma, body) {
   });
 
   const pokemonConstant = pokemon[shopPokemon.pokemonId];
+
   await prisma.gamePokemon.create({
     data: {
       pokemonId: shopPokemon.pokemonId,
       hp: GetHp(pokemonConstant.baseStats.hp, shopPokemon.level),
       attack: GetNotHpStat(pokemonConstant.baseStats.attack, shopPokemon.level),
-      defense: GetNotHpStat(
-        pokemonConstant.baseStats.defense,
-        shopPokemon.level
-      ),
+      defense: GetNotHpStat(pokemonConstant.baseStats.defense, shopPokemon.level),
       gameId: game.id,
       level: shopPokemon.level,
       isShiny: shopPokemon.isShiny,
@@ -62,17 +75,8 @@ async function handleNewPokemonPurchase(game, prisma, body) {
   }
 }
 
-async function handleUpgradePokemonPurchase(prisma, body) {
-  let gamePokemon = await prisma.gamePokemon.findUnique({
-    where: { id: parseInt(body.gamePokemonId) },
-  });
-
-  const shopPokemon = await prisma.shopPokemon.delete({
-    where: { id: parseInt(body.shopPokemonId) },
-  });
-
+async function handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant, shopPokemon) {
   const newLevel = gamePokemon.level + shopPokemon.level;
-  const pokemonConstant = pokemon[gamePokemon.pokemonId];
 
   await prisma.gamePokemon.update({
     where: {
