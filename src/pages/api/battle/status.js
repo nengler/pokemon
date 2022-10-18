@@ -79,11 +79,10 @@ export default async function handler(req, res) {
   }
 }
 
-// TODO: fix this method
 async function getRandomTeam(battleId, currentRound) {
   let teamPokemon = [];
   const allowedPokemonToGet = 3;
-  const maxTeamSize = 5;
+  const maxTeamSize = 6;
 
   Array.from({ length: currentRound }).forEach((_, round) => {
     const currentRound = round + 1;
@@ -114,10 +113,12 @@ async function getRandomTeam(battleId, currentRound) {
           };
         }
       });
+    });
 
-      teamPokemon.sort((a, b) => {
-        a.level < b.level;
-      });
+    console.log(teamPokemon);
+
+    teamPokemon.sort((a, b) => {
+      a.level < b.level;
     });
   });
 
@@ -149,12 +150,14 @@ function combineDuplicates(pokemonTeam) {
     duplicateObj[t.pokemonId] = (duplicateObj[t.pokemonId] || 0) + 1;
   });
 
-  const duplicateIds = Object.keys(duplicateObj).filter((key) => duplicateObj[key] > 1);
+  const duplicateIds = Object.keys(duplicateObj)
+    .filter((key) => duplicateObj[key] > 1)
+    .map((a) => parseInt(a));
 
   let newTeam = [];
 
   duplicateIds.forEach((id) => {
-    const duplicateTeamPokemon = pokemonTeam.filter((t) => t.pokemonId === parseInt(id));
+    const duplicateTeamPokemon = pokemonTeam.filter((t) => t.pokemonId === id);
     const combinedPokemon = duplicateTeamPokemon.reduce(
       (previousValue, currentValue) => ({ ...previousValue, level: previousValue.level + currentValue.level }),
       {

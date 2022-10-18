@@ -3,15 +3,15 @@ import calculateDamage from "./calculateDamage";
 export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
   let battleOver = false;
 
-  console.log(myBattleTeam);
-  console.log(enemyBattleTeam);
+  // console.log(myBattleTeam);
+  // console.log(enemyBattleTeam);
 
   while (!battleOver) {
     const myBattlePokemon = myBattleTeam[0];
     const enemyBattlePokemon = enemyBattleTeam[0];
-    console.log(
-      `current pokemon facing off: ${myBattlePokemon.name} vs ${enemyBattlePokemon.name}`
-    );
+    // console.log(
+    //   `current pokemon facing off: ${myBattlePokemon.name} vs ${enemyBattlePokemon.name}`
+    // );
 
     const calculateMyDamage = await calculateDamage(
       myBattlePokemon.level,
@@ -21,9 +21,9 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
       enemyBattlePokemon.types
     );
 
-    console.log(
-      `damage from ${myBattlePokemon.name} to ${enemyBattlePokemon.name}: ${calculateMyDamage.damageDealt}`
-    );
+    // console.log(
+    //   `damage from ${myBattlePokemon.name} to ${enemyBattlePokemon.name}: ${calculateMyDamage.damageDealt}`
+    // );
 
     enemyBattlePokemon.hp -= calculateMyDamage.damageDealt;
 
@@ -36,12 +36,12 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
     );
 
     myBattlePokemon.hp -= calculateEnemyDamage.damageDealt;
-    console.log(
-      `damage from ${enemyBattlePokemon.name} to ${myBattlePokemon.name}: ${calculateEnemyDamage.damageDealt}`
-    );
+    // console.log(
+    //   `damage from ${enemyBattlePokemon.name} to ${myBattlePokemon.name}: ${calculateEnemyDamage.damageDealt}`
+    // );
 
     if (myBattlePokemon.hp <= 0) {
-      console.log(`${myBattlePokemon.name} Fainted`);
+      // console.log(`${myBattlePokemon.name} Fainted`);
       myBattleTeam.shift();
       if (myBattleTeam.length === 0) {
         battleOver = true;
@@ -49,7 +49,7 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
     }
 
     if (enemyBattlePokemon.hp <= 0) {
-      console.log(`${enemyBattlePokemon.name} Fainted`);
+      // console.log(`${enemyBattlePokemon.name} Fainted`);
       enemyBattleTeam.shift();
       if (enemyBattleTeam.length === 0) {
         battleOver = true;
@@ -58,17 +58,17 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
   }
 
   if (myBattleTeam.length === 0 && enemyBattleTeam.length !== 0) {
-    console.log(`enemy Won`);
+    // console.log(`enemy Won`);
     let enemyGameId = enemyBattleTeam[0].gameId;
     if (enemyGameId === undefined) {
       enemyGameId = null;
     }
     return enemyGameId;
   } else if (myBattleTeam.length !== 0 && enemyBattleTeam.length === 0) {
-    console.log(`I Won`);
+    // console.log(`I Won`);
     return myBattleTeam[0].gameId;
   } else {
-    console.log("draw");
+    // console.log("draw");
     return null;
   }
 }
