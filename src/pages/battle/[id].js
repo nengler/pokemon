@@ -25,9 +25,7 @@ import calculateDamage from "util/calculateDamage";
 let intervalIteration = 0;
 
 export default function Battle(props) {
-  const [myBattlePokemon, setMyBattlePokemon] = useState(
-    props.battlePokemon.filter((b) => b.gameId === props.game.id)
-  );
+  const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
   const [enemyBattlePokemon, setEnemyBattlePokemon] = useState(
     props.battlePokemon.filter((b) => b.gameId !== props.game.id)
   );
@@ -40,9 +38,7 @@ export default function Battle(props) {
   const handlePokemonLogic = async () => {
     const myFightingPokemon = myBattlePokemon.filter((p) => p.tempHp > 0)[0];
 
-    const enemyFightingPokemon = enemyBattlePokemon.filter(
-      (p) => p.tempHp > 0
-    )[0];
+    const enemyFightingPokemon = enemyBattlePokemon.filter((p) => p.tempHp > 0)[0];
 
     if (myFightingPokemon === undefined || enemyFightingPokemon === undefined) {
       setIsFighting(false);
@@ -66,8 +62,7 @@ export default function Battle(props) {
     );
 
     const myNewHp = myFightingPokemon.tempHp - calculateEnemyAttack.damageDealt;
-    const enemyNewHp =
-      enemyFightingPokemon.tempHp - calculateMyAttack.damageDealt;
+    const enemyNewHp = enemyFightingPokemon.tempHp - calculateMyAttack.damageDealt;
 
     // console.log(`${myFightingPokemon.name} took ${calculateEnemyAttack.damageDealt} Damage`);
     // console.log(`${enemyFightingPokemon.name} took ${calculateMyAttack.damageDealt} Damage`);
@@ -85,7 +80,7 @@ export default function Battle(props) {
       },
     ]);
 
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -153,11 +148,7 @@ export default function Battle(props) {
   return (
     <>
       <div className="flex gap-8 mt-10 h-80">
-        <div
-          ref={myTeamRef}
-          data-my-team="true"
-          className="w-full flex justify-end "
-        >
+        <div ref={myTeamRef} data-my-team="true" className="w-full flex justify-end ">
           {myBattlePokemon
             .filter((p) => p.hasFainted !== true)
             .map((m, index) => (
@@ -168,9 +159,7 @@ export default function Battle(props) {
               >
                 <BattlePokemon
                   battlePokemon={m}
-                  attackAnimation={
-                    fightingAnimations.filter((f) => f.pokemonId === m.id)[0]
-                  }
+                  attackAnimation={fightingAnimations.filter((f) => f.pokemonId === m.id)[0]}
                   teamLocation={myTeamRef.current}
                   enemyTeamLocation={enemyTeamRef.current}
                   flip={true}
@@ -190,9 +179,7 @@ export default function Battle(props) {
               >
                 <BattlePokemon
                   battlePokemon={m}
-                  attackAnimation={
-                    fightingAnimations.filter((f) => f.pokemonId === m.id)[0]
-                  }
+                  attackAnimation={fightingAnimations.filter((f) => f.pokemonId === m.id)[0]}
                   enemyTeamLocation={myTeamRef.current}
                   teamLocation={enemyTeamRef.current}
                 />
@@ -247,105 +234,55 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
   return (
     <>
       {attackAnimation.type === "Fire" && (
-        <FireAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <FireAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Water" && (
-        <WaterAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <WaterAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Grass" && (
-        <GrassAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <GrassAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Psychic" && (
-        <PsychicAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <PsychicAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Poison" && (
-        <PoisonAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <PoisonAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Bug" && (
-        <BugAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <BugAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Normal" && (
-        <NormalAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <NormalAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Flying" && (
-        <FlyingAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <FlyingAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Fighting" && (
-        <FightingAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <FightingAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Dragon" && (
-        <DragonAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <DragonAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Ghost" && (
-        <GhostAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <GhostAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Ice" && (
-        <IceAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <IceAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Rock" && (
-        <RockAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <RockAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Electric" && (
-        <ElectricAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <ElectricAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Ground" && (
-        <GroundAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <GroundAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       {attackAnimation.type === "Steel" && (
-        <SteelAnimation
-          teamLocation={teamLocation}
-          enemyTeamLocation={enemyTeamLocation}
-        />
+        <SteelAnimation teamLocation={teamLocation} enemyTeamLocation={enemyTeamLocation} />
       )}
       <div
-        className={`absolute -bottom-12 whitespace-nowrap ${
-          showAnimation ? "opacity-100" : "opacity-0"
-        } transition`}
+        className={`absolute -bottom-12 whitespace-nowrap ${showAnimation ? "opacity-100" : "opacity-0"} transition`}
       >
         <div className="">-{attackAnimation.damageDealt}</div>
         <div className={effectColor}>{attackAnimation.effect}</div>
@@ -354,13 +291,7 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
   );
 }
 
-function BattlePokemon({
-  flip = false,
-  battlePokemon,
-  attackAnimation,
-  teamLocation,
-  enemyTeamLocation,
-}) {
+function BattlePokemon({ flip = false, battlePokemon, attackAnimation, teamLocation, enemyTeamLocation }) {
   return (
     <div className="text-center">
       {attackAnimation !== undefined && (

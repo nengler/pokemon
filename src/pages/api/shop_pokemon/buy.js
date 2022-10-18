@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       where: { id: parseInt(body.gamePokemonId) },
     });
 
-    const shopPokemon = await prisma.shopPokemon.delete({
+    const shopPokemon = await prisma.shopPokemon.findUnique({
       where: { id: parseInt(body.shopPokemonId) },
     });
 
@@ -77,6 +77,10 @@ async function handleNewPokemonPurchase(game, prisma, body) {
 
 async function handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant, shopPokemon) {
   const newLevel = gamePokemon.level + shopPokemon.level;
+
+  await prisma.shopPokemon.delete({
+    where: { id: shopPokemon.id },
+  });
 
   await prisma.gamePokemon.update({
     where: {
