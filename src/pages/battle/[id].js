@@ -21,6 +21,9 @@ import prisma from "lib/prisma";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import calculateDamage from "util/calculateDamage";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "lib/session";
+import { GetCurrentGame } from "prisma/queries/getCurrentGame";
 
 let intervalIteration = 0;
 
@@ -192,14 +195,14 @@ export default function Battle(props) {
           (props.game.id === props.battle.winnerId ? (
             <>
               <h3 className="text-xl">You Won</h3>
-              <Link href="/">
+              <Link href="/play">
                 <a className="text-indigo-500">Continue</a>
               </Link>
             </>
           ) : (
             <>
               <h3>You Lost</h3>
-              <Link href="/">
+              <Link href="/play">
                 <a className="text-indigo-500">Continue</a>
               </Link>
             </>
@@ -318,9 +321,20 @@ function BattlePokemon({ flip = false, battlePokemon, attackAnimation, teamLocat
   );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps(context) {
+  const user = context.req.session.user;
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   const battleId = parseInt(context.params.id);
-  const userId = 1;
+  const userId = user.id;
 
   const battle = await prisma.battle.findUnique({
     where: {
@@ -332,14 +346,7 @@ export async function getServerSideProps(context) {
     },
   });
 
-  const game = await prisma.game.findFirst({
-    where: {
-      userId: userId,
-      NOT: {
-        lives: 0,
-      },
-    },
-  });
+  const game = await GetCurrentGame(prisma, userId);
 
   let battlePokemon = await prisma.battleTeam.findMany({
     where: {
@@ -364,4 +371,4 @@ export async function getServerSideProps(context) {
   );
 
   return { props: { game, battlePokemon, battle } };
-}
+}, sessionOptions);

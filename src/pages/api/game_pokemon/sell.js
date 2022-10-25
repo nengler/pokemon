@@ -1,15 +1,29 @@
 import prisma from "lib/prisma";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "lib/session";
+import { GetCurrentGame } from "prisma/queries/getCurrentGame";
+import { sellPokemonAmount } from "constants/gameConfig";
 
-export default async function handler(req, res) {
+export default withIronSessionApiRoute(handler, sessionOptions);
+
+async function handler(req, res) {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(401);
+    return;
+  }
+
   const body = JSON.parse(req.body);
+  let game = await GetCurrentGame(prisma, user.id);
 
-  const game = await prisma.game.update({
+  game = await prisma.game.update({
     where: {
-      id: body.gameId,
+      id: game.id,
     },
     data: {
       gold: {
-        increment: 1,
+        increment: sellPokemonAmount,
       },
     },
   });

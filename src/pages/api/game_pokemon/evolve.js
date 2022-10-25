@@ -4,8 +4,19 @@ import prisma from "lib/prisma";
 import TransformGamePokemonRecord from "prisma/methods/transformGamePokemonRecord";
 import GetHp from "util/getHp";
 import GetNotHpStat from "util/getNotHpStat";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "lib/session";
 
-export default async function handler(req, res) {
+export default withIronSessionApiRoute(handler, sessionOptions);
+
+async function handler(req, res) {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(401);
+    return;
+  }
+
   const body = JSON.parse(req.body);
 
   let gamePokemonToEvolve = await prisma.gamePokemon.findUnique({
@@ -31,18 +42,10 @@ export default async function handler(req, res) {
     data: {
       pokemonId: newPokemonId,
       hp: GetHp(evolvesToPokemon.baseStats.hp, gamePokemonToEvolve.level),
-      attack: GetNotHpStat(
-        evolvesToPokemon.baseStats.attack,
-        gamePokemonToEvolve.level
-      ),
-      defense: GetNotHpStat(
-        evolvesToPokemon.baseStats.defense,
-        gamePokemonToEvolve.level
-      ),
+      attack: GetNotHpStat(evolvesToPokemon.baseStats.attack, gamePokemonToEvolve.level),
+      defense: GetNotHpStat(evolvesToPokemon.baseStats.defense, gamePokemonToEvolve.level),
     },
   });
 
-  res
-    .status(200)
-    .json({ gamePokemon: TransformGamePokemonRecord(gamePokemonToEvolve) });
+  res.status(200).json({ gamePokemon: TransformGamePokemonRecord(gamePokemonToEvolve) });
 }

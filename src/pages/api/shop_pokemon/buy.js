@@ -4,14 +4,25 @@ import prisma from "lib/prisma";
 import DecreaseGameGold from "prisma/queries/decreaseGameGold";
 import pokemon from "constants/pokemon";
 import GetGamePokemon from "prisma/methods/getGamePokemon";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "lib/session";
+import { GetCurrentGame } from "prisma/queries/getCurrentGame";
+import { purchasePokemonCost } from "constants/gameConfig";
 
-export default async function handler(req, res) {
+export default withIronSessionApiRoute(handler, sessionOptions);
+
+async function handler(req, res) {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(401);
+    return;
+  }
+
   const body = JSON.parse(req.body);
-  let game = await prisma.game.findUnique({
-    where: { id: parseInt(body.gameId) },
-  });
+  let game = await GetCurrentGame(prisma, user.id);
 
-  if (game.gold < 3) {
+  if (game.gold < purchasePokemonCost) {
     res.status(400);
     return;
   }

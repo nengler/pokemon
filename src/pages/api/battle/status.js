@@ -1,3 +1,4 @@
+import { shopPokemonNumber, startingGold } from "constants/gameConfig";
 import pokemon from "constants/pokemon";
 import prisma from "lib/prisma";
 import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
     });
 
     let updateData = {
-      gold: 10,
+      gold: startingGold,
       round: {
         increment: 1,
       },
@@ -69,7 +70,7 @@ export default async function handler(req, res) {
     });
 
     await DeleteCurrentShop(prisma, game.id);
-    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
+    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber);
 
     res.status(200).json({ battle, enemyBattleTeam, battleWinner });
   } else if (battle.isSearching) {
