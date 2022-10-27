@@ -7,7 +7,7 @@ module.exports = {
       defense: 65,
       hp: 45,
     },
-    canAddToSelf: [1],
+    canAddToSelf: [1, 2, 3],
   },
   2: {
     name: "Ivysaur",
@@ -17,7 +17,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
-    canAddToSelf: [1, 2],
+    canAddToSelf: [1, 2, 3],
   },
   3: {
     name: "Venusaur",
@@ -37,7 +37,7 @@ module.exports = {
       defense: 50,
       hp: 39,
     },
-    canAddToSelf: [4],
+    canAddToSelf: [4, 5, 6],
   },
   5: {
     name: "Charmeleon",
@@ -47,7 +47,7 @@ module.exports = {
       defense: 65,
       hp: 58,
     },
-    canAddToSelf: [4, 5],
+    canAddToSelf: [4, 5, 6],
   },
   6: {
     name: "Charizard",
@@ -67,7 +67,7 @@ module.exports = {
       defense: 65,
       hp: 44,
     },
-    canAddToSelf: [7],
+    canAddToSelf: [7, 8, 9],
   },
   8: {
     name: "Wartortle",
@@ -77,7 +77,7 @@ module.exports = {
       defense: 80,
       hp: 59,
     },
-    canAddToSelf: [7, 8],
+    canAddToSelf: [7, 8, 9],
   },
   9: {
     name: "Blastoise",
@@ -97,7 +97,7 @@ module.exports = {
       defense: 35,
       hp: 45,
     },
-    canAddToSelf: [10],
+    canAddToSelf: [10, 11, 12],
   },
   11: {
     name: "Metapod",
@@ -107,7 +107,7 @@ module.exports = {
       defense: 55,
       hp: 50,
     },
-    canAddToSelf: [10, 11],
+    canAddToSelf: [10, 11, 12],
   },
   12: {
     name: "Butterfree",
@@ -127,7 +127,7 @@ module.exports = {
       defense: 30,
       hp: 40,
     },
-    canAddToSelf: [13],
+    canAddToSelf: [13, 14, 15],
   },
   14: {
     name: "Kakuna",
@@ -137,7 +137,7 @@ module.exports = {
       defense: 50,
       hp: 45,
     },
-    canAddToSelf: [13, 14],
+    canAddToSelf: [13, 14, 15],
   },
   15: {
     name: "Beedrill",
@@ -157,7 +157,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
-    canAddToSelf: [16],
+    canAddToSelf: [16, 17, 18],
   },
   17: {
     name: "Pidgeotto",
@@ -167,7 +167,7 @@ module.exports = {
       defense: 55,
       hp: 63,
     },
-    canAddToSelf: [16, 17],
+    canAddToSelf: [16, 17, 18],
   },
   18: {
     name: "Pidgeot",
@@ -187,7 +187,7 @@ module.exports = {
       defense: 35,
       hp: 30,
     },
-    canAddToSelf: [19],
+    canAddToSelf: [19, 20],
   },
   20: {
     name: "Raticate",
@@ -207,7 +207,7 @@ module.exports = {
       defense: 31,
       hp: 40,
     },
-    canAddToSelf: [21],
+    canAddToSelf: [21, 22],
   },
   22: {
     name: "Fearow",
@@ -227,7 +227,7 @@ module.exports = {
       defense: 54,
       hp: 35,
     },
-    canAddToSelf: [23],
+    canAddToSelf: [23, 24],
   },
   24: {
     name: "Arbok",
@@ -247,7 +247,7 @@ module.exports = {
       defense: 50,
       hp: 35,
     },
-    canAddToSelf: [25],
+    canAddToSelf: [25, 26],
   },
   26: {
     name: "Raichu",
@@ -267,7 +267,7 @@ module.exports = {
       defense: 85,
       hp: 50,
     },
-    canAddToSelf: [27],
+    canAddToSelf: [27, 28],
   },
   28: {
     name: "Sandslash",
@@ -287,7 +287,7 @@ module.exports = {
       defense: 52,
       hp: 55,
     },
-    canAddToSelf: [29],
+    canAddToSelf: [29, 30, 31],
   },
   30: {
     name: "Nidorina",
@@ -297,7 +297,7 @@ module.exports = {
       defense: 67,
       hp: 70,
     },
-    canAddToSelf: [29, 30],
+    canAddToSelf: [29, 30, 31],
   },
   31: {
     name: "Nidoqueen",
@@ -317,7 +317,7 @@ module.exports = {
       defense: 40,
       hp: 46,
     },
-    canAddToSelf: [32],
+    canAddToSelf: [32, 33, 34],
   },
   33: {
     name: "Nidorino",
@@ -327,7 +327,7 @@ module.exports = {
       defense: 57,
       hp: 61,
     },
-    canAddToSelf: [32, 33],
+    canAddToSelf: [32, 33, 34],
   },
   34: {
     name: "Nidoking",
@@ -347,7 +347,7 @@ module.exports = {
       defense: 65,
       hp: 70,
     },
-    canAddToSelf: [35],
+    canAddToSelf: [35, 36],
   },
   36: {
     name: "Clefable",
@@ -367,7 +367,7 @@ module.exports = {
       defense: 65,
       hp: 38,
     },
-    canAddToSelf: [37],
+    canAddToSelf: [37, 38],
   },
   38: {
     name: "Ninetales",
@@ -387,7 +387,7 @@ module.exports = {
       defense: 25,
       hp: 115,
     },
-    canAddToSelf: [39],
+    canAddToSelf: [39, 40],
   },
   40: {
     name: "Wigglytuff",
@@ -407,7 +407,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
-    canAddToSelf: [41],
+    canAddToSelf: [41, 42],
   },
   42: {
     name: "Golbat",
@@ -427,7 +427,7 @@ module.exports = {
       defense: 65,
       hp: 45,
     },
-    canAddToSelf: [43],
+    canAddToSelf: [43, 44, 45],
   },
   44: {
     name: "Gloom",
@@ -437,7 +437,7 @@ module.exports = {
       defense: 75,
       hp: 60,
     },
-    canAddToSelf: [43, 44],
+    canAddToSelf: [43, 44, 45],
   },
   45: {
     name: "Vileplume",
@@ -457,7 +457,7 @@ module.exports = {
       defense: 55,
       hp: 35,
     },
-    canAddToSelf: [46],
+    canAddToSelf: [46, 47],
   },
   47: {
     name: "Parasect",
@@ -477,7 +477,7 @@ module.exports = {
       defense: 55,
       hp: 60,
     },
-    canAddToSelf: [48],
+    canAddToSelf: [48, 49],
   },
   49: {
     name: "Venomoth",
@@ -497,7 +497,7 @@ module.exports = {
       defense: 45,
       hp: 10,
     },
-    canAddToSelf: [50],
+    canAddToSelf: [50, 51],
   },
   51: {
     name: "Dugtrio",
@@ -517,7 +517,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
-    canAddToSelf: [52],
+    canAddToSelf: [52, 53],
   },
   53: {
     name: "Persian",
@@ -537,7 +537,7 @@ module.exports = {
       defense: 50,
       hp: 50,
     },
-    canAddToSelf: [54],
+    canAddToSelf: [54, 55],
   },
   55: {
     name: "Golduck",
@@ -557,7 +557,7 @@ module.exports = {
       defense: 45,
       hp: 40,
     },
-    canAddToSelf: [56],
+    canAddToSelf: [56, 57],
   },
   57: {
     name: "Primeape",
@@ -577,7 +577,7 @@ module.exports = {
       defense: 50,
       hp: 55,
     },
-    canAddToSelf: [58],
+    canAddToSelf: [58, 59],
   },
   59: {
     name: "Arcanine",
@@ -597,7 +597,7 @@ module.exports = {
       defense: 40,
       hp: 40,
     },
-    canAddToSelf: [60],
+    canAddToSelf: [60, 61, 62],
   },
   61: {
     name: "Poliwhirl",
@@ -607,7 +607,7 @@ module.exports = {
       defense: 65,
       hp: 65,
     },
-    canAddToSelf: [60, 61],
+    canAddToSelf: [60, 61, 62],
   },
   62: {
     name: "Poliwrath",
@@ -627,7 +627,7 @@ module.exports = {
       defense: 55,
       hp: 25,
     },
-    canAddToSelf: [63],
+    canAddToSelf: [63, 64, 65],
   },
   64: {
     name: "Kadabra",
@@ -637,7 +637,7 @@ module.exports = {
       defense: 70,
       hp: 40,
     },
-    canAddToSelf: [63, 64],
+    canAddToSelf: [63, 64, 65],
   },
   65: {
     name: "Alakazam",
@@ -657,7 +657,7 @@ module.exports = {
       defense: 50,
       hp: 70,
     },
-    canAddToSelf: [66],
+    canAddToSelf: [66, 67, 68],
   },
   67: {
     name: "Machoke",
@@ -667,7 +667,7 @@ module.exports = {
       defense: 70,
       hp: 80,
     },
-    canAddToSelf: [66, 67],
+    canAddToSelf: [66, 67, 68],
   },
   68: {
     name: "Machamp",
@@ -687,7 +687,7 @@ module.exports = {
       defense: 35,
       hp: 50,
     },
-    canAddToSelf: [69],
+    canAddToSelf: [69, 70, 71],
   },
   70: {
     name: "Weepinbell",
@@ -697,7 +697,7 @@ module.exports = {
       defense: 50,
       hp: 65,
     },
-    canAddToSelf: [69, 70],
+    canAddToSelf: [69, 70, 71],
   },
   71: {
     name: "Victreebel",
@@ -717,7 +717,7 @@ module.exports = {
       defense: 100,
       hp: 40,
     },
-    canAddToSelf: [72],
+    canAddToSelf: [72, 73],
   },
   73: {
     name: "Tentacruel",
@@ -737,7 +737,7 @@ module.exports = {
       defense: 100,
       hp: 40,
     },
-    canAddToSelf: [74],
+    canAddToSelf: [74, 75, 76],
   },
   75: {
     name: "Graveler",
@@ -747,7 +747,7 @@ module.exports = {
       defense: 115,
       hp: 55,
     },
-    canAddToSelf: [74, 75],
+    canAddToSelf: [74, 75, 76],
   },
   76: {
     name: "Golem",
@@ -767,7 +767,7 @@ module.exports = {
       defense: 65,
       hp: 50,
     },
-    canAddToSelf: [77],
+    canAddToSelf: [77, 78],
   },
   78: {
     name: "Rapidash",
@@ -787,7 +787,7 @@ module.exports = {
       defense: 65,
       hp: 90,
     },
-    canAddToSelf: [79],
+    canAddToSelf: [79, 80],
   },
   80: {
     name: "Slowbro",
@@ -807,7 +807,7 @@ module.exports = {
       defense: 70,
       hp: 25,
     },
-    canAddToSelf: [81],
+    canAddToSelf: [81, 82],
   },
   82: {
     name: "Magneton",
@@ -837,7 +837,7 @@ module.exports = {
       defense: 45,
       hp: 35,
     },
-    canAddToSelf: [84],
+    canAddToSelf: [84, 85],
   },
   85: {
     name: "Dodrio",
@@ -857,7 +857,7 @@ module.exports = {
       defense: 70,
       hp: 65,
     },
-    canAddToSelf: [86],
+    canAddToSelf: [86, 87],
   },
   87: {
     name: "Dewgong",
@@ -877,7 +877,7 @@ module.exports = {
       defense: 50,
       hp: 80,
     },
-    canAddToSelf: [88],
+    canAddToSelf: [88, 89],
   },
   89: {
     name: "Muk",
@@ -897,7 +897,7 @@ module.exports = {
       defense: 100,
       hp: 30,
     },
-    canAddToSelf: [90],
+    canAddToSelf: [90, 91],
   },
   91: {
     name: "Cloyster",
@@ -917,7 +917,7 @@ module.exports = {
       defense: 35,
       hp: 30,
     },
-    canAddToSelf: [92],
+    canAddToSelf: [92, 93, 94],
   },
   93: {
     name: "Haunter",
@@ -927,7 +927,7 @@ module.exports = {
       defense: 55,
       hp: 45,
     },
-    canAddToSelf: [92, 93],
+    canAddToSelf: [92, 93, 94],
   },
   94: {
     name: "Gengar",
@@ -957,7 +957,7 @@ module.exports = {
       defense: 90,
       hp: 60,
     },
-    canAddToSelf: [96],
+    canAddToSelf: [96, 97],
   },
   97: {
     name: "Hypno",
@@ -977,7 +977,7 @@ module.exports = {
       defense: 90,
       hp: 30,
     },
-    canAddToSelf: [98],
+    canAddToSelf: [98, 99],
   },
   99: {
     name: "Kingler",
@@ -997,7 +997,7 @@ module.exports = {
       defense: 55,
       hp: 40,
     },
-    canAddToSelf: [100],
+    canAddToSelf: [100, 101],
   },
   101: {
     name: "Electrode",
@@ -1017,7 +1017,7 @@ module.exports = {
       defense: 80,
       hp: 60,
     },
-    canAddToSelf: [102],
+    canAddToSelf: [102, 103],
   },
   103: {
     name: "Exeggutor",
@@ -1037,7 +1037,7 @@ module.exports = {
       defense: 95,
       hp: 50,
     },
-    canAddToSelf: [104],
+    canAddToSelf: [104, 105],
   },
   105: {
     name: "Marowak",
@@ -1087,7 +1087,7 @@ module.exports = {
       defense: 95,
       hp: 40,
     },
-    canAddToSelf: [109],
+    canAddToSelf: [109, 110],
   },
   110: {
     name: "Weezing",
@@ -1107,7 +1107,7 @@ module.exports = {
       defense: 95,
       hp: 80,
     },
-    canAddToSelf: [111],
+    canAddToSelf: [111, 112],
   },
   112: {
     name: "Rhydon",
@@ -1157,7 +1157,7 @@ module.exports = {
       defense: 70,
       hp: 30,
     },
-    canAddToSelf: [116],
+    canAddToSelf: [116, 117],
   },
   117: {
     name: "Seadra",
@@ -1177,7 +1177,7 @@ module.exports = {
       defense: 60,
       hp: 45,
     },
-    canAddToSelf: [118],
+    canAddToSelf: [118, 119],
   },
   119: {
     name: "Seaking",
@@ -1197,7 +1197,7 @@ module.exports = {
       defense: 55,
       hp: 30,
     },
-    canAddToSelf: [120],
+    canAddToSelf: [120, 121],
   },
   121: {
     name: "Starmie",
@@ -1287,7 +1287,7 @@ module.exports = {
       defense: 55,
       hp: 20,
     },
-    canAddToSelf: [129],
+    canAddToSelf: [129, 130],
   },
   130: {
     name: "Gyarados",
@@ -1377,7 +1377,7 @@ module.exports = {
       defense: 100,
       hp: 35,
     },
-    canAddToSelf: [138],
+    canAddToSelf: [138, 139],
   },
   139: {
     name: "Omastar",
@@ -1397,7 +1397,7 @@ module.exports = {
       defense: 90,
       hp: 30,
     },
-    canAddToSelf: [140],
+    canAddToSelf: [140, 141],
   },
   141: {
     name: "Kabutops",
@@ -1467,7 +1467,7 @@ module.exports = {
       defense: 50,
       hp: 41,
     },
-    canAddToSelf: [147],
+    canAddToSelf: [147, 148, 149],
   },
   148: {
     name: "Dragonair",
@@ -1477,7 +1477,7 @@ module.exports = {
       defense: 70,
       hp: 61,
     },
-    canAddToSelf: [147, 148],
+    canAddToSelf: [147, 148, 149],
   },
   149: {
     name: "Dragonite",

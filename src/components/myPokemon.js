@@ -50,7 +50,7 @@ export default function MyPokemon({
     return gold >= 3 && (gamePokemon === undefined || gamePokemon?.canAddToSelf?.includes(pokemonId));
   };
 
-  const gamePokemonDropped = ({ gamePokemonId, pokemonId, canAddToSelf, originalSpot }) => {
+  const gamePokemonDropped = ({ gamePokemonId, pokemonId, originalSpot }) => {
     if (originalSpot === order) {
       return;
     }
@@ -60,9 +60,6 @@ export default function MyPokemon({
       return;
     } else if (gamePokemon.canAddToSelf.includes(pokemonId)) {
       combinePokemon(gamePokemon.id, gamePokemonId);
-      return;
-    } else if (canAddToSelf.includes(gamePokemon.pokemonId)) {
-      combinePokemon(gamePokemonId, gamePokemon.id);
       return;
     }
     rearrangeOrder(gamePokemonId, originalSpot, order);
@@ -89,10 +86,9 @@ export default function MyPokemon({
 
   const gamePokemonId = gamePokemon?.id;
   const pokemonId = gamePokemon?.pokemonId;
-  const canAddToSelf = gamePokemon?.canAddToSelf;
   const [dragCollectables, drag, preview] = useDrag(() => ({
     type: "GamePokemon",
-    item: { gamePokemonId, pokemonId, canAddToSelf, originalSpot: order },
+    item: { gamePokemonId, pokemonId, originalSpot: order },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

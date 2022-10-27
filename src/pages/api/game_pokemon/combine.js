@@ -27,7 +27,7 @@ async function handler(req, res) {
     where: { id: parseInt(body.pokemonId2) },
   });
 
-  const pokemonConstant = pokemon[gamePokemon1.pokemonId];
+  const [pokemonConstant, highestPokemonId] = getPokemonConstant(gamePokemon1, gamePokemon2);
 
   if (cantCombinePokemon(pokemonConstant, gamePokemon2)) {
     res.status(400).json({ message: "cant combine pokemon" });
@@ -39,6 +39,7 @@ async function handler(req, res) {
   await prisma.gamePokemon.update({
     where: { id: gamePokemon1.id },
     data: {
+      pokemonId: highestPokemonId,
       hp: GetHp(pokemonConstant.baseStats.hp, newLevel),
       attack: GetNotHpStat(pokemonConstant.baseStats.attack, newLevel),
       defense: GetNotHpStat(pokemonConstant.baseStats.defense, newLevel),
@@ -70,4 +71,11 @@ async function handler(req, res) {
 
 function cantCombinePokemon(pokemonConstant1, gamePokemon2) {
   return !pokemonConstant1.canAddToSelf.includes(gamePokemon2.pokemonId);
+}
+
+function getPokemonConstant(gamePokemon1, gamePokemon2) {
+  if (gamePokemon1.pokemonId > gamePokemon2.pokemonId) {
+    return [pokemon[gamePokemon1.pokemonId], gamePokemon1.pokemonId];
+  }
+  return [pokemon[gamePokemon2.pokemonId], gamePokemon2.pokemonId];
 }
