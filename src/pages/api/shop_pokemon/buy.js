@@ -41,7 +41,7 @@ async function handler(req, res) {
 
     const pokemonConstant = pokemon[gamePokemon.pokemonId];
 
-    if (pokemonConstant.canAddToSelf.includes(shopPokemon.pokemonid)) {
+    if (!pokemonConstant.canAddToSelf.includes(shopPokemon.pokemonId)) {
       res.status(400);
       return;
     }

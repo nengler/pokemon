@@ -160,6 +160,27 @@ export default function Home(props) {
     }, 1000);
   };
 
+  const combinePokemon = async (pokemonId1, pokemonId2) => {
+    disallowPerformAction();
+    const body = {
+      pokemonId1,
+      pokemonId2,
+      myPokemonOrder: myPokemon
+        .filter((m) => m.id !== pokemonId2)
+        .map((m) => {
+          return { id: m.id, orderNum: m.orderNum };
+        }),
+    };
+
+    const combineRes = await fetch("/api/game_pokemon/combine", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const combineData = await combineRes.json();
+    setMyPokemon(combineData.gamePokemon);
+    allowPerformAction();
+  };
+
   return (
     <div className="max-w-screen-lg mx-auto pt-12">
       <div className="flex gap-2 mb-4">
@@ -189,6 +210,7 @@ export default function Home(props) {
                   allPokemon={myPokemon}
                   evolvePokemon={evolvePokemon}
                   canPerformAction={canPerformAction}
+                  combinePokemon={combinePokemon}
                 />
               );
             })}

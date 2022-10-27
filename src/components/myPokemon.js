@@ -14,6 +14,7 @@ export default function MyPokemon({
   allPokemon,
   evolvePokemon,
   canPerformAction,
+  combinePokemon,
 }) {
   const clickOutside = useRef();
   const evolveButtonRef = useRef();
@@ -49,10 +50,22 @@ export default function MyPokemon({
     return gold >= 3 && (gamePokemon === undefined || gamePokemon?.canAddToSelf?.includes(pokemonId));
   };
 
-  const gamePokemonDropped = ({ gamePokemonId, originalSpot }) => {
-    if (originalSpot !== order) {
-      rearrangeOrder(gamePokemonId, originalSpot, order);
+  const gamePokemonDropped = ({ gamePokemonId, pokemonId, canAddToSelf, originalSpot }) => {
+    if (originalSpot === order) {
+      return;
     }
+
+    if (!gamePokemon) {
+      rearrangeOrder(gamePokemonId, originalSpot, order);
+      return;
+    } else if (gamePokemon.canAddToSelf.includes(pokemonId)) {
+      combinePokemon(gamePokemon.id, gamePokemonId);
+      return;
+    } else if (canAddToSelf.includes(gamePokemon.pokemonId)) {
+      combinePokemon(gamePokemonId, gamePokemon.id);
+      return;
+    }
+    rearrangeOrder(gamePokemonId, originalSpot, order);
   };
 
   const sellGamePokemon = () => {
@@ -75,9 +88,11 @@ export default function MyPokemon({
   );
 
   const gamePokemonId = gamePokemon?.id;
+  const pokemonId = gamePokemon?.pokemonId;
+  const canAddToSelf = gamePokemon?.canAddToSelf;
   const [dragCollectables, drag, preview] = useDrag(() => ({
     type: "GamePokemon",
-    item: { gamePokemonId, originalSpot: order },
+    item: { gamePokemonId, pokemonId, canAddToSelf, originalSpot: order },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
