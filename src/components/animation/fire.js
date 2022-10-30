@@ -27,10 +27,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
   const yStartingPosition = 90;
 
   const distanceToMove =
-    myCoordinates.left +
-    48 -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+    myCoordinates.left + 48 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
 
   return (
     <>

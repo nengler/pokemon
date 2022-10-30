@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes removeatend {
+  0% {
+    opacity: 0.4;
+  }
+  25% {
+    opactiy: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.text-animation {
+  animation-duration: 0.75s;
+  animation-name: removeatend;
+}
