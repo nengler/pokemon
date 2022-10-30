@@ -31,11 +31,11 @@ export default function Pokemon({
       <div ref={pokemonRef}>
         <div>{name}</div>
         {pokemonTypes.map((pokemonType, index) => (
-          <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} />
+          <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
         ))}
         <div className={`flex justify-center ${didDie ? "transition-transform duration-700 translate-y-40" : ""}`}>
           <img
-            className={`${flip ? "-scale-x-100" : ""} w-24 h-24 z-[1]`}
+            className={`${flip ? "-scale-x-100" : ""} w-20 h-20 sm:w-24 h-24 z-[1]`}
             alt={`${name} Image`}
             src={PokemonImage(pokedexId, isShiny)}
           />
@@ -46,7 +46,7 @@ export default function Pokemon({
           <span className="bg-red-300 rounded-lg flex items-center py-0.5 px-1">{attack}</span>
           <span className="bg-blue-300 rounded-lg flex items-center py-0.5 px-1.5">{defense}</span>
         </div>
-        <div className="relative w-28 h-6 mt-1 mx-auto flex justify-center border border-green-300 rounded-lg">
+        <div className="relative w-20 sm:w-28 h-6 mt-1 mx-auto flex justify-center border border-green-300 rounded-lg">
           <div
             className={`absolute origin-left w-full left-0 rounded-lg z-0 bg-green-300 h-6 transition-transform`}
             style={{ transform: `scaleX(${hpMeter})` }}

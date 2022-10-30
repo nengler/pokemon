@@ -1,4 +1,4 @@
-export default function PokemonType({ pokemonType, index }) {
+export default function PokemonType({ pokemonType, index, shorten = false }) {
   const pokemonTypeMap = {
     Bug: "bg-bug-primary text-bug-secondary",
     Dark: "bg-dark-primary text-dark-secondary",
@@ -21,10 +21,13 @@ export default function PokemonType({ pokemonType, index }) {
   };
 
   const spacing = index > 0 ? " ml-1" : "";
+  const firstLetter = pokemonType.charAt(0);
+  const restOfString = pokemonType.substr(1);
 
   return (
     <span className={pokemonTypeMap[pokemonType] + spacing + " rounded-lg px-1.5 py-0.5 inline-block"}>
-      {pokemonType}
+      {firstLetter}
+      <span className="hidden sm:inline">{restOfString}</span>
     </span>
   );
 }

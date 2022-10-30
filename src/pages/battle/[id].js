@@ -239,16 +239,16 @@ export default function Battle(props) {
         <div className="text-center mt-5">
           {props.game.id === props.battle.winnerId ? (
             <>
-              <h3 className="text-xl">You Won</h3>
+              <h3 className="text-xl">you won</h3>
               <Link href="/play">
-                <a className="text-indigo-500">Continue</a>
+                <a className="text-indigo-500">continue</a>
               </Link>
             </>
           ) : (
             <>
-              <h3>You Lost</h3>
+              <h3>you lost</h3>
               <Link href="/play">
-                <a className="text-indigo-500">Continue</a>
+                <a className="text-indigo-500">continue</a>
               </Link>
             </>
           )}

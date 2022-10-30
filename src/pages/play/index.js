@@ -2,7 +2,7 @@ import prisma from "lib/prisma";
 import MyPokemon from "components/myPokemon";
 import ShopPokemon from "components/shopPokemon";
 import GetShopPokemon from "prisma/queries/getShopPokemon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useRouter } from "next/router";
@@ -22,10 +22,16 @@ export default function Home(props) {
   const [shopPokemon, setShopPokemon] = useState(props.shopPokemon);
   const [game, setGame] = useState(props.game);
   const [myPokemon, setMyPokemon] = useState(props.myPokemonRecords);
-  const [canPerformAction, setCanPerformAction] = useState(true);
+  const [canPerformAction, setCanPerformAction] = useState(props.waitingForBattle ? false : true);
 
   const allowPerformAction = () => setCanPerformAction(true);
   const disallowPerformAction = () => setCanPerformAction(false);
+
+  useEffect(() => {
+    if (props.waitingForBattle?.id) {
+      waitForBattle(props.waitingForBattle.id);
+    }
+  }, []);
 
   const getNewPokemon = async () => {
     disallowPerformAction();
@@ -184,16 +190,15 @@ export default function Home(props) {
   return (
     <div className="max-w-screen-lg mx-auto pt-12">
       <div className="flex gap-2 mb-4">
-        <div>Game stats:</div>
-        <div>Gold: {game.gold}</div>
-        <div>Round: {game.round}</div>
+        <div>gold: {game.gold}</div>
+        <div>round: {game.round}</div>
         <div>lives: {game.lives}</div>
         <div>wins: {game.wins}</div>
       </div>
 
       <DndProvider backend={HTML5Backend}>
         <div className="mb-8">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-wrap justify-between items-center">
             {pokemonLength.map((_p, index) => {
               const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
               return (
@@ -216,7 +221,7 @@ export default function Home(props) {
           </div>
         </div>
 
-        <h4 className="text-lg">Shop Pokemon</h4>
+        <h4 className="text-lg">shop pokemon</h4>
         <div className="flex justify-center gap-8">
           {shopPokemon.map((pokemon, index) => (
             <div
@@ -228,21 +233,13 @@ export default function Home(props) {
           ))}
         </div>
       </DndProvider>
-      <div className="mt-5">
-        <button
-          disabled={!canPerformAction || game.gold < 1}
-          className="bg-gray-100 rounded-lg px-4 h-10 disabled:opacity-30"
-          onClick={getNewPokemon}
-        >
-          Get New Pokemon
+      <div className="mt-10 gap-3 flex justify-end">
+        <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
+          get new pokemon
         </button>
 
-        <button
-          disabled={!canPerformAction}
-          onClick={searchForBattle}
-          className="disabled:opacity-30 bg-indigo-500 text-white rounded-lg px-4 h-10"
-        >
-          Battle
+        <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">
+          battle
         </button>
       </div>
     </div>
@@ -280,5 +277,16 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
 
   const myPokemonRecords = await GetGamePokemon(prisma, game.id);
 
-  return { props: { game, shopPokemon, myPokemonRecords } };
+  const waitingForBattle = await prisma.battle.findFirst({
+    where: {
+      game1Id: game.id,
+      round: game.round,
+      isSearching: true,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return { props: { game, shopPokemon, myPokemonRecords, waitingForBattle: waitingForBattle } };
 }, sessionOptions);

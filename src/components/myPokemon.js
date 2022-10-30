@@ -132,13 +132,13 @@ export default function MyPokemon({
   return (
     <div
       ref={gamePokemonDrop}
-      className={`h-64 transition-colors ${dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""} ${
-        collectables.isOver ? "bg-green-500" : ""
-      }`}
+      className={`h-64 w-[33%] md:w-36 mb-4 transition-colors ${
+        dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
+      } ${collectables.isOver ? "bg-green-500" : ""}`}
     >
       <div
         ref={drop}
-        className={`w-36 h-56 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-56 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >

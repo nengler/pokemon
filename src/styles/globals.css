@@ -7,6 +7,10 @@
     @apply rounded-lg px-4 h-10;
   }
 
+  .btn:disabled {
+    @apply opacity-30 cursor-not-allowed;
+  }
+
   .btn:hover {
     @apply underline;
   }
