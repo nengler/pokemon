@@ -92,7 +92,7 @@ module.exports = module.exports = {
   25: [
     {
       into: 26,
-      minimumLevel: 1,
+      minimumLevel: 30,
     },
   ],
   27: [

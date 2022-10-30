@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn {
+    @apply rounded-lg px-4 h-10;
+  }
+
+  .btn:hover {
+    @apply underline;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-500 text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100;
+  }
+
+  .link-button {
+    @apply inline-flex justify-center items-center;
+  }
+}
+
 @keyframes removeatend {
   0% {
     opacity: 0.4;

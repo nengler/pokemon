@@ -193,7 +193,6 @@ export default function Home(props) {
 
       <DndProvider backend={HTML5Backend}>
         <div className="mb-8">
-          <h4 className="text-xl">My Pokemon</h4>
           <div className="flex justify-between items-center">
             {pokemonLength.map((_p, index) => {
               const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
@@ -229,21 +228,23 @@ export default function Home(props) {
           ))}
         </div>
       </DndProvider>
-      <button
-        disabled={!canPerformAction || game.gold < 1}
-        className="bg-gray-100 rounded-lg px-4 h-10 disabled:opacity-30"
-        onClick={getNewPokemon}
-      >
-        Get New Pokemon
-      </button>
+      <div className="mt-5">
+        <button
+          disabled={!canPerformAction || game.gold < 1}
+          className="bg-gray-100 rounded-lg px-4 h-10 disabled:opacity-30"
+          onClick={getNewPokemon}
+        >
+          Get New Pokemon
+        </button>
 
-      <button
-        disabled={!canPerformAction}
-        onClick={searchForBattle}
-        className="disabled:opacity-30 bg-indigo-500 text-white rounded-lg px-4 h-10"
-      >
-        Battle
-      </button>
+        <button
+          disabled={!canPerformAction}
+          onClick={searchForBattle}
+          className="disabled:opacity-30 bg-indigo-500 text-white rounded-lg px-4 h-10"
+        >
+          Battle
+        </button>
+      </div>
     </div>
   );
 }
