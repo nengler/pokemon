@@ -84,7 +84,7 @@ export default function Battle(props) {
       },
     ]);
 
-    // return;
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {

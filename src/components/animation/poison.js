@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const poisonShotDuration = 0.4;
 const poisonOpacityDuration = 0.05;
 const bubbleRisingDuration = 0.2;
-const baseXFactor = 50;
+const yStartingPosition = 100;
 const bubbles = [55, 40, 72];
 
 export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
@@ -14,21 +14,23 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
   const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
   const myCoordinates = getMyCoordinates(teamLocation);
 
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+
+  console.log(enemyCoordinates, enemyCenter);
+  console.log(myCoordinates, myCenter);
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 * baseXFactor : 0.5 * baseXFactor;
-
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xFactor;
-  const yStartingPosition = 100; //enemyCoordinates.bottom - enemyCoordinates.top / 2;
-
-  const distanceToMove =
-    (myCoordinates.left + xFactor - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) *
-    -1;
+  const xFactor = teamLocation.dataset.myTeam === "true" ? -1 : 1;
+  const xStartingPosition = distanceToMove - (xFactor * enemyCoordinates.width) / 2;
 
   let styles = {
-    left: `${xStartingPosition}px`,
+    left: `${xStartingPosition * xFactor * -1}px`,
     top: `${yStartingPosition}px`,
   };
 
@@ -36,7 +38,7 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
     <>
       <motion.div
         animate={{
-          x: distanceToMove * -1,
+          x: distanceToMove * xFactor,
           opacity: 0,
           y: [0, -50, 10],
         }}
@@ -78,6 +80,17 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
       })}
     </>
   );
+}
+
+function getDistanceBetweenElements(aPosition, bPosition) {
+  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+}
+
+function getPositionAtCenter({ left, width, top, height }) {
+  return {
+    x: left + width / 2,
+    y: top + height / 2,
+  };
 }
 
 const getEnemyCoordinates = (enemyTeamLocation) => {
