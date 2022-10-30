@@ -17,21 +17,15 @@ const animationCheck = {
   nextPokemon: "NextPokemon",
 };
 
-let animationType = animationCheck.logic;
+let animationType = animationCheck.nextPokemon;
 
 export default function Battle(props) {
   const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
   const [enemyBattlePokemon, setEnemyBattlePokemon] = useState(
     props.battlePokemon.filter((b) => b.gameId !== props.game.id).map((b, index) => ({ ...b, seen: index === 0 }))
   );
-  const [myCurrentBattler, setMyCurrentBattler] = useState({
-    id: myBattlePokemon[0].id,
-    status: battleStates.fighting,
-  });
-  const [enemyCurrentBattler, setEnemyCurrentBattler] = useState({
-    id: enemyBattlePokemon[0].id,
-    status: battleStates.fighting,
-  });
+  const [myCurrentBattler, setMyCurrentBattler] = useState({});
+  const [enemyCurrentBattler, setEnemyCurrentBattler] = useState({});
 
   const [isFighting, setIsFighting] = useState(true);
   const myTeamRef = useRef();
@@ -156,11 +150,11 @@ export default function Battle(props) {
   };
 
   function showNewPokemon() {
-    if (myCurrentBattler.status === battleStates.death) {
+    if (myCurrentBattler.status === battleStates.death || !myCurrentBattler.status) {
       updateCurrentBattler(myBattlePokemon, setMyCurrentBattler);
     }
 
-    if (enemyCurrentBattler.status === battleStates.death) {
+    if (enemyCurrentBattler.status === battleStates.death || !myCurrentBattler.status) {
       updateCurrentBattler(enemyBattlePokemon, setEnemyCurrentBattler);
     }
   }
