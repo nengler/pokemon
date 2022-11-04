@@ -187,6 +187,18 @@ export default function Home(props) {
     allowPerformAction();
   };
 
+  const changeFrozenState = (shopPokemonId, isFrozen) => {
+    setShopPokemon((pokemon) =>
+      pokemon.map((p) => {
+        if (p.id === shopPokemonId) {
+          return { ...p, isFrozen };
+        } else {
+          return p;
+        }
+      })
+    );
+  };
+
   return (
     <div className="max-w-screen-lg mx-auto pt-12">
       <div className="flex gap-2 mb-4">
@@ -226,9 +238,11 @@ export default function Home(props) {
           {shopPokemon.map((pokemon, index) => (
             <div
               key={pokemon?.id ? `shop-${pokemon.id}-${pokemon.pokemonId}` : `shopUndefined-${index}`}
-              className="h-52 w-32"
+              className="w-32"
             >
-              {Object.keys(pokemon).length !== 0 && <ShopPokemon shopPokemon={pokemon} canDrag={canPerformAction} />}
+              {Object.keys(pokemon).length !== 0 && (
+                <ShopPokemon changeFrozenState={changeFrozenState} shopPokemon={pokemon} canDrag={canPerformAction} />
+              )}
             </div>
           ))}
         </div>

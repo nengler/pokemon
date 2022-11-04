@@ -38,6 +38,7 @@ model ShopPokemon {
   gameId    Int
   level     Int
   isShiny   Boolean
+  isFrozen  Boolean @default(false)
 }
 
 model GamePokemon {

@@ -163,8 +163,8 @@ export default function MyPokemon({
 
       {gamePokemon !== undefined && (
         <div className="flex justify-center mt-2">
-          <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 px-3 rounded-lg h-6">
-            Sell
+          <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 btn sm">
+            sell
           </button>
 
           {canEvolveInto && (

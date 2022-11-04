@@ -4,11 +4,19 @@
 
 @layer components {
   .btn {
-    @apply rounded-lg px-4 h-10;
+    @apply rounded-lg;
+  }
+
+  .btn:not(.sm) {
+    @apply px-4 h-10;
   }
 
   .btn:disabled {
     @apply opacity-30 cursor-not-allowed;
+  }
+
+  .btn.sm {
+    @apply px-3 h-6;
   }
 
   .btn:hover {
