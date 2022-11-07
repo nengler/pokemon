@@ -7,7 +7,8 @@ import transformShopPokemonRecords from "prisma/methods/transformShopPokemonReco
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
-import { shopPokemonNumber, rerollCost } from "constants/gameConfig";
+import { rerollCost, shopPokemonNumber } from "constants/gameConfig";
+import changeFreezeStatus from "prisma/methods/changeFreezeStatus";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
 
@@ -19,12 +20,15 @@ async function handler(req, res) {
     return;
   }
 
+  const body = JSON.parse(req.body);
+
   let game = await GetCurrentGame(prisma, user.id);
 
-  if (game.gold > 0) {
+  if (game.gold > rerollCost) {
     game = await DecreaseGameGold(prisma, game.id, rerollCost);
+    const numberOfFrozen = await changeFreezeStatus(prisma, game.id, body.frozen, body.notFrozen);
     await DeleteCurrentShop(prisma, game.id);
-    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber);
+    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber - numberOfFrozen);
   }
 
   const newShopPokemon = await GetShopPokemon(prisma, game.id);

@@ -70,7 +70,8 @@ export default async function handler(req, res) {
     });
 
     await DeleteCurrentShop(prisma, game.id);
-    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber);
+    const currentShopPokemon = await prisma.shopPokemon.count({ where: { gameId: game.id } });
+    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber - currentShopPokemon);
 
     res.status(200).json({ battle, enemyBattleTeam, battleWinner });
   } else if (battle.isSearching) {

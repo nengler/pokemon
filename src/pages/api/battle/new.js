@@ -2,6 +2,7 @@ import prisma from "lib/prisma";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
+import changeFreezeStatus from "prisma/methods/changeFreezeStatus";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
 
@@ -17,8 +18,10 @@ async function handler(req, res) {
 
   const game = await GetCurrentGame(prisma, user.id);
 
+  let gamePokemonArray = [];
+
   for await (const myPokemon of body.myPokemonOrder) {
-    await prisma.gamePokemon.update({
+    const pokemon = await prisma.gamePokemon.update({
       where: {
         id: myPokemon.id,
       },
@@ -26,13 +29,10 @@ async function handler(req, res) {
         orderNum: myPokemon.orderNum,
       },
     });
+    gamePokemonArray.push(pokemon);
   }
 
-  const gamePokemon = await prisma.gamePokemon.findMany({
-    where: {
-      gameId: game.id,
-    },
-  });
+  await changeFreezeStatus(prisma, game.id, body.frozen, body.notFrozen);
 
   let battle = await prisma.battle.findFirst({
     where: {
@@ -56,7 +56,7 @@ async function handler(req, res) {
     });
 
     await prisma.BattleTeam.createMany({
-      data: gamePokemon.map((g) => {
+      data: gamePokemonArray.map((g) => {
         return {
           pokemonId: g.pokemonId,
           hp: g.hp,

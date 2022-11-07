@@ -33,9 +33,21 @@ export default function Home(props) {
     }
   }, []);
 
+  const pokemonFrozenStatus = () => {
+    return {
+      frozen: shopPokemon.filter((s) => s.isFrozen === true).map((s) => s.id),
+      notFrozen: shopPokemon.filter((s) => s.isFrozen === false).map((s) => s.id),
+    };
+  };
+
   const getNewPokemon = async () => {
     disallowPerformAction();
-    const pokemonFetch = await fetch("api/shop_pokemon/new");
+
+    console.log(pokemonFrozenStatus());
+    const pokemonFetch = await fetch("api/shop_pokemon/new", {
+      method: "POST",
+      body: JSON.stringify({ pokemonFrozenStatus: pokemonFrozenStatus() }),
+    });
     const pokemonData = await pokemonFetch.json();
     setShopPokemon(pokemonData.pokemon);
     setGame({ ...game, gold: pokemonData.gold });
@@ -137,6 +149,7 @@ export default function Home(props) {
       myPokemonOrder: myPokemon.map((m) => {
         return { id: m.id, orderNum: m.orderNum };
       }),
+      ...pokemonFrozenStatus(),
     };
 
     const battleRes = await fetch(`/api/battle/new`, {
