@@ -11,6 +11,7 @@ import GetPokemonLevelRange from "util/getPokemonLevelRange";
 import GetRandomElement from "util/getRandomElement";
 import isShiny from "util/isShiny";
 import { simulateBattle } from "util/simulateBattle";
+import pokemonEvolution from "constants/pokemonEvolution";
 
 export default async function handler(req, res) {
   let battle = await prisma.battle.findUnique({
@@ -83,7 +84,7 @@ export default async function handler(req, res) {
 
 async function getRandomTeam(battleId, currentRound) {
   let teamPokemon = [];
-  const allowedPokemonToGet = 3;
+  const allowedPokemonToGet = 4;
   const maxTeamSize = 6;
 
   Array.from({ length: currentRound }).forEach((_, round) => {
@@ -126,15 +127,19 @@ async function getRandomTeam(battleId, currentRound) {
 
   const pokemonData = await Promise.all(
     teamPokemon.map(async (t, order) => {
-      const pokemonConstant = pokemon[t.pokemonId];
+      const { pokemonId, level } = t;
+
+      const pokemonId2 = getMostEvolvedPokemon(pokemonId, level);
+
+      const pokemonConstant = pokemon[pokemonId2];
       return {
-        pokemonId: t.pokemonId,
+        pokemonId: pokemonId2,
         battleId: battleId,
-        hp: GetHp(pokemonConstant.baseStats.hp, t.level),
-        attack: GetNotHpStat(pokemonConstant.baseStats.attack, t.level),
-        defense: GetNotHpStat(pokemonConstant.baseStats.defense, t.level),
+        hp: GetHp(pokemonConstant.baseStats.hp, level),
+        attack: GetNotHpStat(pokemonConstant.baseStats.attack, level),
+        defense: GetNotHpStat(pokemonConstant.baseStats.defense, level),
         orderNum: order,
-        level: t.level,
+        level: level,
         isShiny: isShiny(),
       };
     })
@@ -143,6 +148,23 @@ async function getRandomTeam(battleId, currentRound) {
   await prisma.battleTeam.createMany({
     data: pokemonData,
   });
+}
+
+function getMostEvolvedPokemon(pokemonId, level) {
+  const evolutions = pokemonEvolution[pokemonId];
+
+  if (evolutions === undefined) {
+    return pokemonId;
+  }
+
+  const canEvolveInto = evolutions.filter((e) => level >= e.minimumLevel);
+
+  if (canEvolveInto.length === 0) {
+    return pokemonId;
+  }
+
+  const randomEvolution = GetRandomElement(canEvolveInto);
+  return randomEvolution.into;
 }
 
 function combineDuplicates(pokemonTeam) {
