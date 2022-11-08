@@ -3,6 +3,11 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
 import changeFreezeStatus from "prisma/methods/changeFreezeStatus";
+import { GetBattleTeam } from "prisma/queries/getBattleTeam";
+import { shopPokemonNumber, startingGold } from "constants/gameConfig";
+import { simulateBattle } from "util/simulateBattle";
+import DeleteCurrentShop from "prisma/queries/deleteCurrentShop";
+import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
 
@@ -46,7 +51,6 @@ async function handler(req, res) {
     },
   });
 
-  // TODO: ddd logic for if the battle does not equal null
   if (battle === null) {
     battle = await prisma.battle.create({
       data: {
@@ -55,22 +59,77 @@ async function handler(req, res) {
       },
     });
 
-    await prisma.BattleTeam.createMany({
-      data: gamePokemonArray.map((g) => {
-        return {
-          pokemonId: g.pokemonId,
-          hp: g.hp,
-          attack: g.attack,
-          defense: g.defense,
-          level: g.level,
-          orderNum: g.orderNum,
-          isShiny: g.isShiny,
-          gameId: game.id,
-          battleId: battle.id,
-        };
-      }),
+    await createBattleTeam(prisma, gamePokemonArray, game.id, battle.id);
+  } else {
+    battle = await prisma.battle.update({
+      where: { id: battle.id },
+      data: { isSearching: false, game2Id: game.id },
     });
+
+    await createBattleTeam(prisma, gamePokemonArray, game.id, battle.id);
+
+    const enemyBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game2Id);
+    const myBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game1Id);
+
+    const battleWinner = await simulateBattle(myBattleTeam, enemyBattleTeam);
+
+    battle = await prisma.battle.update({
+      where: {
+        id: battle.id,
+      },
+      data: {
+        winnerId: battleWinner,
+        isBattleOver: true,
+      },
+    });
+
+    handleUpdatePostGame(prisma, battle.game1Id, battleWinner);
+    handleUpdatePostGame(prisma, battle.game2Id, battleWinner);
   }
 
   res.status(200).json(battle);
+}
+
+async function createBattleTeam(prisma, gamePokemonArray, gameId, battleId) {
+  await prisma.BattleTeam.createMany({
+    data: gamePokemonArray.map((g) => {
+      return {
+        pokemonId: g.pokemonId,
+        hp: g.hp,
+        attack: g.attack,
+        defense: g.defense,
+        level: g.level,
+        orderNum: g.orderNum,
+        isShiny: g.isShiny,
+        gameId: gameId,
+        battleId: battleId,
+      };
+    }),
+  });
+}
+
+async function handleUpdatePostGame(prisma, gameId, battleWinner) {
+  let updateData = {
+    gold: startingGold,
+    round: {
+      increment: 1,
+    },
+  };
+
+  if (battleWinner === gameId) {
+    updateData.wins = { increment: 1 };
+  } else {
+    updateData.lives = { decrement: 1 };
+  }
+
+  const game = await prisma.game.update({
+    where: {
+      id: gameId,
+    },
+    data: updateData,
+  });
+
+  await DeleteCurrentShop(prisma, gameId);
+  const currentShopPokemon = await prisma.shopPokemon.count({ where: { gameId: gameId } });
+  await CreateNewShopPokemon(prisma, gameId, game.round, shopPokemonNumber - currentShopPokemon);
 }

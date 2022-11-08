@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   const diff = new Date() - new Date(battle.createdAt);
   const secondsSearching = Math.floor((diff / 1000) % 60);
 
-  if (secondsSearching >= 3 && battle.isSearching) {
+  if (secondsSearching >= 300 && battle.isSearching) {
     battle = await prisma.battle.update({
       where: {
         id: battle.id,
@@ -117,8 +117,6 @@ async function getRandomTeam(battleId, currentRound) {
         }
       });
     });
-
-    console.log(teamPokemon);
 
     teamPokemon.sort((a, b) => {
       a.level < b.level;

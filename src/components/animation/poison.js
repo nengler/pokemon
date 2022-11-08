@@ -17,9 +17,6 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
 
-  console.log(enemyCoordinates, enemyCenter);
-  console.log(myCoordinates, myCenter);
-
   const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {

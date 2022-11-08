@@ -1,7 +1,7 @@
 import calculateDamage from "./calculateDamage";
 
 export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
-  let battleOver = false;
+  let battleOver = myBattleTeam.length === 0 || enemyBattleTeam.length === 0;
 
   // console.log(myBattleTeam);
   // console.log(enemyBattleTeam);

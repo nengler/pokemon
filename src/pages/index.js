@@ -13,7 +13,6 @@ export default function Home(props) {
     });
 
     const loginData = await loginRes.json();
-    console.log(loginData);
     setIsLoggedIn(loginData.ok);
   };
 
@@ -26,10 +25,7 @@ export default function Home(props) {
             <a className="btn btn-primary link-button">{props.game ? "continue game" : "start new game"}</a>
           </Link>
         ) : (
-          <button
-            className="bg-indigo-500 text-white rounded-lg px-4 h-10 inline-flex justify-center items-center"
-            onClick={() => signIn()}
-          >
+          <button className="btn btn-primary" onClick={() => signIn()}>
             login as guest
           </button>
         )}
@@ -43,7 +39,7 @@ export default function Home(props) {
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req }) {
   const user = req.session.user;
-  const game = await GetCurrentGame(prisma, user.id);
+  const game = await GetCurrentGame(prisma, user?.id);
 
   return {
     props: { isLoggedIn: user !== undefined, game },

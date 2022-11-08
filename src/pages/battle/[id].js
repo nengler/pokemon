@@ -83,9 +83,6 @@ export default function Battle(props) {
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
         if (p.id === myFightingPokemon.id) {
-          if (p.tempHp <= 0) {
-            console.log(`${myFightingPokemon.name} fainted`);
-          }
           return { ...p, tempHp: myNewHp };
         } else {
           return p;
@@ -96,9 +93,6 @@ export default function Battle(props) {
     setEnemyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
         if (p.id === enemyFightingPokemon.id) {
-          if (p.tempHp <= 0) {
-            console.log(`${enemyFightingPokemon.name} fainted`);
-          }
           return { ...p, tempHp: enemyNewHp };
         } else {
           return p;

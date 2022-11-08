@@ -4,7 +4,7 @@
 
 @layer components {
   .btn {
-    @apply rounded-lg;
+    @apply rounded-lg relative;
   }
 
   .btn:not(.sm) {
@@ -19,8 +19,23 @@
     @apply px-3 h-6;
   }
 
-  .btn:hover {
-    @apply underline;
+  .btn::after {
+    @apply content-[''] left-4 absolute bottom-2;
+    height: 1.5px;
+    width: 0;
+    transition: 0.2s width;
+  }
+
+  .btn:hover::after {
+    width: calc(100% - 32px);
+  }
+
+  .btn-primary:hover::after {
+    @apply bg-white;
+  }
+
+  .btn-secondary:hover::after {
+    @apply bg-black;
   }
 
   .btn-primary {

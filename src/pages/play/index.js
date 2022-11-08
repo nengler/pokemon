@@ -43,7 +43,6 @@ export default function Home(props) {
   const getNewPokemon = async () => {
     disallowPerformAction();
 
-    console.log(pokemonFrozenStatus());
     const pokemonFetch = await fetch("api/shop_pokemon/new", {
       method: "POST",
       body: JSON.stringify({ pokemonFrozenStatus: pokemonFrozenStatus() }),
@@ -158,10 +157,11 @@ export default function Home(props) {
     });
 
     const battleData = await battleRes.json();
-    console.log(battleData);
 
-    if (battleData.isSearching) {
+    if (battleData.isSearching || !battleData.isBattleOver) {
       waitForBattle(battleData.id);
+    } else {
+      router.push(`battle/${battleData.id}`);
     }
   };
 
@@ -299,7 +299,7 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
     await CreateNewShopPokemon(prisma, game.id, game.round, 3);
   }
 
-  let shopPokemonRecords = await GetShopPokemon(prisma, game.id);
+  const shopPokemonRecords = await GetShopPokemon(prisma, game.id);
   const shopPokemon = transformShopPokemonRecords(shopPokemonRecords);
 
   const myPokemonRecords = await GetGamePokemon(prisma, game.id);

@@ -18,8 +18,6 @@ async function handler(req, res) {
 
   const body = JSON.parse(req.body);
 
-  console.log(body);
-
   const gamePokemon1 = await prisma.gamePokemon.findUnique({
     where: { id: parseInt(body.pokemonId1) },
   });
