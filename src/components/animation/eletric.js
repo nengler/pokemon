@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import ThunderIcon from "/public/assets/thunder";
 import { useState } from "react";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
-const styles = {
-  left: "45px",
+let styles = {
   top: "80px",
 };
 
@@ -18,14 +18,27 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
   const fillColor = isFirstStage ? "text-[#f8f86e]" : "text-[#ffca3e]";
+
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
+  const cssDistance = `calc(${distanceToMove}px + 50% - 20px)`;
+
+  if (teamLocation.dataset.myTeam === "true") {
+    styles.left = cssDistance;
+  } else {
+    styles.right = cssDistance;
+  }
 
   return (
     <>
@@ -68,9 +81,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
           style={{
             top: isFirstStage ? "50%" : "-14px",
             left: isFirstStage ? "-20px" : "-11px",
-            transform: isFirstStage
-              ? "translateY(-50%) rotate(90deg)"
-              : "rotate(305deg)",
+            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
           }}
           className={`absolute ${fillColor}`}
         >
@@ -81,9 +92,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
           style={{
             top: isFirstStage ? "50%" : "-30px",
             left: isFirstStage ? "-40px" : "-26px",
-            transform: isFirstStage
-              ? "translateY(-50%) rotate(90deg)"
-              : "rotate(305deg)",
+            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
           }}
           className={`absolute ${fillColor}`}
         >
@@ -95,9 +104,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
             right: isFirstStage ? "-20px" : "-9px",
             top: isFirstStage ? "50%" : "unset",
             bottom: isFirstStage ? "unset" : "-16px",
-            transform: isFirstStage
-              ? "translateY(-50%) rotate(90deg)"
-              : "rotate(305deg)",
+            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
           }}
           className={`absolute  ${fillColor}`}
         >
@@ -109,9 +116,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
             right: isFirstStage ? "-40px" : "-24px",
             top: isFirstStage ? "50%" : "unset",
             bottom: isFirstStage ? "unset" : "-34px",
-            transform: isFirstStage
-              ? "translateY(-50%) rotate(90deg)"
-              : "rotate(305deg)",
+            transform: isFirstStage ? "translateY(-50%) rotate(90deg)" : "rotate(305deg)",
           }}
           className={`absolute  ${fillColor}`}
         >
@@ -143,15 +148,3 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

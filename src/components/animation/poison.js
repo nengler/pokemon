@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 const poisonShotDuration = 0.4;
 const poisonOpacityDuration = 0.05;
@@ -11,8 +12,8 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
@@ -47,9 +48,14 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
       />
       {bubbles.map((bubble, index) => {
         let circleStyles = {
-          left: `calc(${distanceToMove + bubble}px + 50% - 12px)`,
           top: `${yStartingPosition}px`,
         };
+
+        if (teamLocation.dataset.myTeam === "true") {
+          circleStyles.left = `calc(${distanceToMove + bubble}px + 50% - 12px)`;
+        } else {
+          circleStyles.right = `calc(${distanceToMove + bubble}px + 50% - 12px)`;
+        }
 
         const delay = poisonShotDuration + index * 0.075;
 
@@ -77,26 +83,3 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-function getDistanceBetweenElements(aPosition, bPosition) {
-  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
-}
-
-function getPositionAtCenter({ left, width, top, height }) {
-  return {
-    x: left + width / 2,
-    y: top + height / 2,
-  };
-}
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

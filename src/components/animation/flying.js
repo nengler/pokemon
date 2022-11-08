@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Fragment } from "react";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 const blades = [10, 120, 75, 300, 150, 100, 70];
 const topYStartingPosition = 100;
 const bottomYStartingPosition = 60;
@@ -11,31 +12,29 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xOffset = getXOffset(teamLocation);
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - xOffset;
-
-  const distanceToMove =
-    (myCoordinates.left + xOffset - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left)) *
-    -1;
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   return (
     <>
       {blades.map((blade, index) => {
         const topStyles = {
-          left: `${xStartingPosition}px`,
+          left: "calc(50% - 16px)",
           top: `${topYStartingPosition}px`,
         };
 
         const bottomStyles = {
-          left: `${xStartingPosition}px`,
+          left: "calc(50% - 16px)",
           top: `${bottomYStartingPosition}px`,
         };
 
@@ -43,8 +42,18 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
 
         return (
           <Fragment key={index}>
-            <BladeDiv distanceToMove={distanceToMove} delay={delay} styles={topStyles} bladeRotation={blade} />
-            <BladeDiv distanceToMove={distanceToMove} delay={delay} styles={bottomStyles} bladeRotation={blade} />
+            <BladeDiv
+              distanceToMove={distanceToMove * xFactor}
+              delay={delay}
+              styles={topStyles}
+              bladeRotation={blade}
+            />
+            <BladeDiv
+              distanceToMove={distanceToMove * xFactor}
+              delay={delay}
+              styles={bottomStyles}
+              bladeRotation={blade}
+            />
           </Fragment>
         );
       })}
@@ -57,7 +66,7 @@ function BladeDiv({ distanceToMove, bladeRotation, styles, delay }) {
     <motion.div
       initial={{ rotate: bladeRotation }}
       animate={{
-        x: distanceToMove * -1,
+        x: distanceToMove,
         opacity: [0, 1, 1, 0],
         rotate: bladeRotation + 360,
       }}
@@ -72,17 +81,3 @@ function BladeDiv({ distanceToMove, bladeRotation, styles, delay }) {
     />
   );
 }
-
-const getXOffset = (teamLocation) => (teamLocation.dataset.myTeam === "true" ? 70 : 30);
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};
