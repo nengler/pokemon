@@ -69,16 +69,16 @@ export default function Battle(props) {
       {
         ...calculateMyAttack,
         time: new Date(),
-        pokemonId: enemyFightingPokemon.id,
+        pokemonId: myFightingPokemon.id,
       },
       {
         ...calculateEnemyAttack,
         time: new Date(),
-        pokemonId: myFightingPokemon.id,
+        pokemonId: enemyFightingPokemon.id,
       },
     ]);
 
-    // return;
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -235,8 +235,8 @@ export default function Battle(props) {
           ) : (
             <>
               <h3>you lost</h3>
-              <Link href="/play">
-                <a className="text-indigo-500">continue</a>
+              <Link href={props.game.lives === 0 ? "/" : "/play"}>
+                <a className="text-indigo-500">{props.game.lives === 0 ? "rip" : "continue"}</a>
               </Link>
             </>
           )}

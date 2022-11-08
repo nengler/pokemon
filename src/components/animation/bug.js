@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import NeedleIcon from "/public/assets/needle";
 
-const baseXFactor = 60;
+const baseXFactor = 0;
 const animationDuration = 0.4;
 const yStartingPosition = 90;
 
@@ -19,25 +19,18 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xFactor =
-    teamLocation.dataset.myTeam === "true"
-      ? 1 * baseXFactor
-      : 0.5 * baseXFactor;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const xStartingPosition =
-    enemyCoordinates.right - myCoordinates.left - xFactor;
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
 
-  const distanceToMove =
-    myCoordinates.left +
-    xFactor -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   return (
     <>
       {neeldes.map((_circle, index) => {
         let styles = {
-          left: `${xStartingPosition}px`,
+          left: "calc(50% - 12px)",
           top: `${yStartingPosition}px`,
         };
 
@@ -46,13 +39,13 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             initial={{
-              rotate: teamLocation.dataset.myTeam === "true" ? -45 : 45,
+              rotate: teamLocation.dataset.myTeam === "true" ? 45 : -45,
             }}
             animate={{
-              x: distanceToMove,
+              x: distanceToMove * xFactor,
               opacity: [0, 1, 1, 0],
               y: [0, -55, 0],
-              rotate: teamLocation.dataset.myTeam === "true" ? -135 : 135,
+              rotate: teamLocation.dataset.myTeam === "true" ? 135 : -135,
             }}
             transition={{
               default: { duration: animationDuration, delay: delay },
@@ -72,6 +65,17 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
       })}
     </>
   );
+}
+
+function getDistanceBetweenElements(aPosition, bPosition) {
+  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+}
+
+function getPositionAtCenter({ left, width, top, height }) {
+  return {
+    x: left + width / 2,
+    y: top + height / 2,
+  };
 }
 
 const getEnemyCoordinates = (enemyTeamLocation) => {

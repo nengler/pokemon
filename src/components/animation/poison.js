@@ -4,7 +4,7 @@ const poisonShotDuration = 0.4;
 const poisonOpacityDuration = 0.05;
 const bubbleRisingDuration = 0.2;
 const yStartingPosition = 100;
-const bubbles = [55, 40, 72];
+const bubbles = [5, -15, 10];
 
 export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -23,11 +23,10 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const xFactor = teamLocation.dataset.myTeam === "true" ? -1 : 1;
-  const xStartingPosition = distanceToMove - (xFactor * enemyCoordinates.width) / 2;
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   let styles = {
-    left: `${xStartingPosition * xFactor * -1}px`,
+    left: "calc(50% - 12px)",
     top: `${yStartingPosition}px`,
   };
 
@@ -48,7 +47,7 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
       />
       {bubbles.map((bubble, index) => {
         let circleStyles = {
-          left: `${bubble}px`,
+          left: `calc(${distanceToMove + bubble}px + 50% - 12px)`,
           top: `${yStartingPosition}px`,
         };
 
