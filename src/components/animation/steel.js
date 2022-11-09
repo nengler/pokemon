@@ -1,35 +1,32 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import PlusCircle from "/public/assets/plusCircle";
 
-const xFactor = 50;
 const yStartingPosition = 80;
 const growingDuration = 0.25;
-const movingDuration = 0.35;
+const movingDuration = 0.4;
 
 export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xStartingPosition =
-    enemyCoordinates.right - myCoordinates.left - xFactor;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove =
-    (myCoordinates.left +
-      xFactor -
-      ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-        enemyCoordinates.left)) *
-    -1;
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter) * xFactor;
 
   const styles = {
-    left: `${xStartingPosition}px`,
+    left: "calc(50% - 24px)",
     top: `${yStartingPosition}px`,
   };
 
@@ -38,7 +35,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
       initial={{ scale: 0.5 }}
       animate={{
         scale: [0.5, 1.3, 1],
-        x: distanceToMove * -1,
+        x: distanceToMove,
         opacity: [0, 1, 1, 0],
         rotate: 360,
       }}
@@ -50,7 +47,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
           type: "spring",
         },
         opacity: {
-          times: [0, 0.3, 0.8, 1],
+          times: [0, 0.3, 0.6, 1],
           duration: growingDuration + movingDuration,
         },
         rotate: { delay: growingDuration, duration: 0.25, repeat: Infinity },

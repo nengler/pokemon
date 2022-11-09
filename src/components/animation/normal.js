@@ -1,43 +1,43 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import StarIcon from "/public/assets/star";
 
 const animationDuration = 0.5;
 const hitTriggerDelay = 0.25;
 
 const hitTriggers = [
-  { top: "100px", left: "50px" },
-  { top: "70px", left: "80px" },
-  { top: "50px", left: "30px" },
+  { top: "110px", left: 0 },
+  { top: "70px", left: 20 },
+  { top: "50px", left: -15 },
 ];
 
 const stars = [0, 35, -40, 25, 10, -30];
+const yStartingPosition = 90;
 
 export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - 48;
-  const yStartingPosition = 90; //enemyCoordinates.bottom - enemyCoordinates.top / 2;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove =
-    myCoordinates.left +
-    48 -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   return (
     <>
       {stars.map((star, index) => {
         let styles = {
-          left: `${xStartingPosition}px`,
+          left: "calc(50% - 16px)",
           top: `${yStartingPosition}px`,
         };
 
@@ -45,7 +45,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
 
         return (
           <motion.div
-            animate={{ x: distanceToMove, y: star, opacity: [0, 1, 1, 0] }}
+            animate={{ x: distanceToMove * xFactor, y: star, opacity: [0, 1, 1, 0] }}
             transition={{
               x: {
                 type: "spring",
@@ -60,7 +60,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.5, 1],
               },
             }}
-            className="absolute h-5 w-5 opacity-0"
+            className="absolute h-8 w-8 opacity-0"
             key={index}
             style={styles}
           >
@@ -72,10 +72,16 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
       })}
 
       {hitTriggers.map((hit, index) => {
+        const cssDistance = `calc(${distanceToMove}px + 50% - 20px + ${hit.left}px)`;
         let styles = {
           top: hit.top,
-          left: hit.left,
         };
+
+        if (teamLocation.dataset.myTeam === "true") {
+          styles.left = cssDistance;
+        } else {
+          styles.right = cssDistance;
+        }
 
         return (
           <motion.div
@@ -94,15 +100,3 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

@@ -1,17 +1,33 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import HandIcon from "/public/assets/hand";
 const animationDuration = 0.5;
+let styles = {};
 
 export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
+  }
+
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
+  const cssDistance = `calc(${distanceToMove}px + 50% - 24px)`;
+  const isMyTeam = teamLocation.dataset.myTeam === "true";
+
+  if (isMyTeam) {
+    styles.left = cssDistance;
+  } else {
+    styles.right = cssDistance;
   }
 
   return (
@@ -21,20 +37,31 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
         transition={{
           y: { duration: animationDuration, times: [0, 0.3, 0.5] },
         }}
-        className="absolute left-[36px] w-12 flex justify-center items-center z-10"
+        style={styles}
+        className="absolute w-12 flex justify-center items-center z-10"
       >
-        <HandIcon flip={teamLocation.dataset.myTeam === "true"} />
+        <HandIcon flip={!isMyTeam} />
       </motion.div>
-      <HitEffect y={[50, 30, 40]} x={[50, 0]} />
-      <HitEffect y={[50, 40, 50]} x={[70, 100]} />
-      <HitEffect y={[90, 70, 80]} x={[50, 90]} />
+      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[50, 30, 40]} x={[0, -35]} />
+      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[50, 40, 70]} x={[-15, -60]} />
+      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[90, 70, 80]} x={[15, 30]} />
     </>
   );
 }
 
-function HitEffect({ x, y }) {
+function HitEffect({ x, y, distanceToMove, isMyTeam }) {
+  let hitEffectStyles = {};
+  const cssDistanceHitEffect = `calc(${distanceToMove}px + 50% - 8px)`;
+
+  if (isMyTeam) {
+    hitEffectStyles.left = cssDistanceHitEffect;
+  } else {
+    hitEffectStyles.right = cssDistanceHitEffect;
+  }
+
   return (
     <motion.div
+      style={hitEffectStyles}
       className="w-4 h-4 rounded-full bg-[#e9e202] absolute opacity-0 z-10"
       animate={{ y: y, x: x, opacity: [0, 1, 1, 0] }}
       transition={{
@@ -49,15 +76,3 @@ function HitEffect({ x, y }) {
     />
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

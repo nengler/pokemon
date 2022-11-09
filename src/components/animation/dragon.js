@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { getTeamLocation } from "util/animationMethods";
 
 const animationDuration = 0.5;
 const heightMinifyDelay = 0.4;
@@ -17,8 +18,8 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;

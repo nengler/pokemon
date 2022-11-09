@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 const animationDuration = 0.6;
 
@@ -7,54 +8,42 @@ const beforeClasses =
 const afterClasses =
   "after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:w-3 after:h-3 after:rounded-[50%] after:bg-black after:-translate-x-1/2 after:-translate-y-1/2";
 
+const yStartingPosition = 90;
+
 export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - 48;
-  const yStartingPosition = 90; //enemyCoordinates.bottom - enemyCoordinates.top / 2;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove =
-    myCoordinates.left +
-    48 -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   let styles = {
-    left: `${xStartingPosition}px`,
+    left: "calc(50% - 18px)",
     top: `${yStartingPosition}px`,
   };
 
   return (
     <motion.div
-      animate={{ x: distanceToMove, opacity: 0, y: [0, -15, 0, -15] }}
+      animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 0.5, 1, 0], y: [0, -15, 0, -15] }}
       transition={{
         x: { duration: animationDuration, type: "tween", ease: "linear" },
         y: { type: "tween", ease: "linear" },
-        opacity: { delay: animationDuration, duration: 0 },
+        opacity: { duration: animationDuration, times: [0, 0.01, 0.5, 0.86, 1] },
       }}
       className={`absolute h-9 w-9 rounded-full bg-ghost-primary after:content-[''] ${beforeClasses} ${afterClasses}`}
       style={styles}
-    ></motion.div>
+    />
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

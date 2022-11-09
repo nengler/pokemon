@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import AuroraCircle from "/public/assets/auroraCircle";
 
-const xFactor = 50;
 const beams = Array(10).fill(null);
 const animationDuration = 0.3;
 const animationDelay = 0.05;
@@ -12,27 +12,25 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xStartingPosition =
-    enemyCoordinates.right - myCoordinates.left - xFactor;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove =
-    myCoordinates.left +
-    xFactor -
-    ((enemyCoordinates.right - enemyCoordinates.left) / 2 +
-      enemyCoordinates.left);
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
   return (
     <>
       {beams.map((_beam, index) => {
         let styles = {
-          left: `${xStartingPosition - 8}px`,
+          left: "calc(50% - 24px)",
           top: `${yStartingPosition}px`,
         };
 
@@ -42,7 +40,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
           <motion.div
             key={index}
             initial={{ scaleX: 0.5 }}
-            animate={{ x: distanceToMove, opacity: [0, 1, 1, 0] }}
+            animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
             transition={{
               x: { duration: animationDuration, delay: delay },
               opacity: {
@@ -59,9 +57,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
               animate={{ rotate: 360 }}
               transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
             >
-              <div
-                style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}
-              >
+              <div style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}>
                 <AuroraCircle />
               </div>
             </motion.div>
@@ -71,15 +67,3 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

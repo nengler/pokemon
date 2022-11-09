@@ -1,30 +1,38 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import RockIcon from "/public/assets/newRock";
 
 const animationDuration = 0.35;
-const locations = [50, 45, 60, 50, 30, 64];
+const locations = [-20, 0, 20, 0, -20, 15];
 
 export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const yStartingPosition = 0;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
 
   return (
     <>
       {locations.map((rock, index) => {
-        let styles = {
-          left: `${rock}px`,
-          top: `${yStartingPosition}px`,
-        };
+        const cssDistance = `calc(${distanceToMove}px + 50% - 14px + ${rock}px)`;
+        let styles = {};
+
+        if (teamLocation.dataset.myTeam === "true") {
+          styles.left = cssDistance;
+        } else {
+          styles.right = cssDistance;
+        }
 
         const delay = index * 0.07;
 
@@ -59,15 +67,3 @@ export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

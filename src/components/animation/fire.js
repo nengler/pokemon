@@ -1,14 +1,16 @@
 import { motion } from "framer-motion";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import Flame from "/public/assets/flame";
 
 const animationDuration = 0.6;
+const yStartingPosition = 90;
 
 const fires = [
   { top: 2, left: 0 },
   { top: 15, left: 5 },
   { top: -5, left: -5 },
-  { top: 10, left: -10 },
-  { top: 5, left: 5 },
+  { top: 10, left: -30 },
+  { top: -15, left: -20 },
 ];
 
 export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
@@ -16,24 +18,24 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const enemyCoordinates = getEnemyCoordinates(enemyTeamLocation);
-  const myCoordinates = getMyCoordinates(teamLocation);
+  const enemyCoordinates = getTeamLocation(enemyTeamLocation);
+  const myCoordinates = getTeamLocation(teamLocation);
 
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
 
-  const xStartingPosition = enemyCoordinates.right - myCoordinates.left - 48;
-  const yStartingPosition = 90;
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
-  const distanceToMove =
-    myCoordinates.left + 48 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
 
   return (
     <>
       {fires.map((fire, index) => {
         let styles = {
-          left: `${xStartingPosition}px`,
+          left: "calc(50% - 10px)",
           top: `${yStartingPosition}px`,
         };
 
@@ -42,7 +44,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             animate={{
-              x: distanceToMove + fire.left,
+              x: distanceToMove * xFactor + fire.left * xFactor,
               y: fire.top,
               opacity: [0, 1, 1, 0],
             }}
@@ -57,7 +59,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
               opacity: {
                 duration: animationDuration,
                 delay: delay,
-                times: [0, 0.01, 0.99, 1],
+                times: [0, 0.01, 0.8, 1],
               },
             }}
             className="absolute h-5 w-5  fill-red-500 z-10 opacity-0"
@@ -71,15 +73,3 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};
