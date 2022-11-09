@@ -1,16 +1,15 @@
 import { motion } from "framer-motion";
-import { getTeamLocation } from "util/animationMethods";
+import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 const animationDuration = 0.5;
-const heightMinifyDelay = 0.4;
 const balls = [
   { top: 114, left: 0 },
-  { top: 50, left: -40 },
-  { top: 60, left: -99 },
-  { top: 130, left: -55 },
-  { top: 80, left: -12 },
-  { top: 140, left: -65 },
-  { top: 55, left: -88 },
+  { top: 50, left: 40 },
+  { top: 60, left: 99 },
+  { top: 130, left: 55 },
+  { top: 80, left: 12 },
+  { top: 140, left: 65 },
+  { top: 55, left: 88 },
 ];
 
 export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
@@ -27,8 +26,12 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
 
   const yStartingPosition = 90;
 
-  const distanceToMove =
-    myCoordinates.left + 48 - ((enemyCoordinates.right - enemyCoordinates.left) / 2 + enemyCoordinates.left);
+  const enemyCenter = getPositionAtCenter(enemyCoordinates);
+  const myCenter = getPositionAtCenter(myCoordinates);
+
+  const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
+
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter) * xFactor;
 
   let styles = {
     top: yStartingPosition,
@@ -36,9 +39,9 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
   };
 
   if (teamLocation.dataset.myTeam === "true") {
-    styles.right = `-${Math.abs(distanceToMove) / 2}px`;
+    styles.left = "50%";
   } else {
-    styles.left = `-${Math.abs(distanceToMove) / 2}px`;
+    styles.right = "50%";
   }
 
   return (
@@ -49,9 +52,9 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
         };
 
         if (teamLocation.dataset.myTeam === "true") {
-          ballStyles.right = `${ball.left}px`;
+          ballStyles.left = `calc(50% - 4px + ${ball.left}px)`;
         } else {
-          ballStyles.left = `${ball.left}px`;
+          ballStyles.right = `calc(50% - 4px + ${ball.left}px)`;
         }
 
         const ballOffset = teamLocation.dataset.myTeam === "true" ? ball.left : ball.left * -1;
@@ -79,9 +82,9 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
           animate={{ right: [distanceToMove, 0, 0, distanceToMove * -1] }}
           transition={{ duration: animationDuration, times: [0, 0.2, 0.75, 1] }}
         >
-          <Beam yAxis="Top" xAxis={teamLocation.dataset.myTeam === "true" ? "Left" : "Right"} />
+          <Beam yAxis="Top" xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"} />
           <div className="bg-[#ffebf4] w-full h-2" />
-          <Beam yAxis="Bottom" xAxis={teamLocation.dataset.myTeam === "true" ? "Left" : "Right"} />
+          <Beam yAxis="Bottom" xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"} />
         </motion.div>
       </div>
     </>

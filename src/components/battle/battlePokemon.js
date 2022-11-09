@@ -36,21 +36,20 @@ export function BattlePokemon({
             enemyTeamLocation={enemyTeamLocation}
           />
         )}
-        <div className=" overflow-hidden">
-          <Pokemon
-            level={battlePokemon.level}
-            name={battlePokemon.name}
-            pokedexId={battlePokemon.pokemonId}
-            isShiny={battlePokemon.isShiny}
-            tempHp={battlePokemon.tempHp}
-            hp={battlePokemon.hp}
-            attack={battlePokemon.attack}
-            defense={battlePokemon.defense}
-            pokemonTypes={battlePokemon.types}
-            flip={flip}
-            didDie={status === battleStates.death}
-          />
-        </div>
+        <Pokemon
+          level={battlePokemon.level}
+          name={battlePokemon.name}
+          pokedexId={battlePokemon.pokemonId}
+          isShiny={battlePokemon.isShiny}
+          tempHp={battlePokemon.tempHp}
+          hp={battlePokemon.hp}
+          attack={battlePokemon.attack}
+          defense={battlePokemon.defense}
+          pokemonTypes={battlePokemon.types}
+          flip={flip}
+          didDie={status === battleStates.death}
+          isFighting={true}
+        />
       </div>
       <TextAnimation attackAnimation={attackAnimation} />
     </>

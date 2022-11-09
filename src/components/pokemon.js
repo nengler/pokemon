@@ -16,12 +16,19 @@ export default function Pokemon({
   connectDragSource,
   flip = false,
   didDie = false,
+  isFighting = false,
 }) {
   let hpMeter = tempHp / hp;
   if (hpMeter < 0) {
     hpMeter = 0;
   } else {
     hpMeter = hpMeter.toFixed(3);
+  }
+
+  let imgStyle = {};
+
+  if (isFighting) {
+    imgStyle.filter = "drop-shadow(2px 3px 3px rgba(0,0,0,.2))";
   }
   return (
     <>
@@ -33,15 +40,23 @@ export default function Pokemon({
         {pokemonTypes.map((pokemonType, index) => (
           <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
         ))}
-        <div className={`flex justify-center ${didDie ? "transition-transform duration-700 translate-y-40" : ""}`}>
+        <div className="flex justify-center relative overflow-hidden">
           <img
-            className={`${flip ? "-scale-x-100" : ""} w-20 h-20 sm:w-24 h-24 z-[1]`}
+            className={`${flip ? "-scale-x-100" : ""} ${
+              didDie ? "transition-transform duration-700 translate-y-40" : ""
+            } w-20 h-20 sm:w-24 h-24 z-[1]`}
             alt={`${name} Image`}
             src={PokemonImage(pokedexId, isShiny)}
+            style={imgStyle}
           />
+          {isFighting && (
+            <div
+              className="absolute bottom-2 w-full h-12 bg-[#dfc3a5] border-[3px] border-[#efdbb5]"
+              style={{ borderRadius: "50%" }}
+            />
+          )}
         </div>
         <div className="mb-1">Level {level}</div>
-
         <div className="flex justify-center gap-2 mt-1">
           <span className="bg-red-300 rounded-lg flex items-center py-0.5 px-1">{attack}</span>
           <span className="bg-blue-300 rounded-lg flex items-center py-0.5 px-1.5">{defense}</span>
