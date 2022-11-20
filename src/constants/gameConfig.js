@@ -7,4 +7,5 @@ export const startingGold = 10;
 export const battleStates = {
   fighting: "fighting",
   death: "death",
+  spawning: "spawning",
 };

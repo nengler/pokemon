@@ -49,27 +49,52 @@
   .link-button {
     @apply inline-flex justify-center items-center;
   }
-}
 
-@keyframes removeatend {
-  0% {
-    opacity: 0.4;
+  .isSpawningAnimation {
+    animation-name: spawnpokemon;
+    animation-duration: 0.75s;
   }
-  25% {
-    opactiy: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
-.text-animation {
-  animation-duration: 0.75s;
-  animation-name: removeatend;
+  .moveTextUp {
+    animation-name: battletextanimation;
+    animation-duration: 0.75s;
+  }
+
+  @keyframes spawnpokemon {
+    0% {
+      opacity: 0;
+    }
+
+    30% {
+      opacity: 0;
+      transform: scale(0.4);
+      filter: brightness(0);
+    }
+
+    60% {
+      filter: brightness(0);
+    }
+
+    100% {
+      transform: scale(1);
+      filter: brightness(1);
+    }
+  }
+
+  @keyframes battletextanimation {
+    0% {
+      opacity: 0.4;
+      transform: translateY(0);
+    }
+    25% {
+      opactiy: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+  }
 }

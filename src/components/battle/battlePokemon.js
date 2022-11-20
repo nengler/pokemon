@@ -48,12 +48,26 @@ export function BattlePokemon({
           pokemonTypes={battlePokemon.types}
           flip={flip}
           didDie={status === battleStates.death}
+          isSpawning={status === battleStates.spawning}
           isFighting={true}
+          attackAnimation={attackAnimation}
         />
       </div>
-      <TextAnimation attackAnimation={attackAnimation} />
+      {status === battleStates.spawning && <SpawnPokemonText pokemonName={battlePokemon.name} />}
     </>
   );
+}
+
+function SpawnPokemonText({ pokemonName }) {
+  const randomNumber = Math.floor(Math.random() * 3);
+
+  if (randomNumber === 0) {
+    return <div className="mt-1 text-lg text-center">GOOO {pokemonName}</div>;
+  } else if (randomNumber === 1) {
+    return <div className="mt-1 text-lg text-center">I believe in you {pokemonName}</div>;
+  } else if (randomNumber === 2) {
+    return <div className="mt-1 text-lg text-center">ok {pokemonName}, its your turn</div>;
+  }
 }
 
 function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
@@ -110,28 +124,3 @@ function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-function TextAnimation({ attackAnimation }) {
-  if (!attackAnimation) {
-    return null;
-  }
-
-  const effectColor = getEffectColor(attackAnimation?.effect);
-
-  return (
-    <div className="text-animation transition text-center mt-2">
-      <div className="">-{attackAnimation.damageDealt}</div>
-      <div className={effectColor}>{attackAnimation.effect}</div>
-    </div>
-  );
-}
-
-const getEffectColor = (effect) => {
-  const colors = {
-    "Not Very Effective": "text-red-500",
-    Effective: "",
-    "Super Effective": "text-green-500",
-  };
-
-  return colors[effect];
-};

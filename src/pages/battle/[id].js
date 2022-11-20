@@ -14,7 +14,8 @@ import { battleStates } from "constants/gameConfig";
 const animationCheck = {
   logic: "logic",
   fightingAnimations: "Fighting Animations",
-  nextPokemon: "NextPokemon",
+  nextPokemon: "Next Pokemon",
+  spawningPokemon: "Spawning Pokemon",
 };
 
 let animationType = animationCheck.nextPokemon;
@@ -67,18 +68,22 @@ export default function Battle(props) {
 
     setFightingAnimations([
       {
-        ...calculateMyAttack,
+        type: calculateMyAttack.type,
+        damageDealt: calculateEnemyAttack.damageDealt,
+        effect: calculateEnemyAttack.effect,
         time: new Date(),
         pokemonId: myFightingPokemon.id,
       },
       {
-        ...calculateEnemyAttack,
+        type: calculateEnemyAttack.type,
+        damageDealt: calculateMyAttack.damageDealt,
+        effect: calculateMyAttack.effect,
         time: new Date(),
         pokemonId: enemyFightingPokemon.id,
       },
     ]);
 
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -156,9 +161,19 @@ export default function Battle(props) {
   function updateCurrentBattler(battlePokemon, updateBattlerFunction) {
     const notFaintedPokemon = battlePokemon.find((m) => !m.hasFainted);
     if (notFaintedPokemon) {
-      updateBattlerFunction({ id: notFaintedPokemon.id, status: battleStates.fighting });
+      updateBattlerFunction({ id: notFaintedPokemon.id, status: battleStates.spawning });
     } else {
       updateBattlerFunction({});
+    }
+  }
+
+  function spawnNewPokemon() {
+    if (myCurrentBattler.status === battleStates.spawning) {
+      setMyCurrentBattler({ ...myCurrentBattler, status: battleStates.fighting });
+    }
+
+    if (enemyCurrentBattler.status === battleStates.spawning) {
+      setEnemyCurrentBattler({ ...enemyCurrentBattler, status: battleStates.fighting });
     }
   }
 
@@ -179,6 +194,10 @@ export default function Battle(props) {
           break;
         case animationCheck.nextPokemon:
           showNewPokemon();
+          animationType = animationCheck.spawningPokemon;
+          break;
+        case animationCheck.spawningPokemon:
+          spawnNewPokemon();
           animationType = animationCheck.logic;
           break;
       }

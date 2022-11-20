@@ -1,6 +1,8 @@
 import { DragPreviewImage } from "react-dnd";
 import PokemonImage from "util/pokemonImage";
 import PokemonType from "./pokemonType";
+import TextAnimation from "./battle/textComponent";
+import SpawnPokeball from "./battle/spawnPokeball";
 
 export default function Pokemon({
   pokemonRef,
@@ -16,7 +18,9 @@ export default function Pokemon({
   connectDragSource,
   flip = false,
   didDie = false,
+  isSpawning = false,
   isFighting = false,
+  attackAnimation = {},
 }) {
   let hpMeter = tempHp / hp;
   if (hpMeter < 0) {
@@ -28,7 +32,7 @@ export default function Pokemon({
   let imgStyle = {};
 
   if (isFighting) {
-    imgStyle.filter = "drop-shadow(2px 3px 3px rgba(0,0,0,.2))";
+    imgStyle.filter = "drop-shadow(2px 3px 3px rgba(0,0,0,.1))";
   }
   return (
     <>
@@ -36,39 +40,45 @@ export default function Pokemon({
         <DragPreviewImage src={PokemonImage(pokedexId, isShiny)} connect={connectDragSource} />
       )}
       <div ref={pokemonRef}>
-        <div>{name}</div>
+        <div>
+          {name} lv. {level}
+        </div>
         {pokemonTypes.map((pokemonType, index) => (
           <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
         ))}
         <div className="flex justify-center relative overflow-hidden">
-          <img
-            className={`${flip ? "-scale-x-100" : ""} ${
-              didDie ? "transition-transform duration-700 translate-y-40" : ""
-            } w-20 h-20 sm:w-24 h-24 z-[1]`}
-            alt={`${name} Image`}
-            src={PokemonImage(pokedexId, isShiny)}
-            style={imgStyle}
-          />
+          <div className={`${flip ? "-scale-x-100" : ""} z-[1]`}>
+            <img
+              className={`${didDie ? "transition-transform duration-700 translate-y-40" : ""} ${
+                isSpawning ? "isSpawningAnimation" : ""
+              } 
+            w-20 h-20 sm:w-24 sm:h-24 `}
+              alt={`${name} Image`}
+              src={PokemonImage(pokedexId, isShiny)}
+              style={imgStyle}
+            />
+          </div>
+          <TextAnimation attackAnimation={attackAnimation} isMyTeam={flip} />
           {isFighting && (
             <div
               className="absolute bottom-2 w-full h-12 bg-[#dfc3a5] border-[3px] border-[#efdbb5]"
               style={{ borderRadius: "50%" }}
             />
           )}
+          {isSpawning && <SpawnPokeball />}
         </div>
-        <div className="mb-1">Level {level}</div>
-        <div className="flex justify-center gap-2 mt-1">
-          <span className="bg-red-300 rounded-lg flex items-center py-0.5 px-1">{attack}</span>
-          <span className="bg-blue-300 rounded-lg flex items-center py-0.5 px-1.5">{defense}</span>
-        </div>
-        <div className="relative w-20 sm:w-28 h-6 mt-1 mx-auto flex justify-center border border-green-300 rounded-lg">
-          <div
-            className={`absolute origin-left w-full left-0 rounded-lg z-0 bg-green-300 h-6 transition-transform`}
-            style={{ transform: `scaleX(${hpMeter})` }}
-          ></div>
-          <span className="absolute">
-            {tempHp} / {hp}
-          </span>
+        <div className="flex justify-center gap-1 mt-1">
+          <span className="bg-red-300 rounded-md flex items-center h-7 px-1.5">{attack}</span>
+          <span className="bg-blue-300 rounded-md flex items-center h-7 px-1.5">{defense}</span>
+          <div className="relative w-full h-7 flex justify-center border border-green-300 rounded-lg">
+            <div
+              className={`absolute origin-left w-full left-0 rounded-lg z-0 bg-green-300 h-full transition-transform duration-300`}
+              style={{ transform: `scaleX(${hpMeter})` }}
+            ></div>
+            <span className="absolute">
+              {tempHp < 0 ? 0 : tempHp} / {hp}
+            </span>
+          </div>
         </div>
       </div>
     </>
