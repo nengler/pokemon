@@ -19,7 +19,8 @@ export default function Home(props) {
   return (
     <div className="flex h-screen justify-center mt-[30vh]">
       <div className="text-center">
-        <h1 className="text-5xl mb-6 text-indigo-500 underline decoration-wavy">untitled pokemon game</h1>
+        <h1 className="text-7xl">a untitled</h1>
+        <h1 className="text-5xl mb-6 text-indigo-500 underline decoration-wavy">pokemon game</h1>
         {isLoggedIn ? (
           <Link href="/play">
             <a className="btn btn-primary link-button">{props.game ? "continue game" : "start new game"}</a>

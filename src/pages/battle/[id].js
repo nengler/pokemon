@@ -35,14 +35,8 @@ export default function Battle(props) {
   const [fightingAnimations, setFightingAnimations] = useState([]);
 
   const handlePokemonLogic = async () => {
-    const myFightingPokemon = myBattlePokemon.filter((p) => p.tempHp > 0)[0];
-
-    const enemyFightingPokemon = enemyBattlePokemon.filter((p) => p.tempHp > 0)[0];
-
-    if (myFightingPokemon === undefined || enemyFightingPokemon === undefined) {
-      setIsFighting(false);
-      return;
-    }
+    const myFightingPokemon = myBattlePokemon.find((p) => p.tempHp > 0);
+    const enemyFightingPokemon = enemyBattlePokemon.find((p) => p.tempHp > 0);
 
     const calculateMyAttack = await calculateDamage(
       myFightingPokemon.level,
@@ -177,6 +171,12 @@ export default function Battle(props) {
     }
   }
 
+  const isFightOver = () => {
+    const myFightingPokemon = myBattlePokemon.find((p) => p.tempHp > 0);
+    const enemyFightingPokemon = enemyBattlePokemon.find((p) => p.tempHp > 0);
+    return myFightingPokemon === undefined || enemyFightingPokemon === undefined;
+  };
+
   useInterval(
     () => {
       switch (animationType) {
@@ -194,7 +194,11 @@ export default function Battle(props) {
           break;
         case animationCheck.nextPokemon:
           showNewPokemon();
-          animationType = animationCheck.spawningPokemon;
+          if (isFightOver()) {
+            setIsFighting(false);
+          } else {
+            animationType = animationCheck.spawningPokemon;
+          }
           break;
         case animationCheck.spawningPokemon:
           spawnNewPokemon();

@@ -20,14 +20,15 @@ async function handler(req, res) {
     return;
   }
 
-  const body = JSON.parse(req.body);
+  const { frozen = [], notFrozen = [] } = JSON.parse(req.body);
 
   let game = await GetCurrentGame(prisma, user.id);
 
   if (game.gold > rerollCost) {
     game = await DecreaseGameGold(prisma, game.id, rerollCost);
-    const numberOfFrozen = await changeFreezeStatus(prisma, game.id, body.frozen, body.notFrozen);
+    const numberOfFrozen = await changeFreezeStatus(prisma, game.id, frozen, notFrozen);
     await DeleteCurrentShop(prisma, game.id);
+    console.log(game.id, shopPokemonNumber, numberOfFrozen);
     await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber - numberOfFrozen);
   }
 

@@ -1,7 +1,8 @@
-import { useDrag, useDrop } from "react-dnd";
+import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
 import { useState, useRef } from "react";
 import Pokemon from "./pokemon";
 import GetHp from "util/getHp";
+import PokemonImage from "util/pokemonImage";
 
 export default function MyPokemon({
   gamePokemon,
@@ -132,20 +133,22 @@ export default function MyPokemon({
   return (
     <div
       ref={gamePokemonDrop}
-      className={`h-64 w-[33%] md:w-36 mb-4 transition-colors ${
+      className={`w-[33%] md:w-28 mb-4 transition-colors ${
         dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
       } ${collectables.isOver ? "bg-green-500" : ""}`}
     >
       <div
         ref={drop}
-        className={`h-56 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-48 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >
         {gamePokemon !== undefined && (
           <div className="text-center w-full">
+            {preview !== undefined && (
+              <DragPreviewImage src={PokemonImage(gamePokemon.pokemonId, gamePokemon.isShiny)} connect={preview} />
+            )}
             <Pokemon
-              connectDragSource={preview}
               pokemonRef={drag}
               name={gamePokemon.name}
               level={gamePokemon.level}

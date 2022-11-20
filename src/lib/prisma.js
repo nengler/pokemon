@@ -21,9 +21,9 @@ if (process.env.NODE_ENV === "production") {
 
     const after = Date.now();
 
-    console.log(
-      `Query ${params.model}.${params.action} took ${after - before}ms`
-    );
+    // console.log(
+    //   `Query ${params.model}.${params.action} took ${after - before}ms`
+    // );
 
     return result;
   });

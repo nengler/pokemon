@@ -14,8 +14,10 @@ import GetGamePokemon from "prisma/methods/getGamePokemon";
 import transformShopPokemonRecords from "prisma/methods/transformShopPokemonRecords";
 import RearrangeGamePokemon from "util/rearrangeGamePokemon";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
+import { shopPokemonNumber } from "constants/gameConfig";
 
 const pokemonLength = Array.apply(null, Array(6)).map(function () {});
+const shopLength = Array.apply(null, Array(4)).map(function () {});
 
 export default function Home(props) {
   const router = useRouter();
@@ -45,7 +47,7 @@ export default function Home(props) {
 
     const pokemonFetch = await fetch("api/shop_pokemon/new", {
       method: "POST",
-      body: JSON.stringify({ pokemonFrozenStatus: pokemonFrozenStatus() }),
+      body: JSON.stringify(pokemonFrozenStatus()),
     });
     const pokemonData = await pokemonFetch.json();
     setShopPokemon(pokemonData.pokemon);
@@ -223,7 +225,7 @@ export default function Home(props) {
 
       <DndProvider backend={HTML5Backend}>
         <div className="mb-8">
-          <div className="flex flex-wrap justify-between items-center">
+          <div className="flex flex-wrap justify-between">
             {pokemonLength.map((_p, index) => {
               const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
               return (
@@ -248,16 +250,19 @@ export default function Home(props) {
 
         <h4 className="text-lg">shop pokemon</h4>
         <div className="flex justify-center gap-8">
-          {shopPokemon.map((pokemon, index) => (
-            <div
-              key={pokemon?.id ? `shop-${pokemon.id}-${pokemon.pokemonId}` : `shopUndefined-${index}`}
-              className="w-32"
-            >
-              {Object.keys(pokemon).length !== 0 && (
-                <ShopPokemon changeFrozenState={changeFrozenState} shopPokemon={pokemon} canDrag={canPerformAction} />
-              )}
-            </div>
-          ))}
+          {shopLength.map((_, index) => {
+            const shopMon = shopPokemon[index];
+            return (
+              <div
+                key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
+                className="w-28"
+              >
+                {shopMon && Object.keys(shopMon).length !== 0 && (
+                  <ShopPokemon changeFrozenState={changeFrozenState} shopPokemon={shopMon} canDrag={canPerformAction} />
+                )}
+              </div>
+            );
+          })}
         </div>
       </DndProvider>
       <div className="mt-10 gap-3 flex justify-end">
@@ -296,7 +301,7 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
       },
     });
 
-    await CreateNewShopPokemon(prisma, game.id, game.round, 3);
+    await CreateNewShopPokemon(prisma, game.id, game.round, shopPokemonNumber);
   }
 
   const shopPokemonRecords = await GetShopPokemon(prisma, game.id);
