@@ -59,15 +59,19 @@ export function BattlePokemon({
 }
 
 function SpawnPokemonText({ pokemonName }) {
-  const randomNumber = Math.floor(Math.random() * 3);
+  const getRandomText = () => {
+    const randomNumber = Math.floor(Math.random() * 3);
 
-  if (randomNumber === 0) {
-    return <div className="mt-1 text-lg text-center">GOOO {pokemonName}</div>;
-  } else if (randomNumber === 1) {
-    return <div className="mt-1 text-lg text-center">I believe in you {pokemonName}</div>;
-  } else if (randomNumber === 2) {
-    return <div className="mt-1 text-lg text-center">ok {pokemonName}, its your turn</div>;
-  }
+    if (randomNumber === 0) {
+      return `GOOO ${pokemonName}`;
+    } else if (randomNumber === 1) {
+      return `I believe in you ${pokemonName}`;
+    } else if (randomNumber === 2) {
+      return `ok ${pokemonName}, its your turn`;
+    }
+  };
+
+  return <div className="mt-1 text-lg text-center">{getRandomText()}</div>;
 }
 
 function BattleAnimation({ attackAnimation, teamLocation, enemyTeamLocation }) {

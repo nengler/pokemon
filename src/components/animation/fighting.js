@@ -1,8 +1,11 @@
+import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import HandIcon from "/public/assets/hand";
 const animationDuration = 0.5;
 let styles = {};
+
+const centerOfImg = imgHeight / 2 - 24;
 
 export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -33,12 +36,13 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
   return (
     <>
       <motion.div
-        animate={{ y: [-20, 90, 70] }}
+        initial={{ y: centerOfImg - 90 }}
+        animate={{ y: [centerOfImg - 90, centerOfImg + 20, centerOfImg] }}
         transition={{
           y: { duration: animationDuration, times: [0, 0.3, 0.5] },
         }}
         style={styles}
-        className="absolute w-12 flex justify-center items-center z-10"
+        className="absolute w-12 h-12 flex justify-center items-center z-10"
       >
         <HandIcon flip={!isMyTeam} />
       </motion.div>

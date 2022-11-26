@@ -32,16 +32,34 @@ export default function Pokemon({
   if (isFighting) {
     imgStyle.filter = "drop-shadow(2px 3px 3px rgba(0,0,0,.1))";
   }
+
+  const imgClasses = () => {
+    let classes = [];
+
+    if (didDie) {
+      classes.push(["transition-transform", "duration-700", "translate-y-40"]);
+    }
+
+    if (isSpawning) {
+      classes.push("isSpawningAnimation");
+    }
+
+    if (isFighting) {
+      classes.push(...["w-28", "h-28"]);
+    } else {
+      classes.push(...["w-24", "h-24", "sm:w-28", "sm:h-28"]);
+    }
+
+    return classes.join(" ");
+  };
+
   return (
     <div ref={pokemonRef}>
       <div className="flex justify-center relative overflow-hidden">
         <div className="z-[1] relative">
           <div className={`${flip ? "-scale-x-100" : ""}`}>
             <img
-              className={`${didDie ? "transition-transform duration-700 translate-y-40" : ""} ${
-                isSpawning ? "isSpawningAnimation" : ""
-              } 
-            w-20 h-20 sm:w-28 sm:h-28`}
+              className={imgClasses()}
               alt={`${name} Image`}
               src={PokemonImage(pokedexId, isShiny)}
               style={imgStyle}
@@ -59,12 +77,16 @@ export default function Pokemon({
         {isSpawning && <SpawnPokeball />}
       </div>
 
-      <div className="flex justify-center gap-1">
-        {pokemonTypes.map((pokemonType, index) => (
-          <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
-        ))}
-        <span className="bg-red-300 rounded-md flex items-center h-6 px-1.5">{attack}</span>
-        <span className="bg-blue-300 rounded-md flex items-center h-6 px-1.5">{defense}</span>
+      <div className="flex justify-between gap-1">
+        <div>
+          {pokemonTypes.map((pokemonType, index) => (
+            <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
+          ))}
+        </div>
+        <div>
+          <span className="bg-red-300 rounded-md inline-block mr-1 items-center h-6 px-1.5">{attack}</span>
+          <span className="bg-blue-300 rounded-md inline-block items-center h-6 px-1.5">{defense}</span>
+        </div>
       </div>
       <div className="relative w-full h-6 flex justify-center border border-green-300 rounded-lg mt-1">
         <div

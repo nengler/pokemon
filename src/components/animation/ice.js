@@ -1,3 +1,4 @@
+import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import AuroraCircle from "/public/assets/auroraCircle";
@@ -5,7 +6,7 @@ import AuroraCircle from "/public/assets/auroraCircle";
 const beams = Array(10).fill(null);
 const animationDuration = 0.3;
 const animationDelay = 0.05;
-const yStartingPosition = 80;
+const yStartingPosition = imgHeight / 2 - 24;
 
 export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {

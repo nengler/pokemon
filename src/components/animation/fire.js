@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import Flame from "/public/assets/flame";
+import { imgHeight } from "constants/animationConfig";
 
 const animationDuration = 0.6;
-const yStartingPosition = 90;
+const yStartingPosition = imgHeight / 2 - 10;
 
 const fires = [
   { top: 2, left: 0 },
@@ -62,7 +63,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.8, 1],
               },
             }}
-            className="absolute h-5 w-5  fill-red-500 z-10 opacity-0"
+            className="absolute h-5 w-5 fill-red-500 z-10 opacity-0"
             key={index}
             style={styles}
           >

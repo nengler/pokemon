@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
+import { imgHeight } from "constants/animationConfig";
 
 const animationDuration = 0.5;
+
+function topOffset(offset) {
+  return imgHeight / 2 + offset;
+}
+
 const balls = [
-  { top: 114, left: 0 },
-  { top: 50, left: 40 },
-  { top: 60, left: 99 },
-  { top: 130, left: 55 },
-  { top: 80, left: 12 },
-  { top: 140, left: 65 },
-  { top: 55, left: 88 },
+  { top: topOffset(24), left: 0 },
+  { top: topOffset(-20), left: 40 },
+  { top: topOffset(-10), left: 99 },
+  { top: topOffset(40), left: 55 },
+  { top: topOffset(-10), left: 12 },
+  { top: topOffset(30), left: 65 },
+  { top: topOffset(-35), left: 88 },
 ];
 
 export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
@@ -24,7 +30,7 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
     return null;
   }
 
-  const yStartingPosition = 90;
+  const yStartingPosition = topOffset(-8);
 
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
@@ -123,16 +129,4 @@ const getTailwindRoundedClass = (yAxis, xAxis) => {
   } else if (yAxis === "Bottom" && xAxis === "Left") {
     return "rounded-br-[100%]";
   }
-};
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
 };

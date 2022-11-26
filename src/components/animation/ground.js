@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
+import { imgHeight } from "constants/animationConfig";
 
 const earthShots = Array(3).fill(null);
-const yStartingPosition = 90;
+const yStartingPosition = imgHeight / 2 - 10;
 const animationDuration = 0.4;
+
 export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
@@ -49,7 +51,7 @@ export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.5, 1],
               },
             }}
-            className="absolute w-5 h-5 bg-ground-primary rounded-full border border-ground-secondary"
+            className="absolute w-5 h-5 bg-ground-primary rounded-full border border-ground-secondary z-[1]"
             key={index}
             style={styles}
           />

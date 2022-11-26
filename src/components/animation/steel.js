@@ -1,8 +1,9 @@
+import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import PlusCircle from "/public/assets/plusCircle";
 
-const yStartingPosition = 80;
+const yStartingPosition = getImgCenter(-24);
 const growingDuration = 0.25;
 const movingDuration = 0.4;
 

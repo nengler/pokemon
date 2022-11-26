@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
+import { imgHeight } from "constants/animationConfig";
 
 const poisonShotDuration = 0.4;
 const poisonOpacityDuration = 0.05;
 const bubbleRisingDuration = 0.2;
-const yStartingPosition = 100;
+const yStartingPosition = imgHeight / 2 - 12;
 const bubbles = [5, -15, 10];
 
 export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
@@ -37,7 +38,7 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
         animate={{
           x: distanceToMove * xFactor,
           opacity: 0,
-          y: [0, -50, 10],
+          y: [0, -50, 20],
         }}
         transition={{
           default: { duration: poisonShotDuration },
@@ -48,7 +49,7 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
       />
       {bubbles.map((bubble, index) => {
         let circleStyles = {
-          top: `${yStartingPosition}px`,
+          top: `${yStartingPosition + 20}px`,
         };
 
         if (teamLocation.dataset.myTeam === "true") {

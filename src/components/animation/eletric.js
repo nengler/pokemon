@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import ThunderIcon from "/public/assets/thunder";
 import { useState } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
+import { imgHeight } from "constants/animationConfig";
 
 let styles = {
-  top: "80px",
+  top: imgHeight / 2 - 20,
 };
 
 export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {

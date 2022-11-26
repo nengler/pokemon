@@ -1,3 +1,4 @@
+import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
@@ -8,7 +9,7 @@ const beforeClasses =
 const afterClasses =
   "after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:w-3 after:h-3 after:rounded-[50%] after:bg-black after:-translate-x-1/2 after:-translate-y-1/2";
 
-const yStartingPosition = 90;
+const yStartingPosition = imgHeight / 2 - 18;
 
 export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -42,7 +43,7 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
         y: { type: "tween", ease: "linear" },
         opacity: { duration: animationDuration, times: [0, 0.01, 0.5, 0.86, 1] },
       }}
-      className={`absolute h-9 w-9 rounded-full bg-ghost-primary after:content-[''] ${beforeClasses} ${afterClasses}`}
+      className={`z-[1] absolute h-9 w-9 rounded-full bg-ghost-primary after:content-[''] ${beforeClasses} ${afterClasses}`}
       style={styles}
     />
   );

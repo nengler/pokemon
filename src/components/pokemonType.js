@@ -20,11 +20,12 @@ export default function PokemonType({ pokemonType, index, shorten = false }) {
     Water: "bg-water-primary text-water-secondary",
   };
 
+  const spacing = index > 0 ? " ml-1" : "";
   const firstLetter = pokemonType.charAt(0);
   const restOfString = pokemonType.substr(1);
 
   return (
-    <span className={`${pokemonTypeMap[pokemonType]} rounded-lg px-1 h-6 inline-block`}>
+    <span className={`${pokemonTypeMap[pokemonType]} ${spacing} rounded-lg px-1 h-6 inline-block`}>
       {firstLetter}
       <span className="hidden">{restOfString}</span>
     </span>

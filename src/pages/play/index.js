@@ -5,6 +5,7 @@ import GetShopPokemon from "prisma/queries/getShopPokemon";
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import { useRouter } from "next/router";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
@@ -215,7 +216,7 @@ export default function Home(props) {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto pt-12">
+    <div className="max-w-screen-lg mx-auto pt-12 px-3">
       <div className="flex gap-2 mb-4">
         <div>gold: {game.gold}</div>
         <div>round: {game.round}</div>
@@ -223,7 +224,7 @@ export default function Home(props) {
         <div>wins: {game.wins}</div>
       </div>
 
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
         <div className="mb-8">
           <div className="flex flex-wrap justify-between">
             {pokemonLength.map((_p, index) => {
@@ -320,5 +321,9 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
     },
   });
 
-  return { props: { game, shopPokemon, myPokemonRecords, waitingForBattle: waitingForBattle } };
+  const isMobile = Boolean(
+    req.headers["user-agent"].match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i)
+  );
+
+  return { props: { game, shopPokemon, myPokemonRecords, waitingForBattle: waitingForBattle, isMobile } };
 }, sessionOptions);

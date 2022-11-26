@@ -1,9 +1,10 @@
+import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 const animationDuration = 0.39;
 const circles = [0, -30, 30, -15, 30, 0];
-const yStartingPosition = 62;
+const yStartingPosition = imgHeight / 2 - 24;
 
 export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -47,7 +48,7 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
               default: { duration: animationDuration, delay: delay },
               opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.75, 1] },
             }}
-            className="absolute h-12 w-6 border-4 rounded-[50%] border-[#f4bf5d] z-10"
+            className="z-[1] absolute h-12 w-6 border-4 rounded-[50%] border-[#f4bf5d] z-10"
             key={index}
             style={styles}
           />

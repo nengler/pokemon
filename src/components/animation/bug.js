@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import NeedleIcon from "/public/assets/needle";
+import { imgHeight } from "constants/animationConfig";
 
 const animationDuration = 0.4;
-const yStartingPosition = 90;
+const yStartingPosition = imgHeight / 2 - 16;
 
 const neeldes = [null, null, null];
 

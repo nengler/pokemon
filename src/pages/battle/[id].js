@@ -77,7 +77,7 @@ export default function Battle(props) {
       },
     ]);
 
-    // return;
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -214,12 +214,12 @@ export default function Battle(props) {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="sm:flex justify-center items-center sm:gap-4 lg:gap-16">
+      <div className="flex flex-col p-4">
+        <div className="sm:flex justify-center items-center sm:gap-8 lg:gap-16">
           <PokeBalls flip pokemonTeam={myBattlePokemon} />
           <PokeBalls flip={false} pokemonTeam={enemyBattlePokemon} />
         </div>
-        <div className="flex mt-5 justify-center gap-4 lg:gap-16">
+        <div className="flex mt-[10vh] justify-center gap-8 lg:gap-16">
           <div ref={myTeamRef} data-my-team="true" className="w-40">
             {myCurrentPokemon && (
               <BattlePokemon

@@ -1,18 +1,19 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import StarIcon from "/public/assets/star";
+import { getImgCenter } from "constants/animationConfig";
 
 const animationDuration = 0.5;
 const hitTriggerDelay = 0.25;
 
 const hitTriggers = [
-  { top: "110px", left: 0 },
-  { top: "70px", left: 20 },
-  { top: "50px", left: -15 },
+  { top: `${getImgCenter(20)}px`, left: 0 },
+  { top: `${getImgCenter(0)}px`, left: 20 },
+  { top: `${getImgCenter(-20)}px`, left: -15 },
 ];
 
 const stars = [0, 35, -40, 25, 10, -30];
-const yStartingPosition = 90;
+const yStartingPosition = getImgCenter(-16);
 
 export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {

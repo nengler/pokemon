@@ -1,3 +1,4 @@
+import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import RockIcon from "/public/assets/newRock";
@@ -40,7 +41,7 @@ export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
           <motion.div
             animate={{
               opacity: [0, 1, 1, 0],
-              y: index % 2 === 1 ? [0, 100, 75] : [0, 100, 85],
+              y: index % 2 === 1 ? [0, getImgCenter(30), getImgCenter(-16)] : [0, getImgCenter(30), getImgCenter(-20)],
             }}
             transition={{
               y: {
