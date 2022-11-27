@@ -1,5 +1,5 @@
 export default function GetPokemonLevelRange(round) {
-  let oddRound = Math.floor(1 - 1) || 1;
+  let oddRound = Math.ceil(round - 1) | 1;
 
   if (oddRound > 11) {
     oddRound = 11;
@@ -13,5 +13,5 @@ export default function GetPokemonLevelRange(round) {
     9: [7, 8, 9],
     11: [8, 9, 10],
   };
-  return levelRange[round] || [3, 4, 5];
+  return levelRange[oddRound] || [3, 4, 5];
 }

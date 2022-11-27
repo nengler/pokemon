@@ -51,11 +51,14 @@ export default function Pokemon({
       <div className="flex justify-center relative overflow-hidden">
         <div className="z-[1] relative">
           <div className={`${flip ? "-scale-x-100" : ""}`}>
-            <img
+            <div
               className={imgClasses()}
               alt={`${name} Image`}
-              src={PokemonImage(pokedexId, isShiny)}
-              style={imgStyle}
+              style={{
+                ...imgStyle,
+                backgroundImage: `url(${PokemonImage(pokedexId, isShiny)})`,
+                backgroundSize: "100% 100%",
+              }}
             />
           </div>
           <div className={`leading-4 absolute top-0 ${flip ? "left-0" : "right-0"}`}>lv. {level}</div>
