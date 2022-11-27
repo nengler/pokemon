@@ -1,0 +1,9 @@
+.width {
+  width: calc(33% - 12px);
+}
+
+@media (min-width: 768px) {
+  .width {
+    width: 7rem;
+  }
+}

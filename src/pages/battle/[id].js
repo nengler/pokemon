@@ -77,7 +77,7 @@ export default function Battle(props) {
       },
     ]);
 
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -100,13 +100,12 @@ export default function Battle(props) {
     );
   };
 
-  const updateAnimations = () => {
-    const myCurrentBattlerId = myCurrentBattler.id;
-    const myCurrentBattlerStatus = myCurrentBattler.status;
-    const newMyBattlePokemon = myBattlePokemon.map((pokemon) => {
+  const handleMyFightingUpdate = (battler, battlePokemon) => {
+    let { id, status } = battler;
+    const newMyBattlePokemon = battlePokemon.map((pokemon) => {
       if (pokemon.tempHp <= 0) {
-        if (pokemon.id === myCurrentBattlerId && myCurrentBattlerStatus === battleStates.fighting) {
-          myCurrentBattlerStatus = battleStates.death;
+        if (pokemon.id === id && status === battleStates.fighting) {
+          status = battleStates.death;
         }
         return { ...pokemon, hasFainted: true };
       } else {
@@ -114,17 +113,17 @@ export default function Battle(props) {
       }
     });
 
-    setMyBattlePokemon(newMyBattlePokemon);
-    setMyCurrentBattler({ id: myCurrentBattlerId, status: myCurrentBattlerStatus });
+    return [id, status, newMyBattlePokemon];
+  };
 
-    const enemyCurrentBattlerId = enemyCurrentBattler.id;
-    const enemyCurrentBattlerStatus = enemyCurrentBattler.status;
+  const handleEnemyFightingUpdate = (battler, battlePokemon) => {
+    let { id, status } = battler;
     let shouldShowNewPokemon = true;
-    const newEnemyBattlePokemon = enemyBattlePokemon.map((p) => {
+    const newEnemyBattlePokemon = battlePokemon.map((p) => {
       if (p.tempHp <= 0) {
         shouldShowNewPokemon = true;
-        if (p.id === enemyCurrentBattlerId && enemyCurrentBattlerStatus === battleStates.fighting) {
-          enemyCurrentBattlerStatus = battleStates.death;
+        if (p.id === id && status === battleStates.fighting) {
+          status = battleStates.death;
         }
         return { ...p, hasFainted: true };
       } else {
@@ -133,6 +132,23 @@ export default function Battle(props) {
         return { ...p, ...seenObject };
       }
     });
+
+    return [id, status, newEnemyBattlePokemon];
+  };
+
+  const updateFightingAnimations = () => {
+    const [myCurrentBattlerId, myCurrentBattlerStatus, newMyBattlePokemon] = handleMyFightingUpdate(
+      myCurrentBattler,
+      myBattlePokemon
+    );
+
+    setMyBattlePokemon(newMyBattlePokemon);
+    setMyCurrentBattler({ id: myCurrentBattlerId, status: myCurrentBattlerStatus });
+
+    const [enemyCurrentBattlerId, enemyCurrentBattlerStatus, newEnemyBattlePokemon] = handleEnemyFightingUpdate(
+      enemyCurrentBattler,
+      enemyBattlePokemon
+    );
 
     setEnemyBattlePokemon(newEnemyBattlePokemon);
     setEnemyCurrentBattler({ id: enemyCurrentBattlerId, status: enemyCurrentBattlerStatus });
@@ -185,7 +201,7 @@ export default function Battle(props) {
           animationType = animationCheck.fightingAnimations;
           break;
         case animationCheck.fightingAnimations:
-          const spawnNextpokemon = updateAnimations();
+          const spawnNextpokemon = updateFightingAnimations();
           if (spawnNextpokemon) {
             animationType = animationCheck.nextPokemon;
           } else {

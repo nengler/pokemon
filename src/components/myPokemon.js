@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Pokemon from "./pokemon";
 import GetHp from "util/getHp";
 import PokemonImage from "util/pokemonImage";
+import styles from "../styles/myPokemon.module.css";
 
 export default function MyPokemon({
   gamePokemon,
@@ -133,13 +134,13 @@ export default function MyPokemon({
   return (
     <div
       ref={gamePokemonDrop}
-      className={`w-[33%] md:w-28 mb-4 transition-colors ${
+      className={`${styles.width} mt-4 transition-colors ${
         dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
       } ${collectables.isOver ? "bg-green-500" : ""}`}
     >
       <div
         ref={drop}
-        className={`h-48 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-[125px] md:h-36 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >
@@ -165,7 +166,7 @@ export default function MyPokemon({
       </div>
 
       {gamePokemon !== undefined && (
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center mt-1">
           <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 btn sm">
             sell
           </button>

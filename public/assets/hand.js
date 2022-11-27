@@ -7,6 +7,8 @@ export default function HandIcon({ flip }) {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 485 485"
       style={{ transform: `${flip ? "rotateY(180deg)" : ""} rotate(90deg)` }}
+      width="48px"
+      height="48px"
     >
       <g>
         <path

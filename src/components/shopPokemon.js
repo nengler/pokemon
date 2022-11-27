@@ -39,10 +39,7 @@ export default function ShopPokemon({ shopPokemon, canDrag, changeFrozenState })
           pokemonTypes={shopPokemon.types}
         />
       </div>
-      <button
-        onClick={() => changeFrozenState(shopPokemonId, !isFrozen)}
-        className="mt-1 bg-cyan-50 btn sm text-cyan-700"
-      >
+      <button onClick={() => changeFrozenState(shopPokemonId, !isFrozen)} className="bg-cyan-50 btn sm text-cyan-700">
         {shopPokemon.isFrozen ? "unfreeze" : "freeze"}
       </button>
     </div>

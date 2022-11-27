@@ -216,8 +216,8 @@ export default function Home(props) {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto pt-12 px-3">
-      <div className="flex gap-2 mb-4">
+    <div className="max-w-screen-lg mx-auto pt-3 lg:pt-12 px-3">
+      <div className="flex gap-2">
         <div>gold: {game.gold}</div>
         <div>round: {game.round}</div>
         <div>lives: {game.lives}</div>
@@ -225,8 +225,8 @@ export default function Home(props) {
       </div>
 
       <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
-        <div className="mb-8">
-          <div className="flex flex-wrap justify-between">
+        <div className="mb-6">
+          <div className="flex flex-wrap justify-center gap-3">
             {pokemonLength.map((_p, index) => {
               const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
               return (
@@ -249,8 +249,8 @@ export default function Home(props) {
           </div>
         </div>
 
-        <h4 className="text-lg">shop pokemon</h4>
-        <div className="flex justify-center gap-8">
+        <h4 className="text-lg mb-2">shop pokemon</h4>
+        <div className="flex justify-center flex-wrap gap-8">
           {shopLength.map((_, index) => {
             const shopMon = shopPokemon[index];
             return (

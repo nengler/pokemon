@@ -20,13 +20,6 @@ export default function Pokemon({
   isFighting = false,
   attackAnimation = {},
 }) {
-  let hpMeter = tempHp / hp;
-  if (hpMeter < 0) {
-    hpMeter = 0;
-  } else {
-    hpMeter = hpMeter.toFixed(3);
-  }
-
   let imgStyle = {};
 
   if (isFighting) {
@@ -37,7 +30,7 @@ export default function Pokemon({
     let classes = [];
 
     if (didDie) {
-      classes.push(["transition-transform", "duration-700", "translate-y-40"]);
+      classes.push(...["transition-transform", "duration-700", "translate-y-40"]);
     }
 
     if (isSpawning) {
@@ -47,7 +40,7 @@ export default function Pokemon({
     if (isFighting) {
       classes.push(...["w-28", "h-28"]);
     } else {
-      classes.push(...["w-24", "h-24", "sm:w-28", "sm:h-28"]);
+      classes.push(...["w-24", "h-24", "md:w-28", "md:h-28"]);
     }
 
     return classes.join(" ");
@@ -65,7 +58,12 @@ export default function Pokemon({
               style={imgStyle}
             />
           </div>
-          <div className="absolute top-0 right-0">lv. {level}</div>
+          <div className={`leading-4 absolute top-0 ${flip ? "left-0" : "right-0"}`}>lv. {level}</div>
+          <div className={`absolute top-0 ${flip ? "right-0" : "left-0"}`}>
+            {pokemonTypes.map((pokemonType, index) => (
+              <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
+            ))}
+          </div>
         </div>
         <TextAnimation attackAnimation={attackAnimation} isMyTeam={flip} />
         {isFighting && (
@@ -77,26 +75,30 @@ export default function Pokemon({
         {isSpawning && <SpawnPokeball />}
       </div>
 
-      <div className="flex justify-between gap-1">
-        <div>
-          {pokemonTypes.map((pokemonType, index) => (
-            <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />
-          ))}
-        </div>
-        <div>
-          <span className="bg-red-300 rounded-md inline-block mr-1 items-center h-6 px-1.5">{attack}</span>
-          <span className="bg-blue-300 rounded-md inline-block items-center h-6 px-1.5">{defense}</span>
-        </div>
+      <div className="flex gap-1 justify-center">
+        <span className="bg-red-300 rounded-md inline-block h-6 px-1">{attack}</span>
+        <span className="bg-blue-300 rounded-md inline-block h-6 px-1">{defense}</span>
+        <HpMeter hp={hp} tempHp={tempHp} />
       </div>
-      <div className="relative w-full h-6 flex justify-center border border-green-300 rounded-lg mt-1">
-        <div
-          className={`absolute origin-left w-full left-0 rounded-lg z-0 bg-green-300 h-full transition-transform duration-300`}
-          style={{ transform: `scaleX(${hpMeter})` }}
-        ></div>
-        <span className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
-          {tempHp < 0 ? 0 : tempHp} / {hp}
-        </span>
-      </div>
+    </div>
+  );
+}
+
+function HpMeter({ tempHp, hp }) {
+  let hpMeter = tempHp / hp;
+  if (hpMeter < 0) {
+    hpMeter = 0;
+  } else {
+    hpMeter = hpMeter.toFixed(3);
+  }
+
+  return (
+    <div className="min-w-[30px] relative px-1 h-6 flex justify-center items-center border border-green-300 rounded-lg overflow-hidden">
+      <div
+        className={`absolute origin-bottom w-full left-0 z-[-1] bg-green-300 h-full transition-transform duration-300`}
+        style={{ transform: `scaleY(${hpMeter})` }}
+      />
+      {tempHp < 0 ? 0 : tempHp}
     </div>
   );
 }
