@@ -259,7 +259,12 @@ export default function Home(props) {
                 className="w-28"
               >
                 {shopMon && Object.keys(shopMon).length !== 0 && (
-                  <ShopPokemon changeFrozenState={changeFrozenState} shopPokemon={shopMon} canDrag={canPerformAction} />
+                  <ShopPokemon
+                    changeFrozenState={changeFrozenState}
+                    shopPokemon={shopMon}
+                    canPerformAction={canPerformAction}
+                    canPurchase={game.gold >= 3}
+                  />
                 )}
               </div>
             );

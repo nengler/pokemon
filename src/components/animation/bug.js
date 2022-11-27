@@ -3,12 +3,12 @@ import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from
 import NeedleIcon from "/public/assets/needle";
 import { imgHeight } from "constants/animationConfig";
 
-const animationDuration = 0.4;
-const yStartingPosition = imgHeight / 2 - 16;
-
-const neeldes = [null, null, null];
-
 export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
+  const animationDuration = 0.4;
+  const yStartingPosition = imgHeight / 2 - 16;
+
+  const neeldes = [null, null, null];
+
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
@@ -56,7 +56,7 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.9],
               },
             }}
-            className="absolute"
+            className="absolute z-[1]"
             key={index}
             style={styles}
           >

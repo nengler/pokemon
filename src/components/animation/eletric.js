@@ -2,18 +2,18 @@ import { motion } from "framer-motion";
 import ThunderIcon from "/public/assets/thunder";
 import { useState } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import { imgHeight } from "constants/animationConfig";
-
-let styles = {
-  top: imgHeight / 2 - 20,
-};
+import { getImgCenter } from "constants/animationConfig";
 
 export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
+  let electricStyles = {
+    top: getImgCenter(-20),
+  };
+
   const [isFirstStage, setIsFirstStage] = useState(true);
 
-  setTimeout(function () {
-    setIsFirstStage(false);
-  }, 400);
+  // setTimeout(function () {
+  //   setIsFirstStage(false);
+  // }, 400);
 
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
@@ -36,9 +36,9 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
   const cssDistance = `calc(${distanceToMove}px + 50% - 20px)`;
 
   if (teamLocation.dataset.myTeam === "true") {
-    styles.left = cssDistance;
-  } else {
-    styles.right = cssDistance;
+    electricStyles.left = cssDistance;
+  } else if (teamLocation.dataset.myTeam === "false") {
+    electricStyles.right = cssDistance;
   }
 
   return (
@@ -52,7 +52,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
           },
         }}
         className="absolute h-10 w-10 bg-black rounded-full z-10"
-        style={styles}
+        style={electricStyles}
       >
         <div
           style={{

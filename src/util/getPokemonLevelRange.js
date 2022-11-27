@@ -1,5 +1,10 @@
-// TODO: Flesh this out
 export default function GetPokemonLevelRange(round) {
+  let oddRound = Math.floor(1 - 1) || 1;
+
+  if (oddRound > 11) {
+    oddRound = 11;
+  }
+
   const levelRange = {
     1: [3, 4, 5],
     3: [4, 5, 6],

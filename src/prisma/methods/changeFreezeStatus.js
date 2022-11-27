@@ -1,5 +1,4 @@
 export default async function changeFreezeStatus(prisma, gameId, frozenIds, notFrozenIds) {
-  console.log(frozenIds);
   const frozenPokemon = await prisma.shopPokemon.updateMany({
     where: {
       gameId: gameId,
@@ -14,8 +13,6 @@ export default async function changeFreezeStatus(prisma, gameId, frozenIds, notF
     },
     data: { isFrozen: false },
   });
-
-  console.log(frozenPokemon);
 
   return frozenPokemon.count;
 }

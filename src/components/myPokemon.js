@@ -174,12 +174,8 @@ export default function MyPokemon({
           {canEvolveInto && (
             <>
               <div className="relative inline-block ml-1">
-                <button
-                  ref={evolveButtonRef}
-                  onClick={checkEvolution}
-                  className="bg-green-600 text-green-50 px-3 rounded-lg h-6"
-                >
-                  Evolve
+                <button ref={evolveButtonRef} onClick={checkEvolution} className="bg-green-600 text-green-50 btn sm">
+                  evolve
                 </button>
                 {showEvolutions && (
                   <div

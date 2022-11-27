@@ -16,26 +16,38 @@
   }
 
   .btn.sm {
-    @apply px-3 h-6;
+    @apply px-2 h-6;
   }
 
   .btn::after {
-    @apply content-[''] left-4 absolute bottom-2;
+    @apply content-[''] absolute w-0 bg-white;
     height: 1.5px;
-    width: 0;
     transition: 0.2s width;
   }
 
-  .btn:not(:disabled):hover::after {
+  .btn:not(.sm)::after {
+    @apply left-4 bottom-2;
+  }
+
+  .btn.sm::after {
+    @apply left-2;
+    bottom: 0.15rem;
+  }
+
+  .btn:not(:disabled):not(.sm):hover::after {
     width: calc(100% - 32px);
   }
 
-  .btn-primary:hover::after {
-    @apply bg-white;
+  .btn.sm:not(:disabled):hover::after {
+    width: calc(100% - 16px);
   }
 
-  .btn-secondary:hover::after {
+  .btn-secondary::after {
     @apply bg-black;
+  }
+
+  .btn-freeze::after {
+    @apply bg-cyan-700;
   }
 
   .btn-primary {
@@ -44,6 +56,10 @@
 
   .btn-secondary {
     @apply bg-gray-100;
+  }
+
+  .btn-freeze {
+    @apply bg-cyan-50 text-cyan-700;
   }
 
   .link-button {
@@ -72,6 +88,7 @@
     }
 
     60% {
+      opacity: 1;
       filter: brightness(0);
     }
 

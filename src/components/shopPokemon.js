@@ -4,7 +4,7 @@ import GetNotHpStat from "util/getNotHpStat";
 import PokemonImage from "util/pokemonImage";
 import Pokemon from "./pokemon";
 
-export default function ShopPokemon({ shopPokemon, canDrag, changeFrozenState }) {
+export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction, changeFrozenState }) {
   const { pokemonId, id: shopPokemonId, isFrozen } = shopPokemon;
   const [{ isDragging }, drag, preview] = useDrag(
     () => ({
@@ -14,14 +14,14 @@ export default function ShopPokemon({ shopPokemon, canDrag, changeFrozenState })
         isDragging: monitor.isDragging(),
       }),
       canDrag: () => {
-        return canDrag;
+        return canPerformAction && canPurchase;
       },
     }),
-    [canDrag]
+    [canPerformAction, canPurchase]
   );
 
   return (
-    <div className={`${isDragging || !canDrag ? "opacity-25" : "opacity-100"} w-full text-center`}>
+    <div className={`${isDragging || !canPerformAction ? "opacity-25" : "opacity-100"} w-full text-center`}>
       <div className={`pb-1 rounded-lg ${isFrozen ? "bg-cyan-100" : ""}`}>
         {preview !== undefined && (
           <DragPreviewImage src={PokemonImage(shopPokemon.pokemonId, shopPokemon.isShiny)} connect={preview} />
@@ -39,7 +39,7 @@ export default function ShopPokemon({ shopPokemon, canDrag, changeFrozenState })
           pokemonTypes={shopPokemon.types}
         />
       </div>
-      <button onClick={() => changeFrozenState(shopPokemonId, !isFrozen)} className="bg-cyan-50 btn sm text-cyan-700">
+      <button onClick={() => changeFrozenState(shopPokemonId, !isFrozen)} className="btn sm btn-freeze">
         {shopPokemon.isFrozen ? "unfreeze" : "freeze"}
       </button>
     </div>
