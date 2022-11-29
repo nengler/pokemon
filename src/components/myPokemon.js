@@ -165,7 +165,7 @@ export default function MyPokemon({
         )}
       </div>
 
-      {gamePokemon !== undefined && (
+      {gamePokemon !== undefined ? (
         <div className="flex justify-center mt-1">
           <button onClick={sellGamePokemon} className="bg-red-600 text-red-50 btn sm">
             sell
@@ -207,6 +207,8 @@ export default function MyPokemon({
             </>
           )}
         </div>
+      ) : (
+        <div className="text-center">order #: {6 - order}</div>
       )}
     </div>
   );

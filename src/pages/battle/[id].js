@@ -21,6 +21,7 @@ const animationCheck = {
 let animationType = animationCheck.nextPokemon;
 
 export default function Battle(props) {
+  console.log(props);
   const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
   const [enemyBattlePokemon, setEnemyBattlePokemon] = useState(
     props.battlePokemon.filter((b) => b.gameId !== props.game.id).map((b, index) => ({ ...b, seen: index === 0 }))
@@ -262,26 +263,35 @@ export default function Battle(props) {
           </div>
         </div>
       </div>
-      {!isFighting && (
-        <div className="text-center mt-5">
-          {props.game.id === props.battle.winnerId ? (
-            <>
-              <h3 className="text-xl">you won</h3>
-              <Link href="/play">
-                <a className="text-indigo-500">continue</a>
-              </Link>
-            </>
-          ) : (
-            <>
-              <h3>you lost</h3>
-              <Link href={props.game.lives === 0 ? "/" : "/play"}>
-                <a className="text-indigo-500">{props.game.lives === 0 ? "rip" : "continue"}</a>
-              </Link>
-            </>
-          )}
-        </div>
-      )}
+      {!isFighting && <PostGameScreen battle={props.battle} game={props.game} />}
     </>
+  );
+}
+
+function PostGameScreen({ game, battle }) {
+  console.log(game.wins);
+  const didWin = game.id === battle.winnerId;
+  const gameOver = game.lives === 0;
+  const beatGame = game.wins > 9;
+
+  return (
+    <div className="text-center mt-5">
+      {didWin ? (
+        <>
+          <h3 className="text-xl">{beatGame ? "you beat the game" : "you won"}</h3>
+          <Link href={beatGame ? "/" : "/play"}>
+            <a className="text-indigo-500">{beatGame ? "main menu" : "continue"}</a>
+          </Link>
+        </>
+      ) : (
+        <>
+          <h3>you lost</h3>
+          <Link href={gameOver ? "/" : "/play"}>
+            <a className="text-indigo-500">{gameOver ? "rip" : "continue"}</a>
+          </Link>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -310,7 +320,7 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
     },
   });
 
-  const game = await GetCurrentGame(prisma, userId);
+  const game = await GetCurrentGame(prisma, userId, true);
 
   let battlePokemon = await prisma.battleTeam.findMany({
     where: {

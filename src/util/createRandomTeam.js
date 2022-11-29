@@ -6,6 +6,7 @@ import GetRandomElement from "util/getRandomElement";
 import isShiny from "util/isShiny";
 import pokemonEvolution from "constants/pokemonEvolution";
 import pokemon from "constants/pokemon";
+import prisma from "lib/prisma";
 
 export default async function getRandomTeam(battleId, currentRound) {
   let teamPokemon = [];
@@ -42,11 +43,9 @@ export default async function getRandomTeam(battleId, currentRound) {
         }
       });
     });
-
-    teamPokemon.sort((a, b) => {
-      a.level < b.level;
-    });
   });
+
+  teamPokemon.sort((a, b) => (a.level < b.level ? -1 : 1));
 
   const pokemonData = await Promise.all(
     teamPokemon.map(async (t, order) => {

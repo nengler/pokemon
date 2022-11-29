@@ -40,7 +40,7 @@ export default function Pokemon({
     if (isFighting) {
       classes.push(...["w-28", "h-28"]);
     } else {
-      classes.push(...["w-24", "h-24", "md:w-28", "md:h-28"]);
+      classes.push(...["w-[88px]", "h-[88px]", "md:w-28", "md:h-28"]);
     }
 
     return classes.join(" ");
@@ -52,6 +52,7 @@ export default function Pokemon({
         <div className="z-[1] relative">
           <div className={`${flip ? "-scale-x-100" : ""}`}>
             <div
+              data-pokemon-image={true}
               className={imgClasses()}
               alt={`${name} Image`}
               style={{

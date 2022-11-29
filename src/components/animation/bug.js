@@ -16,6 +16,8 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
 
+  console.log(teamLocation, enemyTeamLocation);
+
   if (enemyCoordinates === undefined || myCoordinates === undefined) {
     return null;
   }
@@ -26,6 +28,8 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
   const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
 
   const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
+
+  console.log("heyo");
 
   return (
     <>
