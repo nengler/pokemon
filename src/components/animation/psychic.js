@@ -2,14 +2,14 @@ import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
-const animationDuration = 0.39;
-const circles = [0, -30, 30, -15, 30, 0];
-const yStartingPosition = imgHeight / 2 - 24;
-
 export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const animationDuration = 0.39;
+  const circles = [0, -30, 30, -15, 30, 0];
+  const yStartingPosition = imgHeight / 2 - 24;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

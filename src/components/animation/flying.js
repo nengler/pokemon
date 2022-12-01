@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
+import { imgHeight } from "constants/animationConfig";
 const blades = [10, 120, 75, 300, 150, 100, 70];
 const animationDuration = 0.3;
 const animationDelay = 0.07;
-import { imgHeight } from "constants/animationConfig";
 const topYStartingPosition = imgHeight / 2 - 16 - 20;
 const bottomYStartingPosition = imgHeight / 2 - 16 + 20;
 

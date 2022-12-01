@@ -15,10 +15,10 @@ import GetGamePokemon from "prisma/methods/getGamePokemon";
 import transformShopPokemonRecords from "prisma/methods/transformShopPokemonRecords";
 import RearrangeGamePokemon from "util/rearrangeGamePokemon";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
-import { shopPokemonNumber } from "constants/gameConfig";
+import { maxTeamSize, shopPokemonNumber } from "constants/gameConfig";
 
-const pokemonLength = Array.apply(null, Array(6)).map(function () {});
-const shopLength = Array.apply(null, Array(4)).map(function () {});
+const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
+const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
 
 export default function Home(props) {
   const router = useRouter();

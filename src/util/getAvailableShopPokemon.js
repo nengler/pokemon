@@ -1,4 +1,4 @@
-import pokemonByShopLevel from "constants/pokemonByShopLevel";
+import pokemonByShopLevel from "../constants/pokemonByShopLevel";
 
 export default function GetAvailableShopPokemon(currentRound) {
   return Object.keys(pokemonByShopLevel)

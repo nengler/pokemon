@@ -3,22 +3,22 @@ import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from
 import StarIcon from "/public/assets/star";
 import { getImgCenter } from "constants/animationConfig";
 
-const animationDuration = 0.5;
-const hitTriggerDelay = 0.25;
-
-const hitTriggers = [
-  { top: `${getImgCenter(20)}px`, left: 0 },
-  { top: `${getImgCenter(0)}px`, left: 20 },
-  { top: `${getImgCenter(-20)}px`, left: -15 },
-];
-
-const stars = [0, 35, -40, 25, 10, -30];
-const yStartingPosition = getImgCenter(-16);
-
 export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const animationDuration = 0.5;
+  const hitTriggerDelay = 0.25;
+
+  const hitTriggers = [
+    { top: `${getImgCenter(20)}px`, left: 0 },
+    { top: `${getImgCenter(0)}px`, left: 20 },
+    { top: `${getImgCenter(-20)}px`, left: -15 },
+  ];
+
+  const stars = [0, 35, -40, 25, 10, -30];
+  const yStartingPosition = getImgCenter(-16);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

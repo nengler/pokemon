@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { imgHeight } from "constants/animationConfig";
 
-const earthShots = Array(3).fill(null);
-const yStartingPosition = imgHeight / 2 - 10;
-const animationDuration = 0.4;
-
 export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const earthShots = Array(3).fill(null);
+  const yStartingPosition = imgHeight / 2 - 10;
+  const animationDuration = 0.4;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

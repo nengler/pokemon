@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import PlusCircle from "/public/assets/plusCircle";
 
-const yStartingPosition = getImgCenter(-24);
-const growingDuration = 0.25;
-const movingDuration = 0.4;
-
 export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const yStartingPosition = getImgCenter(-24);
+  const growingDuration = 0.25;
+  const movingDuration = 0.4;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

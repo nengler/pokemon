@@ -2,12 +2,12 @@ import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import HandIcon from "/public/assets/hand";
-const animationDuration = 0.5;
-let styles = {};
-
-const centerOfImg = imgHeight / 2 - 24;
 
 export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
+  const animationDuration = 0.5;
+  let styles = {};
+
+  const centerOfImg = imgHeight / 2 - 24;
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
@@ -46,14 +46,32 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
       >
         <HandIcon flip={!isMyTeam} />
       </motion.div>
-      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[50, 30, 40]} x={[0, -35]} />
-      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[50, 40, 70]} x={[-15, -60]} />
-      <HitEffect isMyTeam={isMyTeam} distanceToMove={distanceToMove} y={[90, 70, 80]} x={[15, 30]} />
+      <HitEffect
+        animationDuration={animationDuration}
+        isMyTeam={isMyTeam}
+        distanceToMove={distanceToMove}
+        y={[50, 30, 40]}
+        x={[0, -35]}
+      />
+      <HitEffect
+        animationDuration={animationDuration}
+        isMyTeam={isMyTeam}
+        distanceToMove={distanceToMove}
+        y={[50, 40, 70]}
+        x={[-15, -60]}
+      />
+      <HitEffect
+        animationDuration={animationDuration}
+        isMyTeam={isMyTeam}
+        distanceToMove={distanceToMove}
+        y={[90, 70, 80]}
+        x={[15, 30]}
+      />
     </>
   );
 }
 
-function HitEffect({ x, y, distanceToMove, isMyTeam }) {
+function HitEffect({ x, y, distanceToMove, isMyTeam, animationDuration }) {
   let hitEffectStyles = {};
   const cssDistanceHitEffect = `calc(${distanceToMove}px + 50% - 8px)`;
 

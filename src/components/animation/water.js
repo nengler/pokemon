@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { getImgCenter } from "constants/animationConfig";
 
-const animationLength = 0.4;
-const waterPulses = [null, null, null];
-const yStartingPosition = getImgCenter(-40);
-
 export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const animationLength = 0.4;
+  const waterPulses = [null, null, null];
+  const yStartingPosition = getImgCenter(-40);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

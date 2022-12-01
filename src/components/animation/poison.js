@@ -2,16 +2,16 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { imgHeight } from "constants/animationConfig";
 
-const poisonShotDuration = 0.4;
-const poisonOpacityDuration = 0.05;
-const bubbleRisingDuration = 0.2;
-const yStartingPosition = imgHeight / 2 - 12;
-const bubbles = [0, -15, 15];
-
 export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const poisonShotDuration = 0.4;
+  const poisonOpacityDuration = 0.05;
+  const bubbleRisingDuration = 0.2;
+  const yStartingPosition = imgHeight / 2 - 12;
+  const bubbles = [0, -15, 15];
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

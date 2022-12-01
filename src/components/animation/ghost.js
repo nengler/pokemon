@@ -2,16 +2,16 @@ import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
-const animationDuration = 0.6;
-
-const beforeClasses =
-  "before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:w-6 before:h-6 before:rounded-[50%] before:bg-[#5f0a68] before:-translate-x-1/2 before:-translate-y-1/2";
-const afterClasses =
-  "after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:w-3 after:h-3 after:rounded-[50%] after:bg-black after:-translate-x-1/2 after:-translate-y-1/2";
-
-const yStartingPosition = imgHeight / 2 - 18;
-
 export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
+  const animationDuration = 0.6;
+
+  const beforeClasses =
+    "before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:w-6 before:h-6 before:rounded-[50%] before:bg-[#5f0a68] before:-translate-x-1/2 before:-translate-y-1/2";
+  const afterClasses =
+    "after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:w-3 after:h-3 after:rounded-[50%] after:bg-black after:-translate-x-1/2 after:-translate-y-1/2";
+
+  const yStartingPosition = imgHeight / 2 - 18;
+
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }

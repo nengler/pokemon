@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import RockIcon from "/public/assets/newRock";
 
-const animationDuration = 0.35;
-const locations = [-20, 0, 20, 0, -20, 15];
-
 export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const animationDuration = 0.35;
+  const locations = [-20, 0, 20, 0, -20, 15];
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

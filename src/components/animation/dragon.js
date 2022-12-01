@@ -2,26 +2,26 @@ import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { imgHeight } from "constants/animationConfig";
 
-const animationDuration = 0.5;
-
 function topOffset(offset) {
   return imgHeight / 2 + offset;
 }
-
-const balls = [
-  { top: topOffset(24), left: 0 },
-  { top: topOffset(-20), left: 40 },
-  { top: topOffset(-10), left: 99 },
-  { top: topOffset(40), left: 55 },
-  { top: topOffset(-10), left: 12 },
-  { top: topOffset(30), left: 65 },
-  { top: topOffset(-35), left: 88 },
-];
 
 export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
+
+  const animationDuration = 0.5;
+
+  const balls = [
+    { top: topOffset(24), left: 0 },
+    { top: topOffset(-20), left: 40 },
+    { top: topOffset(-10), left: 99 },
+    { top: topOffset(40), left: 55 },
+    { top: topOffset(-10), left: 12 },
+    { top: topOffset(30), left: 65 },
+    { top: topOffset(-35), left: 88 },
+  ];
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);

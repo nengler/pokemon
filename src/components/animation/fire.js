@@ -3,18 +3,18 @@ import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from
 import Flame from "/public/assets/flame";
 import { imgHeight } from "constants/animationConfig";
 
-const animationDuration = 0.6;
-const yStartingPosition = imgHeight / 2 - 10;
-
-const fires = [
-  { top: 2, left: 0 },
-  { top: 15, left: 5 },
-  { top: -5, left: -5 },
-  { top: 10, left: -30 },
-  { top: -15, left: -20 },
-];
-
 export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
+  const animationDuration = 0.6;
+  const yStartingPosition = imgHeight / 2 - 10;
+
+  const fires = [
+    { top: 2, left: 0 },
+    { top: 15, left: 5 },
+    { top: -5, left: -5 },
+    { top: 10, left: -30 },
+    { top: -15, left: -20 },
+  ];
+
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }

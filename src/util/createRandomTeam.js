@@ -1,51 +1,59 @@
-import GetAvailableShopPokemon from "util/getAvailableShopPokemon";
-import GetHp from "util/getHp";
-import GetNotHpStat from "util/getNotHpStat";
-import GetPokemonLevelRange from "util/getPokemonLevelRange";
-import GetRandomElement from "util/getRandomElement";
-import isShiny from "util/isShiny";
-import pokemonEvolution from "constants/pokemonEvolution";
-import pokemon from "constants/pokemon";
-import prisma from "lib/prisma";
+import GetAvailableShopPokemon from "../util/getAvailableShopPokemon";
+import GetHp from "../util/getHp";
+import GetNotHpStat from "../util/getNotHpStat";
+import GetPokemonLevelRange from "../util/getPokemonLevelRange";
+import GetRandomElement from "../util/getRandomElement";
+import isShiny from "../util/isShiny";
+import pokemonEvolution from "../constants/pokemonEvolution";
+import pokemon from "../constants/pokemon";
+import prisma from "../lib/prisma";
+import { maxTeamSize, shopPokemonNumber } from "../constants/gameConfig";
 
 export default async function getRandomTeam(battleId, currentRound) {
   let teamPokemon = [];
-  const allowedPokemonToGet = 4;
-  const maxTeamSize = 6;
 
+  // iterate for each round
   Array.from({ length: currentRound }).forEach((_, round) => {
     const currentRound = round + 1;
-    let numberPokemonCanGrab = 3;
+    let numberPokemonCanGrab = currentRound < 3 ? 3 : 4;
     const levelRange = GetPokemonLevelRange(currentRound);
     teamPokemon = combineDuplicates(teamPokemon);
     const availablePokemon = GetAvailableShopPokemon(currentRound);
+    if (currentRound >= 3) {
+      console.log("before", teamPokemon);
+      teamPokemon = removeWeakerPokemon(teamPokemon, Math.max(...levelRange));
+      console.log("after", teamPokemon);
+    }
 
-    Array.from({ length: 2 }).forEach((_a) => {
-      const randomPokemon = Array.from({ length: allowedPokemonToGet }, () => ({
-        pokemonId: GetRandomElement(availablePokemon),
-        level: GetRandomElement(levelRange),
-      }));
+    const randomShopPokemon = Array.from({ length: shopPokemonNumber * 2 }, () => ({
+      pokemonId: GetRandomElement(availablePokemon),
+      level: GetRandomElement(levelRange),
+    }));
 
-      while (numberPokemonCanGrab > 0 && randomPokemon.length > 0 && teamPokemon.length < maxTeamSize) {
-        teamPokemon.push(randomPokemon.shift());
+    randomShopPokemon.sort(byLevel);
+
+    // add pokemon to team until team is full
+    while (numberPokemonCanGrab > 0 && randomShopPokemon.length > 0 && teamPokemon.length < maxTeamSize) {
+      teamPokemon.push(randomShopPokemon.shift());
+      numberPokemonCanGrab--;
+    }
+
+    const pokemonIdsOnTeam = teamPokemon.map((t) => t.pokemonId);
+
+    // add duplicates to team
+    randomShopPokemon.forEach((randomP) => {
+      if (numberPokemonCanGrab > 0 && pokemonIdsOnTeam.includes(randomP.pokemonId)) {
         numberPokemonCanGrab--;
+        const teamPokemonIndex = teamPokemon.findIndex((t) => t.pokemonId === randomP.pokemonId);
+        teamPokemon[teamPokemonIndex] = {
+          ...teamPokemon[teamPokemonIndex],
+          level: teamPokemon[teamPokemonIndex].level + randomP.level,
+        };
       }
-
-      const pokemonIdsOnTeam = teamPokemon.map((t) => t.pokemonId);
-      randomPokemon.forEach((randomP) => {
-        if (numberPokemonCanGrab > 0 && pokemonIdsOnTeam.includes(randomP.pokemonId)) {
-          numberPokemonCanGrab--;
-          const teamPokemonIndex = teamPokemon.findIndex((t) => t.pokemonId === randomP.pokemonId);
-          teamPokemon[teamPokemonIndex] = {
-            ...teamPokemon[teamPokemonIndex],
-            level: teamPokemon[teamPokemonIndex].level + randomP.level,
-          };
-        }
-      });
     });
   });
 
-  teamPokemon.sort((a, b) => (a.level < b.level ? -1 : 1));
+  teamPokemon.sort(byLevel);
 
   const pokemonData = await Promise.all(
     teamPokemon.map(async (t, order) => {
@@ -72,6 +80,10 @@ export default async function getRandomTeam(battleId, currentRound) {
   });
 }
 
+function byLevel(a, b) {
+  return a.level < b.level ? 1 : -1;
+}
+
 function getMostEvolvedPokemon(pokemonId, level) {
   const evolutions = pokemonEvolution[pokemonId];
 
@@ -90,31 +102,26 @@ function getMostEvolvedPokemon(pokemonId, level) {
 }
 
 function combineDuplicates(pokemonTeam) {
-  const duplicateObj = {};
+  let newPokemonArray = [];
 
-  pokemonTeam.forEach((t) => {
-    duplicateObj[t.pokemonId] = (duplicateObj[t.pokemonId] || 0) + 1;
+  pokemonTeam.forEach((p) => {
+    const existsInNewArray = newPokemonArray.findIndex((n) => n.pokemonId === p.pokemonId);
+    if (existsInNewArray === -1) {
+      newPokemonArray.push(p);
+    } else {
+      const pokemonAtIndex = newPokemonArray[existsInNewArray];
+      newPokemonArray[existsInNewArray] = { ...pokemonAtIndex, level: pokemonAtIndex.level + p.level };
+    }
   });
 
-  const duplicateIds = Object.keys(duplicateObj)
-    .filter((key) => duplicateObj[key] > 1)
-    .map((a) => parseInt(a));
+  return newPokemonArray;
+}
 
-  let newTeam = [];
-
-  duplicateIds.forEach((id) => {
-    const duplicateTeamPokemon = pokemonTeam.filter((t) => t.pokemonId === id);
-    const combinedPokemon = duplicateTeamPokemon.reduce(
-      (previousValue, currentValue) => ({ ...previousValue, level: previousValue.level + currentValue.level }),
-      {
-        pokemonId: duplicateTeamPokemon[0].pokemonId,
-        level: 0,
-      }
-    );
-    newTeam.push(combinedPokemon);
-  });
-
-  newTeam.push(...pokemonTeam.filter((t) => !duplicateIds.includes(t.pokemonId)));
-
-  return newTeam;
+function removeWeakerPokemon(teamPokemon, levelMin) {
+  teamPokemon.sort(byLevel);
+  const lastTwoPokemon = teamPokemon.slice(-2);
+  console.log("last two", lastTwoPokemon);
+  const numberBelowMin = lastTwoPokemon.filter((t) => t.level < levelMin).length;
+  console.log(`Number below ${levelMin}: ${numberBelowMin}`);
+  return teamPokemon.slice(0, teamPokemon.length - numberBelowMin);
 }
