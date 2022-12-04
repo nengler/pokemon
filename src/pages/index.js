@@ -17,8 +17,8 @@ export default function Home(props) {
   };
 
   return (
-    <div className="flex h-screen justify-center mt-[30vh]">
-      <div className="text-center">
+    <div className="flex h-screen justify-center ">
+      <div className="text-center mt-[30vh]">
         <h1 className="text-7xl">an untitled</h1>
         <h1 className="text-5xl mb-6 text-indigo-500 underline decoration-wavy">pokemon game</h1>
         {isLoggedIn ? (

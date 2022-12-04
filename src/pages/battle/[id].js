@@ -21,7 +21,6 @@ const animationCheck = {
 let animationType = animationCheck.nextPokemon;
 
 export default function Battle(props) {
-  console.log(props);
   const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
   const [enemyBattlePokemon, setEnemyBattlePokemon] = useState(
     props.battlePokemon.filter((b) => b.gameId !== props.game.id).map((b, index) => ({ ...b, seen: index === 0 }))
@@ -269,7 +268,6 @@ export default function Battle(props) {
 }
 
 function PostGameScreen({ game, battle }) {
-  console.log(game.wins);
   const didWin = game.id === battle.winnerId;
   const gameOver = game.lives === 0;
   const beatGame = game.wins > 9;

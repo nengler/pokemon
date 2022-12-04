@@ -20,9 +20,7 @@ export default async function getRandomTeam(battleId, currentRound) {
     teamPokemon = combineDuplicates(teamPokemon);
     const availablePokemon = GetAvailableShopPokemon(currentRound);
     if (currentRound >= 3) {
-      console.log("before", teamPokemon);
       teamPokemon = removeWeakerPokemon(teamPokemon, Math.max(...levelRange));
-      console.log("after", teamPokemon);
     }
 
     const randomShopPokemon = Array.from({ length: shopPokemonNumber * 2 }, () => ({
@@ -120,8 +118,6 @@ function combineDuplicates(pokemonTeam) {
 function removeWeakerPokemon(teamPokemon, levelMin) {
   teamPokemon.sort(byLevel);
   const lastTwoPokemon = teamPokemon.slice(-2);
-  console.log("last two", lastTwoPokemon);
   const numberBelowMin = lastTwoPokemon.filter((t) => t.level < levelMin).length;
-  console.log(`Number below ${levelMin}: ${numberBelowMin}`);
   return teamPokemon.slice(0, teamPokemon.length - numberBelowMin);
 }
