@@ -54,9 +54,6 @@ export default function MusicPlayer() {
 
     source.buffer = buffer;
 
-    source.connect(gainNode);
-    gainNode.connect(audioContext.current.destination);
-
     source.loop = true;
     gainNode.gain.setValueAtTime(
       document.getElementById("volume-slider").value / 100,
