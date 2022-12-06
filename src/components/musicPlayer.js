@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 
 let isEventAdded = false;
 
 export default function MusicPlayer() {
+  const router = useRouter();
   const audioContext = useRef(null);
   const sourceRef = useRef(null);
   const gainNodeRef = useRef(null);
@@ -17,28 +19,27 @@ export default function MusicPlayer() {
     gainNode.gain.setValueAtTime(newVolumne / 100, audioContext.current.currentTime);
   }
 
-  function loadSound(url) {
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.responseType = "arraybuffer";
-    request.onload = function () {
-      audioContext.current.decodeAudioData(request.response, playSong, onError);
-    };
-    request.send();
+  async function loadSound(url) {
+    const audioBuffer = await fetch(url)
+      .then((res) => res.arrayBuffer())
+      .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
+
+    playSong(audioBuffer);
   }
 
-  function getOrCreateSource() {
-    if (!sourceRef.current) {
-      sourceRef.current = audioContext.current.createBufferSource();
+  function createSource(gainNode) {
+    if (sourceRef.current && audioContext.current.state === "running") {
+      sourceRef.current.stop();
     }
 
+    sourceRef.current = audioContext.current.createBufferSource();
+    sourceRef.current.connect(gainNode);
     return sourceRef.current;
   }
 
-  function getOrCreateGain(source) {
+  function getOrCreateGain() {
     if (!gainNodeRef.current) {
       gainNodeRef.current = audioContext.current.createGain();
-      source.connect(gainNodeRef.current);
       gainNodeRef.current.connect(audioContext.current.destination);
     }
 
@@ -46,30 +47,42 @@ export default function MusicPlayer() {
   }
 
   function playSong(buffer) {
-    let source = getOrCreateSource();
-    let gainNode = getOrCreateGain(source);
+    let gainNode = getOrCreateGain();
+    let source = createSource(gainNode);
+
+    console.log("buffer", buffer);
 
     source.buffer = buffer;
 
-    source.loop = true;
-    gainNode.gain.setValueAtTime(0.5, audioContext.current.currentTime);
-    source.start();
-  }
+    source.connect(gainNode);
+    gainNode.connect(audioContext.current.destination);
 
-  function onError(e) {
-    console.log(e);
+    source.loop = true;
+    gainNode.gain.setValueAtTime(
+      document.getElementById("volume-slider").value / 100,
+      audioContext.current.currentTime
+    );
+    source.start(0);
   }
 
   function setAudioContext() {
     audioContext.current = new AudioContext();
   }
 
+  function getSongFromUrl(url) {
+    if (url === "/") {
+      return "/assets/pokemon_center.mp3";
+    } else if (url === "/how-to-play") {
+      return "/assets/azalea_town.mp3";
+    }
+  }
+
   useEffect(() => {
     try {
       if (!audioContext.current) {
         setAudioContext();
-        let source = getOrCreateSource();
-        getOrCreateGain(source);
+        const gainNode = getOrCreateGain();
+        createSource(gainNode);
       }
 
       if (!isEventAdded) {
@@ -77,9 +90,8 @@ export default function MusicPlayer() {
         document.querySelector("body").addEventListener(
           "click",
           function () {
-            audioContext.current.resume().then(() => {
-              loadSound("/assets/pokemon_center.mp3");
-            });
+            const songToPlay = getSongFromUrl(router.pathname);
+            loadSound(songToPlay);
           },
           { once: true }
         );
@@ -89,6 +101,18 @@ export default function MusicPlayer() {
     } catch (e) {
       console.log("heyo");
     }
+
+    const handleRouteChange = (url) => {
+      console.log(url);
+      const songToPlay = getSongFromUrl(url);
+      loadSound(songToPlay);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
   }, []);
 
   return <input type="range" min="0" max="100" step="1" id="volume-slider" />;
