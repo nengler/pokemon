@@ -3,11 +3,24 @@ import { useRouter } from "next/router";
 
 let isEventAdded = false;
 
-export default function MusicPlayer() {
+export default function MusicPlayer({ Component, pageProps }) {
   const router = useRouter();
-  const audioContext = useRef(null);
-  const sourceRef = useRef(null);
+  const audioContext = useRef(createAudioContext());
   const gainNodeRef = useRef(null);
+  const sourceRef = useRef(null);
+  const inputRange = getInputRange();
+
+  function getInputRange() {
+    if (typeof window !== "undefined") {
+      return document.getElementById("volume-slider");
+    }
+  }
+
+  function createAudioContext() {
+    if (typeof window !== "undefined") {
+      return new AudioContext();
+    }
+  }
 
   function changeVolume(event) {
     if (!audioContext.current) {
@@ -17,14 +30,15 @@ export default function MusicPlayer() {
     const newVolumne = parseInt(event.currentTarget.value);
     const gainNode = getOrCreateGain();
     gainNode.gain.setValueAtTime(newVolumne / 100, audioContext.current.currentTime);
+    localStorage.setItem("volume", newVolumne);
   }
 
-  async function loadSound(url) {
+  async function loadSound(url, callback) {
     const audioBuffer = await fetch(url)
       .then((res) => res.arrayBuffer())
       .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
 
-    playSong(audioBuffer);
+    callback(audioBuffer);
   }
 
   function createSource(gainNode) {
@@ -50,20 +64,23 @@ export default function MusicPlayer() {
     let gainNode = getOrCreateGain();
     let source = createSource(gainNode);
 
-    console.log("buffer", buffer);
-
     source.buffer = buffer;
 
     source.loop = true;
-    gainNode.gain.setValueAtTime(
-      document.getElementById("volume-slider").value / 100,
-      audioContext.current.currentTime
-    );
+    const currentVolume = parseInt(inputRange.value);
+    gainNode.gain.setValueAtTime(currentVolume / 100, audioContext.current.currentTime);
     source.start(0);
   }
 
-  function setAudioContext() {
-    audioContext.current = new AudioContext();
+  function playSound(buffer) {
+    let gainNode = getOrCreateGain();
+    let source = audioContext.current.createBufferSource();
+    source.connect(gainNode);
+
+    source.buffer = buffer;
+    const currentVolume = parseInt(inputRange.value);
+    gainNode.gain.setValueAtTime(currentVolume / 100, audioContext.current.currentTime);
+    source.start(0);
   }
 
   function getSongFromUrl(url) {
@@ -72,12 +89,13 @@ export default function MusicPlayer() {
     } else if (url === "/how-to-play") {
       return "/assets/azalea_town.mp3";
     }
+
+    return "/assets/pokemon_center.mp3";
   }
 
   useEffect(() => {
     try {
       if (!audioContext.current) {
-        setAudioContext();
         const gainNode = getOrCreateGain();
         createSource(gainNode);
       }
@@ -88,20 +106,20 @@ export default function MusicPlayer() {
           "click",
           function () {
             const songToPlay = getSongFromUrl(router.pathname);
-            loadSound(songToPlay);
+            loadSound(songToPlay, playSong);
           },
           { once: true }
         );
 
-        document.getElementById("volume-slider").addEventListener("change", changeVolume);
+        inputRange.addEventListener("change", changeVolume);
       }
     } catch (e) {
-      console.log("heyo");
+      console.log("heyo", e);
     }
 
     const handleRouteChange = (url) => {
       console.log(url);
-      const songToPlay = getSongFromUrl(url);
+      const songToPlay = getSongFromUrl(url, playSong);
       loadSound(songToPlay);
     };
 
@@ -112,5 +130,24 @@ export default function MusicPlayer() {
     };
   }, []);
 
-  return <input type="range" min="0" max="100" step="1" id="volume-slider" />;
+  function getInitialVolume() {
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("volume") || "50";
+    }
+
+    return "50";
+  }
+
+  const childPlaySound = (url) => {
+    loadSound(url, playSound);
+  };
+
+  const allProps = { ...pageProps, childPlaySound };
+
+  return (
+    <>
+      <Component {...allProps} />
+      <input defaultValue={getInitialVolume()} type="range" min="0" max="100" step="1" id="volume-slider" />
+    </>
+  );
 }

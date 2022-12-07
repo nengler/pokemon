@@ -77,7 +77,11 @@ export default function Battle(props) {
       },
     ]);
 
-    // return;
+    console.log("hit");
+
+    props.childPlaySound("/assets/acid_armor.mp3");
+
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
