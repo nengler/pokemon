@@ -192,11 +192,13 @@ export default function Home(props) {
   };
 
   function startPageTransition(battleId) {
-    setPageTransition({ ...pageTransition, isRunning: true });
-    props.childPlaySong("/assets/gym_battle.mp3");
+    props.childPlaySong("gym_battle");
+    setTimeout(() => {
+      setPageTransition({ ...pageTransition, isRunning: true });
+    }, 500);
     setTimeout(() => {
       router.push(`battle/${battleId}`);
-    }, pageTransition.timeout);
+    }, 3000);
   }
 
   const combinePokemon = async (pokemonId1, pokemonId2) => {

@@ -1,7 +1,6 @@
 import useInterval from "components/useInterval";
 import pokemon from "constants/pokemon";
 import prisma from "lib/prisma";
-import Link from "next/link";
 import { useState, useRef } from "react";
 import calculateDamage from "util/calculateDamage";
 import { withIronSessionSsr } from "iron-session/next";
@@ -213,7 +212,7 @@ export default function Battle(props) {
         case animationCheck.nextPokemon:
           showNewPokemon();
           if (isFightOver()) {
-            props.childPlaySong("/assets/victory");
+            props.childPlaySong("victory");
             setIsFighting(false);
           } else {
             animationType = animationCheck.spawningPokemon;

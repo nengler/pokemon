@@ -60,7 +60,7 @@ export function BattlePokemon({
 
 function SpawnPokemonText({ pokemonName }) {
   const getRandomText = () => {
-    const randomNumber = Math.floor(Math.random() * 3);
+    const randomNumber = Math.floor(Math.random() * 4);
 
     if (randomNumber === 0) {
       return `GOOO ${pokemonName}`;

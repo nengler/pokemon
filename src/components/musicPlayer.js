@@ -9,6 +9,12 @@ export default function MusicPlayer({ Component, pageProps }) {
   const gainNodeRef = useRef(null);
   const sourceRef = useRef(null);
   const inputRange = getInputRange();
+  const audioSongs = useRef([
+    { name: "victory", buffer: null, didFetch: false, url: "/assets/victory.mp3" },
+    { name: "center", buffer: null, didFetch: false, url: "/assets/pokemon_center.mp3" },
+    { name: "azalea", buffer: null, didFetch: false, url: "/assets/azalea_town.mp3" },
+    { name: "gym_battle", buffer: null, didFetch: false, url: "/assets/gym_battle.mp3" },
+  ]);
 
   function getInputRange() {
     if (typeof window !== "undefined") {
@@ -85,10 +91,32 @@ export default function MusicPlayer({ Component, pageProps }) {
 
   function getSongFromUrl(url) {
     if (url === "/") {
-      return "/assets/pokemon_center.mp3";
+      return "center";
     } else if (url === "/how-to-play" || url === "/play") {
-      return "/assets/azalea_town.mp3";
+      return "azalea";
     }
+  }
+
+  async function preloadSong(songObject) {
+    audioSongs.current = audioSongs.current.map((a) => {
+      if (songObject.name === a.name) {
+        return { ...a, didFetch: true };
+      }
+
+      return a;
+    });
+
+    const audioBuffer = await fetch(songObject.url)
+      .then((res) => res.arrayBuffer())
+      .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
+
+    audioSongs.current = audioSongs.current.map((a) => {
+      if (songObject.name === a.name) {
+        return { ...a, buffer: audioBuffer };
+      }
+
+      return a;
+    });
   }
 
   useEffect(() => {
@@ -105,7 +133,7 @@ export default function MusicPlayer({ Component, pageProps }) {
           function () {
             const songToPlay = getSongFromUrl(router.pathname);
             if (songToPlay) {
-              loadSound(songToPlay, playSong);
+              loadOrPlaySong(songToPlay);
             }
           },
           { once: true }
@@ -120,11 +148,17 @@ export default function MusicPlayer({ Component, pageProps }) {
     const handleRouteChange = (url) => {
       const songToPlay = getSongFromUrl(url, playSong);
       if (songToPlay) {
-        loadSound(songToPlay, playSong);
+        loadOrPlaySong(songToPlay);
       }
     };
 
     router.events.on("routeChangeStart", handleRouteChange);
+
+    audioSongs.current
+      .filter((a) => !a.didFetch)
+      .forEach((songObject) => {
+        preloadSong(songObject);
+      });
 
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
@@ -139,12 +173,37 @@ export default function MusicPlayer({ Component, pageProps }) {
     return "50";
   }
 
+  async function loadSong() {
+    const audioBuffer = await fetch(url)
+      .then((res) => res.arrayBuffer())
+      .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
+
+    return audioBuffer;
+  }
+
+  async function loadOrPlaySong(songName) {
+    const songObject = audioSongs.current.find((a) => a.name === songName);
+    if (songObject.buffer) {
+      playSong(songObject.buffer);
+      return;
+    }
+
+    const audioBuffer = await loadSong(songObject.url);
+    audioSongs.current.map((a) => {
+      if (a.name === songName) {
+        return { ...a, didFetch: true, buffer: audioBuffer };
+      }
+    });
+
+    playSong(audioBuffer);
+  }
+
   const childPlaySound = (url) => {
     loadSound(url, playSound);
   };
 
-  const childPlaySong = (url) => {
-    loadSound(url, playSong);
+  const childPlaySong = (songName) => {
+    loadOrPlaySong(songName, playSong);
   };
 
   const allProps = { ...pageProps, childPlaySound, childPlaySong };
