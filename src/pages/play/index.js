@@ -16,16 +16,25 @@ import transformShopPokemonRecords from "prisma/methods/transformShopPokemonReco
 import RearrangeGamePokemon from "util/rearrangeGamePokemon";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
 import { maxTeamSize, shopPokemonNumber } from "constants/gameConfig";
+import WheelTransition from "components/play/wheelTransition";
+import RandomBlocksTransition from "components/play/randomBlocksTransition";
+import GetRandomElement from "util/getRandomElement";
 
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
 
 export default function Home(props) {
+  const pageAnimation = () => {
+    const animations = [<WheelTransition />, <RandomBlocksTransition />];
+    return GetRandomElement(animations);
+  };
+
   const router = useRouter();
   const [shopPokemon, setShopPokemon] = useState(props.shopPokemon);
   const [game, setGame] = useState(props.game);
   const [myPokemon, setMyPokemon] = useState(props.myPokemonRecords);
   const [canPerformAction, setCanPerformAction] = useState(props.waitingForBattle ? false : true);
+  const [pageTransition, setPageTransition] = useState({ isRunning: false, timeout: 2500, animation: pageAnimation() });
 
   const allowPerformAction = () => setCanPerformAction(true);
   const disallowPerformAction = () => setCanPerformAction(false);
@@ -164,7 +173,7 @@ export default function Home(props) {
     if (battleData.isSearching || !battleData.isBattleOver) {
       waitForBattle(battleData.id);
     } else {
-      router.push(`battle/${battleData.id}`);
+      startPageTransition(battleData.id);
     }
   };
 
@@ -177,10 +186,18 @@ export default function Home(props) {
       } else if (!battleData.battle.isBattleOver) {
         waitForBattle(battleData.battle.id);
       } else {
-        router.push(`battle/${battleId}`);
+        startPageTransition(battleId);
       }
     }, 1000);
   };
+
+  function startPageTransition(battleId) {
+    setPageTransition({ ...pageTransition, isRunning: true });
+    props.childPlaySong("/assets/gym_battle.mp3");
+    setTimeout(() => {
+      router.push(`battle/${battleId}`);
+    }, pageTransition.timeout);
+  }
 
   const combinePokemon = async (pokemonId1, pokemonId2) => {
     disallowPerformAction();
@@ -216,71 +233,77 @@ export default function Home(props) {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3">
-      <div className="flex gap-2">
-        <div>gold: {game.gold}</div>
-        <div>round: {game.round}</div>
-        <div>lives: {game.lives}</div>
-        <div>wins: {game.wins}</div>
-      </div>
+    <>
+      <div
+        className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3 fadeInAnimation"
+        style={{ "--fadeinduration": "750ms" }}
+      >
+        <div className="flex gap-2">
+          <div>gold: {game.gold}</div>
+          <div>round: {game.round}</div>
+          <div>lives: {game.lives}</div>
+          <div>wins: {game.wins}</div>
+        </div>
 
-      <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
-        <div className="mb-6">
-          <div className="flex flex-wrap justify-between sm:justify-center gap-3">
-            {pokemonLength.map((_p, index) => {
-              const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
+        <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
+          <div className="mb-6">
+            <div className="flex flex-wrap justify-between sm:justify-center gap-3">
+              {pokemonLength.map((_p, index) => {
+                const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
+                return (
+                  <MyPokemon
+                    gold={game.gold}
+                    gamePokemon={gamePokemon}
+                    order={index}
+                    key={`${index}-${gamePokemon === undefined ? "undefined" : gamePokemon.id}`}
+                    buyNewPokemon={buyNewPokemon}
+                    upgradePokemon={upgradePokemon}
+                    sellPokemon={sellPokemon}
+                    rearrangeOrder={rearrangeOrder}
+                    allPokemon={myPokemon}
+                    evolvePokemon={evolvePokemon}
+                    canPerformAction={canPerformAction}
+                    combinePokemon={combinePokemon}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+          <h4 className="text-lg mb-2">shop pokemon</h4>
+          <div className="flex justify-between sm:justify-center sm:gap-8">
+            {shopLength.map((_, index) => {
+              const shopMon = shopPokemon[index];
               return (
-                <MyPokemon
-                  gold={game.gold}
-                  gamePokemon={gamePokemon}
-                  order={index}
-                  key={`${index}-${gamePokemon === undefined ? "undefined" : gamePokemon.id}`}
-                  buyNewPokemon={buyNewPokemon}
-                  upgradePokemon={upgradePokemon}
-                  sellPokemon={sellPokemon}
-                  rearrangeOrder={rearrangeOrder}
-                  allPokemon={myPokemon}
-                  evolvePokemon={evolvePokemon}
-                  canPerformAction={canPerformAction}
-                  combinePokemon={combinePokemon}
-                />
+                <div
+                  key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
+                  className="w-[88px] md:w-28"
+                >
+                  {shopMon && Object.keys(shopMon).length !== 0 && (
+                    <ShopPokemon
+                      changeFrozenState={changeFrozenState}
+                      shopPokemon={shopMon}
+                      canPerformAction={canPerformAction}
+                      canPurchase={game.gold >= 3}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
-        </div>
+        </DndProvider>
+        <div className="mt-10 gap-3 flex justify-end">
+          <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
+            get new pokemon
+          </button>
 
-        <h4 className="text-lg mb-2">shop pokemon</h4>
-        <div className="flex justify-between sm:justify-center sm:gap-8">
-          {shopLength.map((_, index) => {
-            const shopMon = shopPokemon[index];
-            return (
-              <div
-                key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
-                className="w-[88px] md:w-28"
-              >
-                {shopMon && Object.keys(shopMon).length !== 0 && (
-                  <ShopPokemon
-                    changeFrozenState={changeFrozenState}
-                    shopPokemon={shopMon}
-                    canPerformAction={canPerformAction}
-                    canPurchase={game.gold >= 3}
-                  />
-                )}
-              </div>
-            );
-          })}
+          <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">
+            battle
+          </button>
         </div>
-      </DndProvider>
-      <div className="mt-10 gap-3 flex justify-end">
-        <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
-          get new pokemon
-        </button>
-
-        <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">
-          battle
-        </button>
       </div>
-    </div>
+      {pageTransition.isRunning && pageTransition.animation}
+    </>
   );
 }
 

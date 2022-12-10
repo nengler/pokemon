@@ -68,6 +68,8 @@ function SpawnPokemonText({ pokemonName }) {
       return `I believe in you ${pokemonName}`;
     } else if (randomNumber === 2) {
       return `ok ${pokemonName}, its your turn`;
+    } else if (randomNumber === 3) {
+      return `Prove them wrong ${pokemonName}`;
     }
   };
 

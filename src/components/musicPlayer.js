@@ -86,11 +86,9 @@ export default function MusicPlayer({ Component, pageProps }) {
   function getSongFromUrl(url) {
     if (url === "/") {
       return "/assets/pokemon_center.mp3";
-    } else if (url === "/how-to-play") {
+    } else if (url === "/how-to-play" || url === "/play") {
       return "/assets/azalea_town.mp3";
     }
-
-    return "/assets/pokemon_center.mp3";
   }
 
   useEffect(() => {
@@ -106,7 +104,9 @@ export default function MusicPlayer({ Component, pageProps }) {
           "click",
           function () {
             const songToPlay = getSongFromUrl(router.pathname);
-            loadSound(songToPlay, playSong);
+            if (songToPlay) {
+              loadSound(songToPlay, playSong);
+            }
           },
           { once: true }
         );
@@ -118,9 +118,10 @@ export default function MusicPlayer({ Component, pageProps }) {
     }
 
     const handleRouteChange = (url) => {
-      console.log(url);
       const songToPlay = getSongFromUrl(url, playSong);
-      loadSound(songToPlay);
+      if (songToPlay) {
+        loadSound(songToPlay, playSong);
+      }
     };
 
     router.events.on("routeChangeStart", handleRouteChange);
@@ -142,7 +143,11 @@ export default function MusicPlayer({ Component, pageProps }) {
     loadSound(url, playSound);
   };
 
-  const allProps = { ...pageProps, childPlaySound };
+  const childPlaySong = (url) => {
+    loadSound(url, playSong);
+  };
+
+  const allProps = { ...pageProps, childPlaySound, childPlaySong };
 
   return (
     <>

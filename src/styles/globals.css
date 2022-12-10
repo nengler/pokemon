@@ -115,3 +115,36 @@
     }
   }
 }
+
+.blockAnimation {
+  width: 6.66667%;
+  height: 6.66667%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.biggerBlockAnimation {
+  width: 10%;
+  height: 10%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.fadeInAnimation {
+  opacity: 0;
+  animation-name: fadein;
+  animation-duration: var(--fadeinduration);
+  animation-delay: var(--fadeindelay);
+  animation-fill-mode: forwards;
+  z-index: 1;
+  animation-timing-function: ease;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

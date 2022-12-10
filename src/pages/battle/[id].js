@@ -6,10 +6,10 @@ import { useState, useRef } from "react";
 import calculateDamage from "util/calculateDamage";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
-import { GetCurrentGame } from "prisma/queries/getCurrentGame";
 import PokeBalls from "components/battle/pokeballs";
 import { BattlePokemon } from "components/battle/battlePokemon";
 import { battleStates } from "constants/gameConfig";
+import { useRouter } from "next/router";
 
 const animationCheck = {
   logic: "logic",
@@ -77,11 +77,9 @@ export default function Battle(props) {
       },
     ]);
 
-    console.log("hit");
-
     props.childPlaySound("/assets/acid_armor.mp3");
 
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -215,6 +213,7 @@ export default function Battle(props) {
         case animationCheck.nextPokemon:
           showNewPokemon();
           if (isFightOver()) {
+            props.childPlaySong("/assets/victory");
             setIsFighting(false);
           } else {
             animationType = animationCheck.spawningPokemon;
@@ -275,25 +274,47 @@ function PostGameScreen({ game, battle }) {
   const didWin = game.id === battle.winnerId;
   const gameOver = game.lives === 0;
   const beatGame = game.wins > 9;
+  const router = useRouter();
+  const [fadeOut, shouldFadeOut] = useState(false);
+
+  const handleClick = () => {
+    if (beatGame || gameOver) {
+      router.push("/");
+      return;
+    }
+
+    shouldFadeOut(true);
+    setTimeout(() => {
+      router.push("/play");
+    }, 500);
+  };
 
   return (
-    <div className="text-center mt-5">
-      {didWin ? (
-        <>
-          <h3 className="text-xl">{beatGame ? "you beat the game" : "you won"}</h3>
-          <Link href={beatGame ? "/" : "/play"}>
-            <a className="text-indigo-500">{beatGame ? "main menu" : "continue"}</a>
-          </Link>
-        </>
-      ) : (
-        <>
-          <h3>you lost</h3>
-          <Link href={gameOver ? "/" : "/play"}>
-            <a className="text-indigo-500">{gameOver ? "rip" : "continue"}</a>
-          </Link>
-        </>
+    <>
+      <div className="text-center mt-5">
+        {didWin ? (
+          <>
+            <h3 className="text-xl">{beatGame ? "you beat the game" : "you won"}</h3>
+            <button onClick={handleClick} className="text-indigo-500">
+              {beatGame ? "main menu" : "continue"}
+            </button>
+          </>
+        ) : (
+          <>
+            <h3>you lost</h3>
+            <button onClick={handleClick} className="text-indigo-500">
+              {gameOver ? "rip" : "continue"}
+            </button>
+          </>
+        )}
+      </div>
+      {fadeOut && (
+        <div
+          style={{ "--fadeinduration": "500ms" }}
+          className="white h-screen w-screen fixed fadeInAnimation bg-white top-0"
+        />
       )}
-    </div>
+    </>
   );
 }
 
@@ -319,10 +340,19 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
     select: {
       winnerId: true,
       id: true,
+      game1Id: true,
+      game2Id: true,
     },
   });
 
-  const game = await GetCurrentGame(prisma, userId, true);
+  const possibleGameIds = [battle.game1Id, battle.game2Id].filter((a) => a);
+
+  const game = await prisma.game.findFirst({
+    where: {
+      id: { in: possibleGameIds },
+      userId: userId,
+    },
+  });
 
   let battlePokemon = await prisma.battleTeam.findMany({
     where: {

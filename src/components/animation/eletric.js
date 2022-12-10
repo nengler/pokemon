@@ -9,11 +9,11 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
     top: getImgCenter(-20),
   };
 
-  const [isFirstStage, setIsFirstStage] = useState(true);
+  const [isFirstStage, setIsFirstStage] = useState(false);
 
-  // setTimeout(function () {
-  //   setIsFirstStage(false);
-  // }, 400);
+  setTimeout(function () {
+    setIsFirstStage(true);
+  }, 400);
 
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
