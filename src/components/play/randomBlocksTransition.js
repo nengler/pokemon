@@ -11,7 +11,7 @@ export default function RandomBlocksTransition() {
       {shuffledDelays.map((delay, index) => (
         <div
           key={delay}
-          className="fadeInAnimation biggerBlockAnimation"
+          className="fadeInAnimation biggerBlockAnimation block"
           style={{
             top: `${Math.floor(index / numberPerSide) * (100 / numberPerSide)}%`,
             left: `${(index % numberPerSide) * (100 / numberPerSide)}%`,

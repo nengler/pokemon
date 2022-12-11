@@ -67,6 +67,7 @@ model Battle {
   isSearching  Boolean      @default(true)
   isBattleOver Boolean      @default(false)
   round        Int
+  isDraw       Boolean      @default(false)
   BattleTeam   BattleTeam[]
 }
 

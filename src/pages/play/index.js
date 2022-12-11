@@ -192,7 +192,8 @@ export default function Home(props) {
   };
 
   function startPageTransition(battleId) {
-    props.childPlaySong("gym_battle");
+    const songToPlay = Math.floor(Math.random() * 2) === 0 ? "gym_battle_1" : "gym_battle_3";
+    props.childPlaySong(songToPlay);
     setTimeout(() => {
       setPageTransition({ ...pageTransition, isRunning: true });
     }, 500);
@@ -279,7 +280,7 @@ export default function Home(props) {
               return (
                 <div
                   key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
-                  className="w-[88px] md:w-28"
+                  className="w-[88px] md:w-32"
                 >
                   {shopMon && Object.keys(shopMon).length !== 0 && (
                     <ShopPokemon

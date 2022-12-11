@@ -78,7 +78,7 @@ export default function Battle(props) {
 
     props.childPlaySound("/assets/acid_armor.mp3");
 
-    // return;
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -194,6 +194,17 @@ export default function Battle(props) {
     return myFightingPokemon === undefined || enemyFightingPokemon === undefined;
   };
 
+  function playPostFightSong() {
+    const { battle, game } = props;
+    if (battle.winnerId === game.id) {
+      props.childPlaySong("victory");
+    } else if (battle.isDraw) {
+      props.childPlaySong("defeat");
+    } else {
+      props.childPlaySong("tie");
+    }
+  }
+
   useInterval(
     () => {
       switch (animationType) {
@@ -212,7 +223,7 @@ export default function Battle(props) {
         case animationCheck.nextPokemon:
           showNewPokemon();
           if (isFightOver()) {
-            props.childPlaySong("victory");
+            playPostFightSong();
             setIsFighting(false);
           } else {
             animationType = animationCheck.spawningPokemon;
@@ -231,14 +242,15 @@ export default function Battle(props) {
   const enemyCurrentPokemon = enemyBattlePokemon.find((p) => p.id === enemyCurrentBattler.id);
 
   return (
-    <>
-      <div className="flex flex-col p-4">
+    <div className="grassBackground w-screen h-screen">
+      <div className="fadeFromBlack" />
+      <div className="flex flex-col p-4 ">
         <div className="sm:flex justify-center items-center sm:gap-8 lg:gap-16">
           <PokeBalls flip pokemonTeam={myBattlePokemon} />
           <PokeBalls flip={false} pokemonTeam={enemyBattlePokemon} />
         </div>
         <div className="flex mt-[10vh] justify-center gap-8 lg:gap-16">
-          <div ref={myTeamRef} data-my-team="true" className="w-40">
+          <div ref={myTeamRef} data-my-team="true" className="w-40 md:w-48">
             {myCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={myCurrentPokemon}
@@ -251,7 +263,7 @@ export default function Battle(props) {
             )}
           </div>
 
-          <div ref={enemyTeamRef} data-my-team="false" className="w-40">
+          <div ref={enemyTeamRef} data-my-team="false" className="w-40 md:w-48">
             {enemyCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={enemyCurrentPokemon}
@@ -265,7 +277,7 @@ export default function Battle(props) {
         </div>
       </div>
       {!isFighting && <PostGameScreen battle={props.battle} game={props.game} />}
-    </>
+    </div>
   );
 }
 
@@ -288,24 +300,33 @@ function PostGameScreen({ game, battle }) {
     }, 500);
   };
 
+  const getHeaderText = () => {
+    if (didWin) {
+      return beatGame ? "you beat the game" : "you won";
+    } else if (battle.isDraw) {
+      return "its a draw";
+    } else {
+      return "you lost";
+    }
+  };
+
+  const getButtonText = () => {
+    if (didWin) {
+      return beatGame ? "main menu" : "continue";
+    } else if (battle.isDraw) {
+      return "continue";
+    } else {
+      return gameOver ? "rip" : "continue";
+    }
+  };
+
   return (
     <>
       <div className="text-center mt-5">
-        {didWin ? (
-          <>
-            <h3 className="text-xl">{beatGame ? "you beat the game" : "you won"}</h3>
-            <button onClick={handleClick} className="text-indigo-500">
-              {beatGame ? "main menu" : "continue"}
-            </button>
-          </>
-        ) : (
-          <>
-            <h3>you lost</h3>
-            <button onClick={handleClick} className="text-indigo-500">
-              {gameOver ? "rip" : "continue"}
-            </button>
-          </>
-        )}
+        <h3 className="text-xl">{getHeaderText()}</h3>
+        <button onClick={handleClick} className="text-indigo-500">
+          {getButtonText()}
+        </button>
       </div>
       {fadeOut && (
         <div
@@ -341,6 +362,7 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
       id: true,
       game1Id: true,
       game2Id: true,
+      isDraw: true,
     },
   });
 

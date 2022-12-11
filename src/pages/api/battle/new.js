@@ -8,6 +8,7 @@ import { shopPokemonNumber, startingGold } from "constants/gameConfig";
 import { simulateBattle } from "util/simulateBattle";
 import DeleteCurrentShop from "prisma/queries/deleteCurrentShop";
 import CreateNewShopPokemon from "prisma/methods/createNewShopPokemon";
+import handlePostBattle from "prisma/methods/handlePostBattle";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
 
@@ -71,20 +72,9 @@ async function handler(req, res) {
     const enemyBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game2Id);
     const myBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game1Id);
 
-    const battleWinner = await simulateBattle(myBattleTeam, enemyBattleTeam);
+    const battleStatus = await simulateBattle(myBattleTeam, enemyBattleTeam);
 
-    battle = await prisma.battle.update({
-      where: {
-        id: battle.id,
-      },
-      data: {
-        winnerId: battleWinner,
-        isBattleOver: true,
-      },
-    });
-
-    handleUpdatePostGame(prisma, battle.game1Id, battleWinner);
-    handleUpdatePostGame(prisma, battle.game2Id, battleWinner);
+    battle = await handlePostBattle(battle.id, battleStatus);
   }
 
   res.status(200).json(battle);
@@ -106,30 +96,4 @@ async function createBattleTeam(prisma, gamePokemonArray, gameId, battleId) {
       };
     }),
   });
-}
-
-async function handleUpdatePostGame(prisma, gameId, battleWinner) {
-  let updateData = {
-    gold: startingGold,
-    round: {
-      increment: 1,
-    },
-  };
-
-  if (battleWinner === gameId) {
-    updateData.wins = { increment: 1 };
-  } else {
-    updateData.lives = { decrement: 1 };
-  }
-
-  const game = await prisma.game.update({
-    where: {
-      id: gameId,
-    },
-    data: updateData,
-  });
-
-  await DeleteCurrentShop(prisma, gameId);
-  const currentShopPokemon = await prisma.shopPokemon.count({ where: { gameId: gameId } });
-  await CreateNewShopPokemon(prisma, gameId, game.round, shopPokemonNumber - currentShopPokemon);
 }

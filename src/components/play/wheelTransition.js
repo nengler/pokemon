@@ -39,11 +39,11 @@ function handleLeft(start, end, delay) {
 }
 
 function createElement(x, y, iterator) {
-  const delay = iterator * 12;
+  const delay = iterator * 10;
   const div = (
     <div
       key={delay}
-      className="fadeInAnimation blockAnimation"
+      className="fadeInAnimation blockAnimation block"
       style={{
         top: `${y * (100 / 15)}%`,
         left: `${x * (100 / 15)}%`,

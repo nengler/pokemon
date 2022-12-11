@@ -56,7 +56,7 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.9],
               },
             }}
-            className="absolute z-[1]"
+            className="absolute z-[2]"
             key={index}
             style={styles}
           >

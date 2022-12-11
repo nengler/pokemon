@@ -65,10 +65,10 @@ export default function PoisonAnimation({ teamLocation, enemyTeamLocation }) {
             animate={{
               opacity: [0, 1, 1, 0],
               y: -50,
-              background: "rgb(255, 255, 255)",
-              borderBottomColor: "rgb(255, 255, 255)",
-              borderRightColor: "rgb(255, 255, 255)",
-              borderLeftColor: "rgb(255, 255, 255)",
+              background: "rgba(255, 255, 255, 0)",
+              borderBottomColor: "rgba(255, 255, 255, 0)",
+              borderRightColor: "rgba(255, 255, 255, 0)",
+              borderLeftColor: "rgba(255, 255, 255, 0)",
             }}
             transition={{
               y: { duration: bubbleRisingDuration, delay: delay },

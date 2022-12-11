@@ -140,7 +140,7 @@ export default function MyPokemon({
     >
       <div
         ref={drop}
-        className={`h-[125px] md:h-36 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-[125px] md:h-auto border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >

@@ -69,6 +69,6 @@ export async function simulateBattle(myBattleTeam, enemyBattleTeam) {
     return myBattleTeam[0].gameId;
   } else {
     // console.log("draw");
-    return null;
+    return "draw";
   }
 }

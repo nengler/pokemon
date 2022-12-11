@@ -2,6 +2,7 @@ import PokemonImage from "util/pokemonImage";
 import PokemonType from "./pokemonType";
 import TextAnimation from "./battle/textComponent";
 import SpawnPokeball from "./battle/spawnPokeball";
+import Image from "next/image";
 
 export default function Pokemon({
   pokemonRef,
@@ -38,9 +39,9 @@ export default function Pokemon({
     }
 
     if (isFighting) {
-      classes.push(...["w-28", "h-28"]);
+      classes.push(...["w-32", "h-32"]);
     } else {
-      classes.push(...["w-[88px]", "h-[88px]", "md:w-28", "md:h-28"]);
+      classes.push(...["w-[88px]", "h-[88px]", "md:w-32", "md:h-32"]);
     }
 
     return classes.join(" ");
@@ -71,10 +72,9 @@ export default function Pokemon({
         </div>
         <TextAnimation attackAnimation={attackAnimation} isMyTeam={flip} />
         {isFighting && (
-          <div
-            className="absolute bottom-2 w-full h-12 bg-[#dfc3a5] border-[3px] border-[#efdbb5]"
-            style={{ borderRadius: "50%" }}
-          />
+          <div className="absolute bottom-1 w-full">
+            <Image src="/assets/grass_platform.png" width={256} height={70} />
+          </div>
         )}
         {isSpawning && <SpawnPokeball />}
       </div>
