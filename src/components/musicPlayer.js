@@ -10,13 +10,13 @@ export default function MusicPlayer({ Component, pageProps }) {
   const sourceRef = useRef(null);
   const inputRange = getInputRange();
   const audioSongs = useRef([
-    { name: "victory", buffer: null, didFetch: false, url: "/assets/victory.mp3" },
-    { name: "defeat", buffer: null, didFetch: false, url: "/assets/defeat.mp3" },
-    { name: "tie", buffer: null, didFetch: false, url: "/assets/tie.mp3" },
-    { name: "center", buffer: null, didFetch: false, url: "/assets/pokemon_center.mp3" },
-    { name: "azalea", buffer: null, didFetch: false, url: "/assets/azalea_town.mp3" },
-    { name: "gym_battle_1", buffer: null, didFetch: false, url: "/assets/gym_battle_1.mp3" },
-    { name: "gym_battle_3", buffer: null, didFetch: false, url: "/assets/gym_battle_3.mp3" },
+    { name: "victory", buffer: null, didFetch: false, url: "/assets/music/victory.mp3" },
+    { name: "defeat", buffer: null, didFetch: false, url: "/assets/music/defeat.mp3" },
+    { name: "tie", buffer: null, didFetch: false, url: "/assets/music/tie.mp3" },
+    { name: "center", buffer: null, didFetch: false, url: "/assets/music/pokemon_center.mp3" },
+    { name: "azalea", buffer: null, didFetch: false, url: "/assets/music/azalea_town.mp3" },
+    { name: "gym_battle_1", buffer: null, didFetch: false, url: "/assets/music/gym_battle_1.mp3" },
+    { name: "gym_battle_3", buffer: null, didFetch: false, url: "/assets/music/gym_battle_3.mp3" },
   ]);
 
   function getInputRange() {

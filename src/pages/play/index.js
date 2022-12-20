@@ -19,6 +19,7 @@ import { maxTeamSize, shopPokemonNumber } from "constants/gameConfig";
 import WheelTransition from "components/play/wheelTransition";
 import RandomBlocksTransition from "components/play/randomBlocksTransition";
 import GetRandomElement from "util/getRandomElement";
+import Image from "next/image";
 
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
@@ -34,7 +35,7 @@ export default function Home(props) {
   const [game, setGame] = useState(props.game);
   const [myPokemon, setMyPokemon] = useState(props.myPokemonRecords);
   const [canPerformAction, setCanPerformAction] = useState(props.waitingForBattle ? false : true);
-  const [pageTransition, setPageTransition] = useState({ isRunning: false, timeout: 2500, animation: pageAnimation() });
+  const [pageTransition, setPageTransition] = useState({ isRunning: true, timeout: 2500, animation: pageAnimation() });
 
   const allowPerformAction = () => setCanPerformAction(true);
   const disallowPerformAction = () => setCanPerformAction(false);
@@ -243,8 +244,11 @@ export default function Home(props) {
         className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3 fadeInAnimation"
         style={{ "--fadeinduration": "750ms" }}
       >
-        <div className="flex gap-2">
-          <div>gold: {game.gold}</div>
+        <div className="flex gap-4">
+          <div className="flex gap-1">
+            {game.gold}
+            <Image src="/assets/PokeCoin.png" height={25} width={25} />
+          </div>
           <div>round: {game.round}</div>
           <div>lives: {game.lives}</div>
           <div>wins: {game.wins}</div>
