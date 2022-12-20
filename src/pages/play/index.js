@@ -35,7 +35,7 @@ export default function Home(props) {
   const [game, setGame] = useState(props.game);
   const [myPokemon, setMyPokemon] = useState(props.myPokemonRecords);
   const [canPerformAction, setCanPerformAction] = useState(props.waitingForBattle ? false : true);
-  const [pageTransition, setPageTransition] = useState({ isRunning: true, timeout: 2500, animation: pageAnimation() });
+  const [pageTransition, setPageTransition] = useState({ isRunning: false, timeout: 2500, animation: pageAnimation() });
 
   const allowPerformAction = () => setCanPerformAction(true);
   const disallowPerformAction = () => setCanPerformAction(false);

@@ -212,7 +212,7 @@ export default function MusicPlayer({ Component, pageProps }) {
   const spawnPokemonSound = (pokemonId) => {
     let stringPokemonId = pokemonId.toString();
     Array.apply(null, Array(3 - stringPokemonId.length)).forEach((_i) => (stringPokemonId = "0" + stringPokemonId));
-    childPlaySound(`/assets/cries/${stringPokemonId}.ogg`);
+    childPlaySound(`/assets/cries/${stringPokemonId}.mp3`);
   };
 
   const allProps = { ...pageProps, childPlaySound, childPlaySong, spawnPokemonSound };
