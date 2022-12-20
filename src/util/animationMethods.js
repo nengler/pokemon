@@ -10,7 +10,6 @@ export function getPositionAtCenter({ left, width, top, height }) {
 }
 
 export const getTeamLocation = (teamLocation) => {
-  const currentPokemonDiv = teamLocation.children[0];
-  const currentPokemonImg = currentPokemonDiv?.querySelector("div[data-pokemon-image='true']");
+  const currentPokemonImg = teamLocation.querySelector("div[data-pokemon-image='true']");
   return currentPokemonImg?.getBoundingClientRect();
 };

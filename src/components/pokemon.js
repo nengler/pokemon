@@ -2,7 +2,6 @@ import PokemonImage from "util/pokemonImage";
 import PokemonType from "./pokemonType";
 import TextAnimation from "./battle/textComponent";
 import SpawnPokeball from "./battle/spawnPokeball";
-import Image from "next/image";
 
 export default function Pokemon({
   pokemonRef,
@@ -71,11 +70,6 @@ export default function Pokemon({
           </div>
         </div>
         <TextAnimation attackAnimation={attackAnimation} isMyTeam={flip} />
-        {isFighting && (
-          <div className="absolute bottom-1 w-full">
-            <Image src="/assets/grass_platform.png" width={256} height={70} />
-          </div>
-        )}
         {isSpawning && <SpawnPokeball />}
       </div>
 

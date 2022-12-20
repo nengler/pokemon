@@ -1,7 +1,7 @@
 import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import HandIcon from "/public/assets/hand";
+import HandIcon from "./svg/hand";
 
 export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
   const animationDuration = 0.5;

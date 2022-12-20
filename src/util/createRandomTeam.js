@@ -23,7 +23,7 @@ export default async function getRandomTeam(battleId, currentRound) {
       teamPokemon = removeWeakerPokemon(teamPokemon, Math.max(...levelRange));
     }
 
-    const randomShopPokemon = Array.from({ length: shopPokemonNumber * 2 }, () => ({
+    const randomShopPokemon = Array.from({ length: shopPokemonNumber * 4 }, () => ({
       pokemonId: GetRandomElement(availablePokemon),
       level: GetRandomElement(levelRange),
     }));
@@ -51,7 +51,7 @@ export default async function getRandomTeam(battleId, currentRound) {
     });
   });
 
-  teamPokemon.sort(byLevel);
+  teamPokemon.sort(byLevelForCreation);
 
   const pokemonData = await Promise.all(
     teamPokemon.map(async (t, order) => {
@@ -82,6 +82,10 @@ function byLevel(a, b) {
   return a.level < b.level ? 1 : -1;
 }
 
+function byLevelForCreation(a, b) {
+  return a.level < b.level ? -1 : 1;
+}
+
 function getMostEvolvedPokemon(pokemonId, level) {
   const evolutions = pokemonEvolution[pokemonId];
 
@@ -95,8 +99,8 @@ function getMostEvolvedPokemon(pokemonId, level) {
     return pokemonId;
   }
 
-  const randomEvolution = GetRandomElement(canEvolveInto);
-  return randomEvolution.into;
+  const randomEvolution = canEvolveInto.length === 1 ? GetRandomElement(canEvolveInto) : canEvolveInto[0];
+  return getMostEvolvedPokemon(randomEvolution.into, level);
 }
 
 function combineDuplicates(pokemonTeam) {

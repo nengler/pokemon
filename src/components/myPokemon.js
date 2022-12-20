@@ -40,11 +40,11 @@ export default function MyPokemon({
     document.removeEventListener("mousedown", handleOutsideClicks);
   };
 
-  const pokemonDropped = ({ shopPokemonId }) => {
+  const pokemonDropped = (props) => {
     if (gamePokemon === undefined) {
-      buyNewPokemon(order, shopPokemonId);
+      buyNewPokemon(order, props.shopPokemonId, props.pokemonId);
     } else {
-      upgradePokemon(gamePokemon.id, shopPokemonId);
+      upgradePokemon(gamePokemon.id, props.shopPokemonId);
     }
   };
 
@@ -140,7 +140,7 @@ export default function MyPokemon({
     >
       <div
         ref={drop}
-        className={`h-[125px] md:h-auto border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-[125px] md:h-40 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >

@@ -69,13 +69,13 @@ export default function MusicPlayer({ Component, pageProps }) {
     return gainNodeRef.current;
   }
 
-  function playSong(buffer) {
+  function playSong(buffer, shouldLoop = true) {
     let gainNode = getOrCreateGain();
     let source = createSource(gainNode);
 
     source.buffer = buffer;
 
-    source.loop = true;
+    source.loop = shouldLoop;
     const currentVolume = parseInt(inputRange.value);
     gainNode.gain.setValueAtTime(currentVolume / 100, audioContext.current.currentTime);
     source.start(0);
@@ -184,10 +184,10 @@ export default function MusicPlayer({ Component, pageProps }) {
     return audioBuffer;
   }
 
-  async function loadOrPlaySong(songName) {
+  async function loadOrPlaySong(songName, shouldLoop) {
     const songObject = audioSongs.current.find((a) => a.name === songName);
     if (songObject.buffer) {
-      playSong(songObject.buffer);
+      playSong(songObject.buffer, shouldLoop);
       return;
     }
 
@@ -198,18 +198,24 @@ export default function MusicPlayer({ Component, pageProps }) {
       }
     });
 
-    playSong(audioBuffer);
+    playSong(audioBuffer, shouldLoop);
   }
 
   const childPlaySound = (url) => {
     loadSound(url, playSound);
   };
 
-  const childPlaySong = (songName) => {
-    loadOrPlaySong(songName, playSong);
+  const childPlaySong = (songName, shouldLoop = true) => {
+    loadOrPlaySong(songName, shouldLoop);
   };
 
-  const allProps = { ...pageProps, childPlaySound, childPlaySong };
+  const spawnPokemonSound = (pokemonId) => {
+    let stringPokemonId = pokemonId.toString();
+    Array.apply(null, Array(3 - stringPokemonId.length)).forEach((_i) => (stringPokemonId = "0" + stringPokemonId));
+    childPlaySound(`/assets/cries/${stringPokemonId}.ogg`);
+  };
+
+  const allProps = { ...pageProps, childPlaySound, childPlaySong, spawnPokemonSound };
 
   return (
     <>

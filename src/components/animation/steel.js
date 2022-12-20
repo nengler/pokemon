@@ -1,7 +1,7 @@
 import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import PlusCircle from "/public/assets/plusCircle";
+import PlusCircle from "./svg/plusCircle";
 
 export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {

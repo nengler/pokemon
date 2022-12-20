@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ThunderIcon from "/public/assets/thunder";
+import ThunderIcon from "./svg/thunder";
 import { useState } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { getImgCenter } from "constants/animationConfig";

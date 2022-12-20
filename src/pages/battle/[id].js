@@ -9,6 +9,9 @@ import PokeBalls from "components/battle/pokeballs";
 import { BattlePokemon } from "components/battle/battlePokemon";
 import { battleStates } from "constants/gameConfig";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import styles from "../../styles/battle.module.css";
+import GetRandomElement from "util/getRandomElement";
 
 const animationCheck = {
   logic: "logic",
@@ -18,6 +21,17 @@ const animationCheck = {
 };
 
 let animationType = animationCheck.nextPokemon;
+
+function getBackgroundType() {
+  const backgroundOptions = [
+    { type: "grass", platformImage: "/assets/platforms/grass_platform.png", class: "bg-[#d8f8d0]" },
+    { type: "ground", platformImage: "/assets/platforms/ground_platform.png", class: "bg-[#c4ad78]" },
+    { type: "normal", platformImage: "/assets/platforms/normal_platform.png", class: styles.whiteBackground },
+    { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
+  ];
+
+  return backgroundOptions[3];
+}
 
 export default function Battle(props) {
   const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));
@@ -30,6 +44,7 @@ export default function Battle(props) {
   const [isFighting, setIsFighting] = useState(true);
   const myTeamRef = useRef();
   const enemyTeamRef = useRef();
+  const backgroundType = useRef(getBackgroundType());
 
   const [fightingAnimations, setFightingAnimations] = useState([]);
 
@@ -78,7 +93,7 @@ export default function Battle(props) {
 
     props.childPlaySound("/assets/acid_armor.mp3");
 
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -199,9 +214,9 @@ export default function Battle(props) {
     if (battle.winnerId === game.id) {
       props.childPlaySong("victory");
     } else if (battle.isDraw) {
-      props.childPlaySong("defeat");
+      props.childPlaySong("defeat", false);
     } else {
-      props.childPlaySong("tie");
+      props.childPlaySong("tie", false);
     }
   }
 
@@ -242,7 +257,7 @@ export default function Battle(props) {
   const enemyCurrentPokemon = enemyBattlePokemon.find((p) => p.id === enemyCurrentBattler.id);
 
   return (
-    <div className="grassBackground w-screen h-screen">
+    <div className={`${backgroundType.current.class} w-screen h-screen`}>
       <div className="fadeFromBlack" />
       <div className="flex flex-col p-4 ">
         <div className="sm:flex justify-center items-center sm:gap-8 lg:gap-16">
@@ -250,7 +265,8 @@ export default function Battle(props) {
           <PokeBalls flip={false} pokemonTeam={enemyBattlePokemon} />
         </div>
         <div className="flex mt-[10vh] justify-center gap-8 lg:gap-16">
-          <div ref={myTeamRef} data-my-team="true" className="w-40 md:w-48">
+          <div ref={myTeamRef} data-my-team="true" className="w-40 md:w-48 relative">
+            <Platform image={backgroundType.current.platformImage} />
             {myCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={myCurrentPokemon}
@@ -259,11 +275,13 @@ export default function Battle(props) {
                 enemyTeamLocation={enemyTeamRef.current}
                 flip={true}
                 status={myCurrentBattler.status}
+                spawnSound={props.spawnPokemonSound}
               />
             )}
           </div>
 
-          <div ref={enemyTeamRef} data-my-team="false" className="w-40 md:w-48">
+          <div ref={enemyTeamRef} data-my-team="false" className="w-40 md:w-48 relative">
+            <Platform image={backgroundType.current.platformImage} />
             {enemyCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={enemyCurrentPokemon}
@@ -277,6 +295,14 @@ export default function Battle(props) {
         </div>
       </div>
       {!isFighting && <PostGameScreen battle={props.battle} game={props.game} />}
+    </div>
+  );
+}
+
+function Platform({ image }) {
+  return (
+    <div className="absolute top-16 w-full">
+      <Image src={image} width={256} height={70} />
     </div>
   );
 }

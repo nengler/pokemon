@@ -1,7 +1,7 @@
 import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import RockIcon from "/public/assets/newRock";
+import RockIcon from "./svg/newRock";
 
 export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {

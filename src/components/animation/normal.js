@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import StarIcon from "/public/assets/star";
+import StarIcon from "./svg/star";
 import { getImgCenter } from "constants/animationConfig";
 
 export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {

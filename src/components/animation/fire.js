@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import Flame from "/public/assets/flame";
 import { imgHeight } from "constants/animationConfig";
+import Flame from "./svg/flame";
 
 export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
   const animationDuration = 0.6;

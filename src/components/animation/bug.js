@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import NeedleIcon from "/public/assets/needle";
+import NeedleIcon from "./svg/needle";
 import { imgHeight } from "constants/animationConfig";
 
 export default function BugAnimation({ teamLocation, enemyTeamLocation }) {

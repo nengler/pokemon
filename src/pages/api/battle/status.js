@@ -1,7 +1,7 @@
 import prisma from "lib/prisma";
 import { GetBattleTeam } from "prisma/queries/getBattleTeam";
 import { simulateBattle } from "util/simulateBattle";
-import getRandomTeam from "util/createRandomTeam";
+import createRandomTeam from "util/createRandomTeam";
 import handlePostBattle from "prisma/methods/handlePostBattle";
 
 export default async function handler(req, res) {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       },
     });
 
-    await getRandomTeam(battle.id, battle.round);
+    await createRandomTeam(battle.id, battle.round);
 
     const enemyBattleTeam = await GetBattleTeam(prisma, battle.id, null);
     const myBattleTeam = await GetBattleTeam(prisma, battle.id, battle.game1Id);

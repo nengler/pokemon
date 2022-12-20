@@ -77,7 +77,7 @@ export default function Home(props) {
     );
   };
 
-  const buyNewPokemon = async (order, shopPokemonId) => {
+  const buyNewPokemon = async (order, shopPokemonId, pokemonId) => {
     disallowPerformAction();
     const body = {
       order: order,
@@ -96,6 +96,7 @@ export default function Home(props) {
     setGame({ ...game, gold: buyData.gold });
     updateShopPokemon(shopPokemonId);
     allowPerformAction();
+    props.spawnPokemonSound(pokemonId);
   };
 
   const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
@@ -152,6 +153,7 @@ export default function Home(props) {
       })
     );
     allowPerformAction();
+    props.spawnPokemonSound(evolveData.gamePokemon.pokemonId);
   };
 
   const searchForBattle = async () => {

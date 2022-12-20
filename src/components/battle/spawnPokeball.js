@@ -23,7 +23,7 @@ export default function SpawnPokeball() {
   }, []);
 
   return (
-    <div className="absolute bottom-4">
+    <div className="absolute bottom-6">
       {pokeballState === pokeballAnimation.first && <Image src={closedPokeball} width={15} height={15} />}
       {pokeballState === pokeballAnimation.second && <Image src={openPokeball} width={15} height={20} />}
     </div>

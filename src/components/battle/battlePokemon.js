@@ -24,7 +24,17 @@ export function BattlePokemon({
   teamLocation,
   enemyTeamLocation,
   status,
+  spawnSound,
 }) {
+  const didDie = status === battleStates.death;
+  const isSpawning = status === battleStates.spawning;
+
+  if (isSpawning && spawnSound) {
+    setTimeout(() => {
+      spawnSound(battlePokemon.pokemonId);
+    }, 600);
+  }
+
   return (
     <>
       <div className="text-center relative">
@@ -47,13 +57,13 @@ export function BattlePokemon({
           defense={battlePokemon.defense}
           pokemonTypes={battlePokemon.types}
           flip={flip}
-          didDie={status === battleStates.death}
-          isSpawning={status === battleStates.spawning}
+          didDie={didDie}
+          isSpawning={isSpawning}
           isFighting={true}
           attackAnimation={attackAnimation}
         />
       </div>
-      {status === battleStates.spawning && <SpawnPokemonText pokemonName={battlePokemon.name} />}
+      {isSpawning && <SpawnPokemonText pokemonName={battlePokemon.name} />}
     </>
   );
 }
