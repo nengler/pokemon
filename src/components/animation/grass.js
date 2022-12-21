@@ -27,7 +27,7 @@ export default function GrassAnimation({ teamLocation, enemyTeamLocation }) {
       {razorLeafs.map((_water, index) => {
         let styles = {
           left: "calc(50%  - 24px)",
-          top: `${index % 2 === 0 ? 90 : 62}px`,
+          top: "calc(50%  - 24px)", //`${index % 2 === 0 ? 90 : 62}px`,
         };
 
         const delay = index * 0.15;
@@ -38,7 +38,7 @@ export default function GrassAnimation({ teamLocation, enemyTeamLocation }) {
               x: distanceToMove * xFactor,
               opacity: [0, 1, 1, 0],
               rotate: 1080,
-              y: [0, index % 2 === 0 ? 60 : -60, 0],
+              y: [0, index % 2 === 0 ? 80 : -80, 0],
             }}
             transition={{
               default: { delay: delay, duration: 0.4 },

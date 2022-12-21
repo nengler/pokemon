@@ -2,13 +2,12 @@ import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { imgHeight } from "constants/animationConfig";
-const blades = [10, 120, 75, 300, 150, 100, 70];
-const animationDuration = 0.3;
-const animationDelay = 0.07;
-const topYStartingPosition = imgHeight / 2 - 16 - 20;
-const bottomYStartingPosition = imgHeight / 2 - 16 + 20;
 
 export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
+  const blades = [10, 120, 75, 180, 30];
+  const animationDelay = 0.07;
+  const topYStartingPosition = imgHeight / 2 - 16 - 20;
+  const bottomYStartingPosition = imgHeight / 2 - 16 + 20;
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
@@ -63,17 +62,19 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
 }
 
 function BladeDiv({ distanceToMove, bladeRotation, styles, delay }) {
+  const animationDuration = 0.25;
+
   return (
     <motion.div
       initial={{ rotate: bladeRotation }}
       animate={{
         x: distanceToMove,
         opacity: [0, 1, 1, 0],
-        rotate: bladeRotation + 360,
+        rotate: bladeRotation + 900,
       }}
       transition={{
         // rotate: { delay: delay, duration: 0.15, repeat: Infinity },
-        default: { delay: delay, duration: animationDuration },
+        default: { delay: delay, duration: animationDuration, ease: "linear" },
         opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.8, 1] },
       }}
       className="absolute h-8 w-8 rounded-full border-[#b4b9b9] border-t-8 opacity-0 border-r-8 z-10 

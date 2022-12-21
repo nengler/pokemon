@@ -4,7 +4,8 @@ import { imgHeight } from "constants/animationConfig";
 import Flame from "./svg/flame";
 
 export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
-  const animationDuration = 0.6;
+  const animationDuration = 0.5;
+  const animationDelay = 0.05;
   const yStartingPosition = imgHeight / 2 - 10;
 
   const fires = [
@@ -13,6 +14,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
     { top: -5, left: -5 },
     { top: 10, left: -30 },
     { top: -15, left: -20 },
+    { top: 0, left: 0 },
   ];
 
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -40,7 +42,7 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.05;
+        const delay = index * animationDelay;
 
         return (
           <motion.div

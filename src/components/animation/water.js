@@ -7,8 +7,9 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const animationLength = 0.4;
-  const waterPulses = [null, null, null];
+  const animationLength = 0.25;
+  const animationDelay = 0.1;
+  const waterPulses = [null, null, null, null, null];
   const yStartingPosition = getImgCenter(-40);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
@@ -33,7 +34,7 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.175;
+        const delay = index * animationDelay;
 
         return (
           <motion.div

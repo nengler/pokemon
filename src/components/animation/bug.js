@@ -5,6 +5,7 @@ import { imgHeight } from "constants/animationConfig";
 
 export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
   const animationDuration = 0.4;
+  const animationDelay = 0.19;
   const yStartingPosition = imgHeight / 2 - 16;
 
   const neeldes = [null, null, null];
@@ -35,7 +36,7 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = 0.15 * index;
+        const delay = animationDelay * index;
 
         return (
           <motion.div

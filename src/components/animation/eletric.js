@@ -13,7 +13,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
 
   setTimeout(function () {
     setIsFirstStage(true);
-  }, 400);
+  }, 350);
 
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;

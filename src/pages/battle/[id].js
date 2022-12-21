@@ -91,9 +91,8 @@ export default function Battle(props) {
       },
     ]);
 
-    props.childPlaySound("/assets/acid_armor.mp3");
-
-    // return;
+    playMoveSound(calculateMyAttack.type);
+    return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {
@@ -115,6 +114,53 @@ export default function Battle(props) {
       })
     );
   };
+
+  function playMoveSound(type) {
+    switch (type) {
+      case "Bug":
+        props.childPlaySound("/assets/moves/pin_missle.mp3");
+        break;
+      case "Dragon":
+        break;
+      case "Electric":
+        props.childPlaySound("/assets/moves/spark.mp3");
+        break;
+      case "Fighting":
+        props.childPlaySound("/assets/moves/karate_chop.mp3");
+        break;
+      case "Fire":
+        props.childPlaySound("/assets/moves/flame_wheel.mp3");
+        break;
+      case "Flying":
+        props.childPlaySound("/assets/moves/aeroblast.mp3");
+        break;
+      case "Ghost":
+        break;
+      case "Grass":
+        props.childPlaySound("/assets/moves/razor_leaf.mp3");
+        break;
+      case "Ground":
+        break;
+      case "Ice":
+        break;
+      case "Normal":
+        props.childPlaySound("/assets/moves/swift.mp3");
+        break;
+      case "Poison":
+        props.childPlaySound("/assets/moves/sludge.mp3");
+        break;
+      case "Psychic":
+        props.childPlaySound("/assets/moves/psycho_boost.mp3");
+        break;
+      case "Rock":
+        break;
+      case "Steel":
+        break;
+      case "Water":
+        props.childPlaySound("/assets/moves/bubble.mp3");
+        break;
+    }
+  }
 
   const handleMyFightingUpdate = (battler, battlePokemon) => {
     let { id, status } = battler;
