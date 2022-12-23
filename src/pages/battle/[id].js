@@ -30,7 +30,7 @@ function getBackgroundType() {
     { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
   ];
 
-  return backgroundOptions[3];
+  return backgroundOptions[1];
 }
 
 export default function Battle(props) {
@@ -129,7 +129,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/karate_chop.mp3");
         break;
       case "Fire":
-        props.childPlaySound("/assets/moves/flame_wheel.mp3");
+        props.childPlaySound("/assets/moves/ember.mp3");
         break;
       case "Flying":
         props.childPlaySound("/assets/moves/aeroblast.mp3");

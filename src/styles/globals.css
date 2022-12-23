@@ -139,7 +139,7 @@
       transform: translateY(0);
     }
     25% {
-      opactiy: 1;
+      opacity: 1;
     }
     75% {
       opacity: 1;
@@ -167,5 +167,24 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+.fadeInFadeOuAnimation {
+  opacity: 0;
+  animation-name: fadee;
+  animation-duration: 200ms;
+  animation-delay: var(--fadeindelay);
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+  z-index: 2;
+}
+
+@keyframes fadee {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

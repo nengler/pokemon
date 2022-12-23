@@ -7,10 +7,16 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const animationLength = 0.25;
-  const animationDelay = 0.1;
-  const waterPulses = [null, null, null, null, null];
-  const yStartingPosition = getImgCenter(-40);
+  const bubbleScaleOptions = [
+    [0.4, 0.6, 0.8],
+    [0.5, 1, 1.5],
+    [0.6, 0.9, 1.2],
+  ];
+
+  const animationLength = 0.35;
+  const animationDelay = 0.03;
+  const bubbles = Array.apply(null, Array(18)).map(() => Math.floor(Math.random() * 60) - 30);
+  const yStartingPosition = getImgCenter(-8);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
@@ -28,10 +34,11 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
 
   return (
     <>
-      {waterPulses.map((_water, index) => {
+      {bubbles.map((bubbleOffset, index) => {
+        const topOffsetFactor = Math.floor(Math.random() * 10) - 5;
         let styles = {
-          left: "calc(50% - 16px)",
-          top: `${yStartingPosition}px`,
+          left: `calc(50% - 16px + ${20 * xFactor}px)`,
+          top: `${yStartingPosition + topOffsetFactor}px`,
         };
 
         const delay = index * animationDelay;
@@ -39,19 +46,21 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             animate={{
-              x: distanceToMove * xFactor,
-              opacity: [0, 1, 1, 0],
-              scale: [1, 0.6, 1, 0.9],
+              x: distanceToMove * xFactor + bubbleOffset,
+              y: bubbleOffset,
+              opacity: [0, 0.8, 0.6, 0],
+              scale: bubbleScaleOptions[index % 3],
             }}
             transition={{
-              x: { type: "tween", ease: "linear", duration: animationLength, delay: delay },
-              scale: { delay: delay, duration: animationLength },
-              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.9, 1] },
+              x: { ease: "linear", duration: animationLength, delay: delay },
+              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.8, 1] },
+              scale: { delay: delay, duration: animationLength, times: [0, 0.5, 1] },
+              y: { duration: animationLength, delay: delay },
             }}
-            className="absolute h-20 w-8 border-4 rounded-[50%] border-[#79baed] z-10"
+            className="absolute h-4 w-4 rounded-[50%] border border-[#d6ddf8] bg-[#f7f9f9] z-10"
             key={index}
             style={styles}
-          ></motion.div>
+          />
         );
       })}
     </>
