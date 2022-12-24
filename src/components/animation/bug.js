@@ -43,7 +43,7 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
         let hitStyles = {
           top: "calc(50% - 16px)",
           left: `calc(50% - 16px + ${distanceToMove * xFactor}px)`,
-          "--fadeindelay": `${delay + animationDuration}s`,
+          "--fadeindelay": `${delay + animationDuration - 0.05}s`,
         };
 
         return (
@@ -70,14 +70,25 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
                   times: [0, 0.01, 0.9],
                 },
               }}
-              className="absolute z-[2]"
+              className="absolute w-8 h-8 z-[2]"
               style={styles}
             >
-              <NeedleIcon />
+              <NeedleCSS />
             </motion.div>
           </Fragment>
         );
       })}
+    </>
+  );
+}
+
+function NeedleCSS() {
+  return (
+    <>
+      <div className="absolute bottom-1.5 left-1.5 border-solid border-b-[26px] border-x-[9px] border-x-[transparent] border-b-gray-900" />
+      <div className="absolute bottom-1.5 left-[7px] border-solid border-b-[24px] border-x-[8px] border-x-[transparent] border-b-gray-100" />
+      <div className="absolute bottom-[1px] left-1.5 border-solid border-t-[5px] border-x-[9px] border-x-[transparent] border-t-gray-900" />
+      <div className="absolute bottom-0.5 left-[7px] border-solid border-t-[4px] border-x-[8px] border-x-[transparent] border-t-gray-100" />
     </>
   );
 }

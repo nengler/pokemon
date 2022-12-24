@@ -309,11 +309,11 @@ export default function Battle(props) {
     <div className={`${backgroundType.current.class} w-screen h-screen`}>
       <div className="fadeFromBlack" />
       <div className="flex flex-col p-4 ">
-        <div className="sm:flex justify-center items-center sm:gap-8 lg:gap-16">
+        <div className="sm:flex justify-center items-center sm:gap-8 md:gap-16 lg:gap-32">
           <PokeBalls flip pokemonTeam={myBattlePokemon} />
           <PokeBalls flip={false} pokemonTeam={enemyBattlePokemon} />
         </div>
-        <div className="flex mt-[10vh] justify-center gap-8 lg:gap-16">
+        <div className="flex mt-[10vh] justify-center gap-8 md:gap-16 lg:gap-32">
           <div ref={myTeamRef} data-my-team="true" className="w-40 md:w-48 relative">
             <Platform image={backgroundType.current.platformImage} />
             {myCurrentPokemon && (
@@ -350,7 +350,7 @@ export default function Battle(props) {
 
 function Platform({ image }) {
   return (
-    <div className="absolute top-16 w-full">
+    <div className="absolute top-16 w-full scale-y-150 md:scale-125">
       <Image src={image} width={256} height={70} />
     </div>
   );

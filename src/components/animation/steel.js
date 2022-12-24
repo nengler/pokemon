@@ -9,7 +9,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const yStartingPosition = getImgCenter(-24);
+  const yStartingPosition = getImgCenter(-16);
   const growingDuration = 0.35;
   const movingDuration = 0.35;
 
@@ -36,7 +36,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
 
   const hitStyles = {
     top: "calc(50% - 16px)",
-    left: `calc(50% - 16px + ${distanceToMove * xFactor}px)`,
+    left: `calc(50% - 16px + ${distanceToMove}px)`,
     "--fadeindelay": `550ms`,
   };
 
@@ -49,9 +49,9 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
         initial={{ scale: 0.5 }}
         animate={{
           scale: [0.5, 1.3, 1],
-          x: distanceToMove - xOffset,
-          opacity: [0, 1, 1, 0],
-          rotate: 360,
+          x: distanceToMove - xOffset + distanceToMove / 4,
+          opacity: [0, 1, 0.8, 0],
+          rotate: 1080,
         }}
         transition={{
           scale: { duration: growingDuration, times: [0, 0.8, 1] },
@@ -61,10 +61,10 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
             type: "spring",
           },
           opacity: {
-            times: [0, 0.3, 0.6, 1],
+            times: [0, 0.3, 0.7, 1],
             duration: growingDuration + movingDuration,
           },
-          rotate: { delay: growingDuration, duration: 0.25, repeat: Infinity },
+          rotate: { delay: growingDuration, duration: 0.75 },
         }}
         className="absolute h-12 w-12 rounded-full z-10 opacity-0 flex justify-center items-center text-steel-secondary bg-steel-primary"
         style={styles}
@@ -74,15 +74,3 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
     </>
   );
 }
-
-const getEnemyCoordinates = (enemyTeamLocation) => {
-  const currentEnemyDiv = enemyTeamLocation.children[0];
-  const currentEnemyImg = currentEnemyDiv?.querySelector("img");
-  return currentEnemyImg?.getBoundingClientRect();
-};
-
-const getMyCoordinates = (teamLocation) => {
-  const myCurrentDiv = teamLocation.children[0];
-  const myCurrentImg = myCurrentDiv?.querySelector("img");
-  return myCurrentImg?.getBoundingClientRect();
-};

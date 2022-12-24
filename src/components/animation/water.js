@@ -46,14 +46,14 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             animate={{
-              x: distanceToMove * xFactor + bubbleOffset,
+              x: distanceToMove * xFactor + distanceToMove / 4,
               y: bubbleOffset,
               opacity: [0, 0.8, 0.6, 0],
               scale: bubbleScaleOptions[index % 3],
             }}
             transition={{
               x: { ease: "linear", duration: animationLength, delay: delay },
-              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.8, 1] },
+              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.65, 1] },
               scale: { delay: delay, duration: animationLength, times: [0, 0.5, 1] },
               y: { duration: animationLength, delay: delay },
             }}
