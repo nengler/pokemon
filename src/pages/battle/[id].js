@@ -135,6 +135,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/aeroblast.mp3");
         break;
       case "Ghost":
+        props.childPlaySound("/assets/moves/spite.mp3");
         break;
       case "Grass":
         props.childPlaySound("/assets/moves/razor_leaf.mp3");
@@ -142,6 +143,7 @@ export default function Battle(props) {
       case "Ground":
         break;
       case "Ice":
+        props.childPlaySound("/assets/moves/aurora_beam.mp3");
         break;
       case "Normal":
         props.childPlaySound("/assets/moves/swift.mp3");
@@ -155,6 +157,7 @@ export default function Battle(props) {
       case "Rock":
         break;
       case "Steel":
+        props.childPlaySound("/assets/moves/metal_claw.mp3");
         break;
       case "Water":
         props.childPlaySound("/assets/moves/bubble.mp3");

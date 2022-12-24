@@ -32,7 +32,7 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
 
   let styles = {
     left: "calc(50% - 18px)",
-    top: `${yStartingPosition}px`,
+    top: `${yStartingPosition + 10}px`,
   };
 
   return (

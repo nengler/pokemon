@@ -88,16 +88,24 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
           animate={{ right: [distanceToMove, 0, 0, distanceToMove * -1] }}
           transition={{ duration: animationDuration, times: [0, 0.2, 0.75, 1] }}
         >
-          <Beam yAxis="Top" xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"} />
+          <Beam
+            animationDuration={animationDuration}
+            yAxis="Top"
+            xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"}
+          />
           <div className="bg-[#ffebf4] w-full h-2" />
-          <Beam yAxis="Bottom" xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"} />
+          <Beam
+            animationDuration={animationDuration}
+            yAxis="Bottom"
+            xAxis={teamLocation.dataset.myTeam === "true" ? "Right" : "Left"}
+          />
         </motion.div>
       </div>
     </>
   );
 }
 
-function Beam({ yAxis, xAxis }) {
+function Beam({ yAxis, xAxis, animationDuration }) {
   const border = `border${yAxis}${xAxis}Radius`;
 
   const roundedCorner = getTailwindRoundedClass(yAxis, xAxis);
