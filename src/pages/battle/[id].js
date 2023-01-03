@@ -30,7 +30,7 @@ function getBackgroundType() {
     { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
   ];
 
-  return backgroundOptions[1];
+  return backgroundOptions[2];
 }
 
 export default function Battle(props) {
@@ -132,7 +132,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/ember.mp3");
         break;
       case "Flying":
-        props.childPlaySound("/assets/moves/aeroblast.mp3");
+        props.childPlaySound("/assets/moves/aeroblast-trimmed.mp3");
         break;
       case "Ghost":
         props.childPlaySound("/assets/moves/spite.mp3");
@@ -160,7 +160,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/metal_claw.mp3");
         break;
       case "Water":
-        props.childPlaySound("/assets/moves/bubble.mp3");
+        props.childPlaySound("/assets/moves/bubble-trimmed.mp3");
         break;
     }
   }

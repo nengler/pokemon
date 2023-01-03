@@ -10,6 +10,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
 
   const animationDuration = 0.5;
   const hitTriggerDelay = 0.25;
+  const animationDelay = 0.05;
 
   const hitTriggers = [
     { top: `${getImgCenter(20)}px`, left: 0 },
@@ -17,7 +18,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
     { top: `${getImgCenter(-20)}px`, left: -15 },
   ];
 
-  const stars = [0, 35, -40, 25, 10, -30];
+  const stars = [0, 35, -40, 25, 10, -30, 0, 50];
   const yStartingPosition = getImgCenter(-16);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
@@ -42,7 +43,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.075;
+        const delay = index * animationDelay;
 
         return (
           <motion.div
@@ -61,7 +62,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
                 times: [0, 0.01, 0.5, 1],
               },
             }}
-            className="absolute h-8 w-8 opacity-0"
+            className="absolute h-8 w-8 opacity-0 z-[1]"
             key={index}
             style={styles}
           >

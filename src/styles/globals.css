@@ -173,7 +173,7 @@
 .fadeInFadeOuAnimation {
   opacity: 0;
   animation-name: fadee;
-  animation-duration: 300ms;
+  animation-duration: var(--fadeinduration);
   animation-delay: var(--fadeindelay);
   animation-fill-mode: forwards;
   animation-timing-function: ease;

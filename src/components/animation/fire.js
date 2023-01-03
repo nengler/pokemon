@@ -4,8 +4,8 @@ import { imgHeight } from "constants/animationConfig";
 import Flame from "./svg/flame";
 
 export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
-  const animationDuration = 0.5;
-  const animationDelay = 0.05;
+  const animationDuration = 0.6;
+  const animationDelay = 0.02;
   const yStartingPosition = imgHeight / 2 - 10;
 
   const fires = [
@@ -50,19 +50,21 @@ export default function FireAnimation({ teamLocation, enemyTeamLocation }) {
               x: distanceToMove * xFactor + fire.left * xFactor,
               y: fire.top,
               opacity: [0, 1, 1, 0],
+              scale: [1, 1, 0],
             }}
             transition={{
               x: {
                 type: "spring",
                 stiffness: 60,
-                duration: animationDuration,
+                duration: animationDuration * 0.6,
                 delay: delay,
               },
               y: { duration: animationDuration, delay: delay },
               opacity: {
                 duration: animationDuration,
                 delay: delay,
-                times: [0, 0.01, 0.8, 1],
+                times: [0, 0.01, 1, 1],
+                scale: [0, 0.6, 1],
               },
             }}
             className="absolute h-5 w-5 fill-red-500 z-10 opacity-0"

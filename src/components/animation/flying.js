@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import { imgHeight } from "constants/animationConfig";
+import Image from "next/image";
 
 export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
-  const blades = [10, 120, 75, 180, 30];
-  const animationDelay = 0.07;
+  const blades = [10, 120, 75, 180, 30, 135, 70, 150, 10, 90];
+  const animationDelay = 0.03;
   const topYStartingPosition = imgHeight / 2 - 16 - 20;
   const bottomYStartingPosition = imgHeight / 2 - 16 + 20;
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
@@ -22,11 +23,23 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+  const distanceBetween = getDistanceBetweenElements(enemyCenter, myCenter);
+  const distanceToMove = distanceBetween + distanceBetween / 4;
   const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
+
+  const hitStyles = {
+    top: "calc(50% - 16px)",
+    left: `calc(50% - 16px + ${distanceBetween * xFactor}px)`,
+    "--fadeindelay": `200ms`,
+    "--fadeinduration": `800ms`,
+  };
 
   return (
     <>
+      <div className="absolute h-8 w-8 fadeInFadeOuAnimation" style={hitStyles}>
+        <Image src="/assets/hit.png" width={32} height={32} />
+      </div>
+
       {blades.map((blade, index) => {
         const topStyles = {
           left: "calc(50% - 16px)",
@@ -73,7 +86,7 @@ function BladeDiv({ distanceToMove, bladeRotation, styles, delay }) {
         rotate: bladeRotation + 900,
       }}
       transition={{
-        // rotate: { delay: delay, duration: 0.15, repeat: Infinity },
+        rotate: { delay: delay, duration: animationDuration },
         default: { delay: delay, duration: animationDuration, ease: "linear" },
         opacity: { delay: delay, duration: animationDuration, times: [0, 0.01, 0.8, 1] },
       }}

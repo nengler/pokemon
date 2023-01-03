@@ -1,5 +1,6 @@
 import { imgHeight } from "constants/animationConfig";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import HandIcon from "./svg/hand";
 
@@ -26,15 +27,27 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
 
   const cssDistance = `calc(${distanceToMove}px + 50% - 24px)`;
   const isMyTeam = teamLocation.dataset.myTeam === "true";
+  const hitDistanceToMove = `calc(50% - 16px + ${distanceToMove}px)`;
+
+  let hitStyles = {
+    top: `${imgHeight / 2 - 16}px`,
+    "--fadeindelay": `200ms`,
+    "--fadeinduration": `500ms`,
+  };
 
   if (isMyTeam) {
     styles.left = cssDistance;
+    hitStyles.left = hitDistanceToMove;
   } else {
     styles.right = cssDistance;
+    hitStyles.right = hitDistanceToMove;
   }
 
   return (
     <>
+      <div className="absolute h-8 w-8 fadeInFadeOuAnimation" style={hitStyles}>
+        <Image src="/assets/hit.png" width={32} height={32} />
+      </div>
       <motion.div
         initial={{ y: centerOfImg - 90 }}
         animate={{ y: [centerOfImg - 90, centerOfImg + 20, centerOfImg] }}

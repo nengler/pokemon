@@ -9,7 +9,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const yStartingPosition = getImgCenter(-16);
+  const yStartingPosition = getImgCenter(-24);
   const growingDuration = 0.35;
   const movingDuration = 0.35;
 

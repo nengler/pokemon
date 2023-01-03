@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import NeedleIcon from "./svg/needle";
 import { imgHeight } from "constants/animationConfig";
 import Image from "next/image";
 import { Fragment } from "react";
@@ -44,6 +43,7 @@ export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
           top: "calc(50% - 16px)",
           left: `calc(50% - 16px + ${distanceToMove * xFactor}px)`,
           "--fadeindelay": `${delay + animationDuration - 0.05}s`,
+          "--fadeinduration": `300ms`,
         };
 
         return (

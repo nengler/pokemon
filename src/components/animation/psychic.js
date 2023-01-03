@@ -7,8 +7,9 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const animationDuration = 0.39;
-  const circles = [0, -30, 30, -15, 30, 0];
+  const animationDuration = 0.5;
+  const animationDelay = 0.05;
+  const circles = [0, -30, 30, -15, 30, 0, 40, -20];
   const yStartingPosition = imgHeight / 2 - 24;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
@@ -21,7 +22,8 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
 
-  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
+  const distanceBetween = getDistanceBetweenElements(enemyCenter, myCenter);
+  const distanceToMove = distanceBetween + distanceBetween / 3;
 
   const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
 
@@ -33,11 +35,11 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
           top: `${yStartingPosition}px`,
         };
 
-        const delay = index * 0.08;
+        const delay = index * animationDelay;
 
         return (
           <motion.div
-            initial={{ scale: 0.4 }}
+            initial={{ scale: 0.5 }}
             animate={{
               x: distanceToMove * xFactor,
               opacity: [0, 1, 1, 0],
@@ -46,7 +48,8 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
             }}
             transition={{
               default: { duration: animationDuration, delay: delay },
-              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.75, 1] },
+              x: { duration: animationDuration, delay: delay, ease: "linear" },
+              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.7, 1] },
             }}
             className="z-[1] absolute h-12 w-6 border-4 rounded-[50%] border-[#f4bf5d] z-10"
             key={index}

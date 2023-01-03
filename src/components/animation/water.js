@@ -13,8 +13,8 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
     [0.6, 0.9, 1.2],
   ];
 
-  const animationLength = 0.35;
-  const animationDelay = 0.03;
+  const animationLength = 0.6;
+  const animationDelay = 0.02;
   const bubbles = Array.apply(null, Array(18)).map(() => Math.floor(Math.random() * 60) - 30);
   const yStartingPosition = getImgCenter(-8);
 
