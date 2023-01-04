@@ -1,4 +1,4 @@
-import { imgHeight } from "constants/animationConfig";
+import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 import AuroraCircle from "./svg/auroraCircle";
@@ -8,10 +8,10 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const beams = Array(10).fill(null);
-  const animationDuration = 0.3;
-  const animationDelay = 0.05;
-  const yStartingPosition = imgHeight / 2 - 24;
+  const beams = Array(25).fill(null);
+  const animationDuration = 0.2;
+  const animationDelay = 0.02;
+  const yStartingPosition = getImgCenter(-24);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
@@ -43,7 +43,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
             initial={{ scaleX: 0.5 }}
             animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
             transition={{
-              x: { duration: animationDuration, delay: delay },
+              x: { duration: animationDuration, delay: delay, ease: "linear" },
               opacity: {
                 delay: delay,
                 duration: animationDuration,
@@ -58,7 +58,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
               animate={{ rotate: 360 }}
               transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
             >
-              <div style={{ transform: index >= 5 ? "scale(1.5)" : "scale(1)" }}>
+              <div style={{ transform: index >= beams.length / 2 ? "scale(1.5)" : "scale(1)" }}>
                 <AuroraCircle />
               </div>
             </motion.div>

@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import { imgHeight } from "constants/animationConfig";
+import { getImgCenter } from "constants/animationConfig";
 import Image from "next/image";
 
 export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
   const blades = [10, 120, 75, 180, 30, 135, 70, 150, 10, 90];
   const animationDelay = 0.03;
-  const topYStartingPosition = imgHeight / 2 - 16 - 20;
-  const bottomYStartingPosition = imgHeight / 2 - 16 + 20;
+  const topYStartingPosition = getImgCenter(-16) - 18;
+  const bottomYStartingPosition = getImgCenter(-16) + 18;
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }

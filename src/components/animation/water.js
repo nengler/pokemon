@@ -15,7 +15,7 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
 
   const animationLength = 0.6;
   const animationDelay = 0.02;
-  const bubbles = Array.apply(null, Array(18)).map(() => Math.floor(Math.random() * 60) - 30);
+  const bubbles = Array.apply(null, Array(20)).map(() => Math.floor(Math.random() * 60) - 30);
   const yStartingPosition = getImgCenter(-8);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
@@ -27,10 +27,8 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
 
   const enemyCenter = getPositionAtCenter(enemyCoordinates);
   const myCenter = getPositionAtCenter(myCoordinates);
-
-  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter);
-
   const xFactor = teamLocation.dataset.myTeam === "true" ? 1 : -1;
+  const distanceToMove = getDistanceBetweenElements(enemyCenter, myCenter) * xFactor;
 
   return (
     <>
@@ -46,7 +44,7 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             animate={{
-              x: distanceToMove * xFactor + distanceToMove / 4,
+              x: distanceToMove + distanceToMove / 6,
               y: bubbleOffset,
               opacity: [0, 0.8, 0.6, 0],
               scale: bubbleScaleOptions[index % 3],

@@ -157,7 +157,7 @@ export default function Battle(props) {
       case "Rock":
         break;
       case "Steel":
-        props.childPlaySound("/assets/moves/metal_claw.mp3");
+        props.childPlaySound("/assets/moves/shadow_ball.mp3");
         break;
       case "Water":
         props.childPlaySound("/assets/moves/bubble-trimmed.mp3");

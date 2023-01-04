@@ -10,7 +10,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
   }
 
   const yStartingPosition = getImgCenter(-24);
-  const growingDuration = 0.35;
+  const growingDuration = 0.4;
   const movingDuration = 0.35;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
@@ -38,6 +38,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
     top: "calc(50% - 16px)",
     left: `calc(50% - 16px + ${distanceToMove}px)`,
     "--fadeindelay": `550ms`,
+    "--fadeinduration": `300ms`,
   };
 
   return (
@@ -46,9 +47,9 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
         <Image src="/assets/hit.png" width={32} height={32} />
       </div>
       <motion.div
-        initial={{ scale: 0.5 }}
+        initial={{ scale: 0.3 }}
         animate={{
-          scale: [0.5, 1.3, 1],
+          scale: [0.3, 1.3, 1],
           x: distanceToMove - xOffset + distanceToMove / 4,
           opacity: [0, 1, 0.8, 0],
           rotate: 1080,
@@ -64,7 +65,7 @@ export default function SteelAnimation({ teamLocation, enemyTeamLocation }) {
             times: [0, 0.3, 0.7, 1],
             duration: growingDuration + movingDuration,
           },
-          rotate: { delay: growingDuration, duration: 0.75 },
+          rotate: { delay: growingDuration, duration: movingDuration },
         }}
         className="absolute h-12 w-12 rounded-full z-10 opacity-0 flex justify-center items-center text-steel-secondary bg-steel-primary"
         style={styles}
