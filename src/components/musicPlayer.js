@@ -176,7 +176,7 @@ export default function MusicPlayer({ Component, pageProps }) {
     return "50";
   }
 
-  async function loadSong() {
+  async function loadSong(url) {
     const audioBuffer = await fetch(url)
       .then((res) => res.arrayBuffer())
       .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));

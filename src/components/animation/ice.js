@@ -9,7 +9,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   }
 
   const beams = Array(25).fill(null);
-  const animationDuration = 0.2;
+  const animationDuration = 0.25;
   const animationDelay = 0.02;
   const yStartingPosition = getImgCenter(-24);
 
@@ -58,7 +58,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
               animate={{ rotate: 360 }}
               transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
             >
-              <div style={{ transform: index >= beams.length / 2 ? "scale(1.5)" : "scale(1)" }}>
+              <div style={{ transform: index >= beams.length / 1.5 ? "scale(1.5)" : "scale(1)" }}>
                 <AuroraCircle />
               </div>
             </motion.div>

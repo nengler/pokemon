@@ -731,7 +731,7 @@ module.exports = {
   },
   74: {
     name: "Geodude",
-    types: ["Rock", "Ground"],
+    types: ["Ground"],
     baseStats: {
       attack: 80,
       defense: 100,

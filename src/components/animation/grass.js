@@ -106,16 +106,16 @@ export default function GrassAnimation({ teamLocation, enemyTeamLocation }) {
           <motion.div
             initial={{ scaleY: 0.5 }}
             animate={{
-              x: distanceToMove + distanceToMove / 3,
               opacity: [0, 1, 1, 0],
               rotate: 1080,
+              x: distanceToMove + distanceToMove / 3,
               y: [0, 60 * leafYMultiplier, 0, 30 * leafYMultiplier * -1],
             }}
             transition={{
               x: { duration: animationDuration, ease: "linear" },
               y: { duration: animationDuration, times: [0, 0.4, 0.75, 1], ease: "linear" },
               rotate: { duration: animationDuration },
-              opacity: { duration: animationDuration, times: [0, 0.01, 0.85, 1] },
+              opacity: { duration: animationDuration, times: [0, 0.01, 0.75, 0.95] },
             }}
             className="absolute h-12 w-12 rounded-full border-grass-secondary border-t-8 opacity-0 border-r-8 z-10"
             key={index}

@@ -121,6 +121,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/pin_missle.mp3");
         break;
       case "Dragon":
+        props.childPlaySound("/assets/moves/dragon_breathe.mp3");
         break;
       case "Electric":
         props.childPlaySound("/assets/moves/spark.mp3");
@@ -141,6 +142,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/razor_leaf.mp3");
         break;
       case "Ground":
+        props.childPlaySound("/assets/moves/mud_shot.mp3");
         break;
       case "Ice":
         props.childPlaySound("/assets/moves/aurora_beam.mp3");
@@ -338,6 +340,7 @@ export default function Battle(props) {
                 enemyTeamLocation={myTeamRef.current}
                 teamLocation={enemyTeamRef.current}
                 status={enemyCurrentBattler.status}
+                spawnSound={props.spawnPokemonSound}
               />
             )}
           </div>

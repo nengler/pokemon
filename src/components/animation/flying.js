@@ -31,7 +31,7 @@ export default function FlyingAnimation({ teamLocation, enemyTeamLocation }) {
     top: "calc(50% - 16px)",
     left: `calc(50% - 16px + ${distanceBetween * xFactor}px)`,
     "--fadeindelay": `200ms`,
-    "--fadeinduration": `800ms`,
+    "--fadeinduration": `900ms`,
   };
 
   return (
