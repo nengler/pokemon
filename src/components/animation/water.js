@@ -13,10 +13,10 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
     [0.6, 0.9, 1.2],
   ];
 
-  const animationLength = 0.6;
-  const animationDelay = 0.02;
+  const animationLength = 0.55;
+  const animationDelay = 0.015;
   const bubbles = Array.apply(null, Array(20)).map(() => Math.floor(Math.random() * 60) - 30);
-  const yStartingPosition = getImgCenter(-8);
+  const yStartingPosition = getImgCenter(-10);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
@@ -55,7 +55,7 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
               scale: { delay: delay, duration: animationLength, times: [0, 0.5, 1] },
               y: { duration: animationLength, delay: delay },
             }}
-            className="absolute h-4 w-4 rounded-[50%] border border-[#d6ddf8] bg-[#f7f9f9] z-10"
+            className="absolute h-5 w-5 rounded-[50%] border-2 border-[#d6ddf8] bg-[#f7f9f9] z-10"
             key={index}
             style={styles}
           />
