@@ -24,13 +24,13 @@ let animationType = animationCheck.nextPokemon;
 
 function getBackgroundType() {
   const backgroundOptions = [
-    { type: "grass", platformImage: "/assets/platforms/grass_platform.png", class: "bg-[#d8f8d0]" },
+    { type: "grass", platformImage: "/assets/platforms/grass_platform.png", class: styles.grassBackground },
     { type: "ground", platformImage: "/assets/platforms/ground_platform.png", class: "bg-[#c4ad78]" },
     { type: "normal", platformImage: "/assets/platforms/normal_platform.png", class: styles.whiteBackground },
     { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
   ];
 
-  return backgroundOptions[2];
+  return backgroundOptions[0];
 }
 
 export default function Battle(props) {
@@ -157,6 +157,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/psycho_boost.mp3");
         break;
       case "Rock":
+        props.childPlaySound("/assets/moves/ancient_power.mp3");
         break;
       case "Steel":
         props.childPlaySound("/assets/moves/shadow_ball.mp3");

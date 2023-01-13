@@ -1,6 +1,6 @@
 import BugAnimation from "components/animation/bug";
 import DragonAnimation from "components/animation/dragon";
-import ElectricAnimation from "components/animation/eletric";
+import ElectricAnimation from "components/animation/electric";
 import FightingAnimation from "components/animation/fighting";
 import FireAnimation from "components/animation/fire";
 import FlyingAnimation from "components/animation/flying";

@@ -48,7 +48,7 @@ export default function ElectricAnimation({ teamLocation, enemyTeamLocation }) {
         transition={{
           opacity: {
             duration: 0.2,
-            repeat: Infinity,
+            repeat: 4,
           },
         }}
         className="absolute h-10 w-10 bg-black rounded-full z-10"
