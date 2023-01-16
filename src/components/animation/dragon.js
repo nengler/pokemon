@@ -7,11 +7,11 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const animationDuration = 0.3;
-  const animationDelay = 0.008;
+  const animationDuration = 0.4;
+  const animationDelay = 0.007;
   const baseBurstDelay = 0.1;
 
-  const balls = Array.apply(null, Array(20)).map(function () {});
+  const balls = Array.apply(null, Array(4)).map(function () {});
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
@@ -53,32 +53,41 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
     return [centerOffset, classes.join(" ")];
   };
 
+  let currentDelay = 0;
+
   return (
     <>
       {balls.map((_, index) => {
-        const burstDelay = Math.floor(index / 5) * baseBurstDelay;
-        const delay = index * animationDelay + burstDelay;
+        if (index !== 0) {
+          currentDelay += baseBurstDelay;
+        }
+        const arraySize = index !== balls.length - 1 ? 2 : 10;
+        return Array.apply(null, Array(arraySize)).map((__, burstArray) => {
+          if (burstArray !== 0) {
+            currentDelay += animationDelay;
+          }
 
-        const [centerOffset, randomEffectsClasses] = getRandomEffects();
+          const [centerOffset, randomEffectsClasses] = getRandomEffects();
 
-        const styles = {
-          top: getImgCenter(-centerOffset) + (Math.floor(Math.random() * 20) - 10),
-          left: `calc(50% - ${20}px)`,
-        };
+          const styles = {
+            top: getImgCenter(-centerOffset) + (Math.floor(Math.random() * 20) - 10),
+            left: `calc(50% - ${20}px)`,
+          };
 
-        return (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 1, 0], x: distanceToMove + distanceToMove / 5 }}
-            transition={{
-              x: { duration: animationDuration, delay: delay, ease: "linear" },
-              opacity: { duration: animationDuration, delay: delay, times: [0, 0.01, 0.8, 1] },
-            }}
-            style={styles}
-            key={index}
-            className={`${randomEffectsClasses} z-[1] rounded-full absolute border-8 bg-[#d9bb59] border-[#4721d3]`}
-          />
-        );
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 1, 0], x: distanceToMove + distanceToMove / 5 }}
+              transition={{
+                x: { duration: animationDuration, delay: currentDelay, type: "spring", stiffness: 65 },
+                opacity: { duration: animationDuration, delay: currentDelay, times: [0, 0.01, 0.6, 1] },
+              }}
+              style={styles}
+              key={index}
+              className={`${randomEffectsClasses} z-[1] rounded-full absolute border-8 bg-[#d9bb59] border-[#4721d3]`}
+            />
+          );
+        });
       })}
     </>
   );

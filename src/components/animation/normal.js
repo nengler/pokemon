@@ -51,7 +51,8 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
             transition={{
               x: {
                 type: "spring",
-                stiffness: 70,
+                stiffness: 60,
+                ease: "linear",
                 duration: animationDuration,
                 delay: delay,
               },
@@ -88,7 +89,7 @@ export default function NormalAnimation({ teamLocation, enemyTeamLocation }) {
         return (
           <motion.div
             key={index}
-            animate={{ height: [10, 30], width: [10, 30], opacity: [0, 0.45] }}
+            animate={{ height: [10, 30], width: [10, 30], opacity: [0, 0.65] }}
             transition={{
               height: { delay: hitTriggerDelay + index * 0.1, duration: 0.3 },
               width: { delay: hitTriggerDelay + index * 0.1, duration: 0.3 },

@@ -51,11 +51,11 @@ export default function WaterAnimation({ teamLocation, enemyTeamLocation }) {
             }}
             transition={{
               x: { ease: "linear", duration: animationLength, delay: delay },
-              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.65, 1] },
+              opacity: { delay: delay, duration: animationLength, times: [0, 0.01, 0.75, 1] },
               scale: { delay: delay, duration: animationLength, times: [0, 0.5, 1] },
               y: { duration: animationLength, delay: delay },
             }}
-            className="absolute h-5 w-5 rounded-[50%] border-2 border-[#d6ddf8] bg-[#f7f9f9] z-10"
+            className="absolute h-5 w-5 rounded-[50%] border-2 border-[#9babee] bg-[#f7f9f9] z-10"
             key={index}
             style={styles}
           />

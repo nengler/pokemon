@@ -60,7 +60,7 @@ export default function RockAnimation({ teamLocation, enemyTeamLocation }) {
               opacity: {
                 delay: risingDelay,
                 duration: roundToTwoDecimals(risingDuration + movingDelay + risingDelay + idlePause + movingDuration),
-                times: [0, 0.01, 0.8, 1],
+                times: [0, 0.01, 0.95, 1],
               },
             }}
             className="absolute h-12 w-12 z-[2]"

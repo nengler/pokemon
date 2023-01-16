@@ -50,9 +50,10 @@ export default function FightingAnimation({ teamLocation, enemyTeamLocation }) {
       </div>
       <motion.div
         initial={{ y: centerOfImg - 90 }}
-        animate={{ y: [centerOfImg - 90, centerOfImg + 20, centerOfImg] }}
+        animate={{ y: [centerOfImg - 90, centerOfImg + 20, centerOfImg], opacity: [0, 1, 1, 0] }}
         transition={{
           y: { duration: animationDuration, times: [0, 0.3, 0.5] },
+          opacity: { duration: animationDuration, times: [0, 0.01, 0.6, 1] },
         }}
         style={styles}
         className="absolute w-12 h-12 flex justify-center items-center z-10"

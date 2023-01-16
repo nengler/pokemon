@@ -7,10 +7,10 @@ export default function PsychicAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const animationDuration = 0.55;
+  const animationDuration = 0.45;
   const scaleDuration = 0.4;
   const animationDelay = 0.05;
-  const circles = [0, -30, 30, -15, 30, 0, 40, -20];
+  const circles = [0, -30, 30, -15, 30, 0, 40, -20, 0, 15];
   const yStartingPosition = getImgCenter(-24);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);

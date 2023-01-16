@@ -136,7 +136,7 @@ export default function Battle(props) {
         props.childPlaySound("/assets/moves/aeroblast-trimmed.mp3");
         break;
       case "Ghost":
-        props.childPlaySound("/assets/moves/spite.mp3");
+        props.childPlaySound("/assets/moves/shadow_ball.mp3");
         break;
       case "Grass":
         props.childPlaySound("/assets/moves/razor_leaf.mp3");

@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Fragment } from "react";
 
 export default function BugAnimation({ teamLocation, enemyTeamLocation }) {
-  const animationDuration = 0.3;
-  const animationDelay = 0.21;
+  const animationDuration = 0.325;
+  const animationDelay = 0.2;
   const yStartingPosition = imgHeight / 2 - 16;
 
   const neeldes = [null, null, null];
