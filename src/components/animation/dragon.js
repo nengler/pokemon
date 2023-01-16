@@ -76,6 +76,7 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
 
           return (
             <motion.div
+              key={currentDelay}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 1, 0], x: distanceToMove + distanceToMove / 5 }}
               transition={{
@@ -83,7 +84,6 @@ export default function DragonAnimation({ teamLocation, enemyTeamLocation }) {
                 opacity: { duration: animationDuration, delay: currentDelay, times: [0, 0.01, 0.6, 1] },
               }}
               style={styles}
-              key={index}
               className={`${randomEffectsClasses} z-[1] rounded-full absolute border-8 bg-[#d9bb59] border-[#4721d3]`}
             />
           );

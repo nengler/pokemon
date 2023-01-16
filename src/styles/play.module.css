@@ -1,0 +1,13 @@
+.background {
+  background-size: 69.74px 48.83px;
+  background-image: linear-gradient(
+    35deg,
+    #f1f5f9 25%,
+    #f8fafc 25%,
+    #f8fafc 50%,
+    #f1f5f9 50%,
+    #f1f5f9 75%,
+    #f8fafc 75%,
+    #f8fafc 100%
+  );
+}

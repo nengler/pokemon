@@ -20,6 +20,8 @@ import WheelTransition from "components/play/wheelTransition";
 import RandomBlocksTransition from "components/play/randomBlocksTransition";
 import GetRandomElement from "util/getRandomElement";
 import Image from "next/image";
+import styles from "../../styles/play.module.css";
+import SoundPopover from "components/soundPopover";
 
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
@@ -239,19 +241,23 @@ export default function Home(props) {
   };
 
   return (
-    <>
+    <div className={`${styles.background} w-screen h-screen`}>
       <div
         className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3 fadeInAnimation"
         style={{ "--fadeinduration": "750ms" }}
       >
-        <div className="flex gap-4">
-          <div className="flex gap-1">
-            {game.gold}
-            <Image src="/assets/PokeCoin.png" height={25} width={25} />
+        <div className="flex justify-between">
+          <div className="flex gap-4">
+            <div className="flex gap-1">
+              {game.gold}
+              <Image src="/assets/PokeCoin.png" height={25} width={25} />
+            </div>
+            <div>round: {game.round}</div>
+            <div>lives: {game.lives}</div>
+            <div>wins: {game.wins}</div>
           </div>
-          <div>round: {game.round}</div>
-          <div>lives: {game.lives}</div>
-          <div>wins: {game.wins}</div>
+
+          <SoundPopover musicSlider={props.musicSlider} soundSlider={props.soundSlider} />
         </div>
 
         <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
@@ -286,7 +292,7 @@ export default function Home(props) {
               return (
                 <div
                   key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
-                  className="w-[88px] md:w-32"
+                  className="w-[88px] sm:w-32"
                 >
                   {shopMon && Object.keys(shopMon).length !== 0 && (
                     <ShopPokemon
@@ -312,7 +318,7 @@ export default function Home(props) {
         </div>
       </div>
       {pageTransition.isRunning && pageTransition.animation}
-    </>
+    </div>
   );
 }
 

@@ -11,7 +11,7 @@ import { battleStates } from "constants/gameConfig";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "../../styles/battle.module.css";
-import GetRandomElement from "util/getRandomElement";
+import SoundPopover from "components/soundPopover";
 
 const animationCheck = {
   logic: "logic",
@@ -22,15 +22,15 @@ const animationCheck = {
 
 let animationType = animationCheck.nextPokemon;
 
-function getBackgroundType() {
+function getBackgroundType(battleId) {
   const backgroundOptions = [
     { type: "grass", platformImage: "/assets/platforms/grass_platform.png", class: styles.grassBackground },
-    { type: "ground", platformImage: "/assets/platforms/ground_platform.png", class: "bg-[#c4ad78]" },
+    { type: "ground", platformImage: "/assets/platforms/ground_platform.png", class: styles.rockBackground },
     { type: "normal", platformImage: "/assets/platforms/normal_platform.png", class: styles.whiteBackground },
     { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
   ];
 
-  return backgroundOptions[0];
+  return backgroundOptions[battleId % backgroundOptions.length];
 }
 
 export default function Battle(props) {
@@ -44,7 +44,7 @@ export default function Battle(props) {
   const [isFighting, setIsFighting] = useState(true);
   const myTeamRef = useRef();
   const enemyTeamRef = useRef();
-  const backgroundType = useRef(getBackgroundType());
+  const backgroundType = getBackgroundType(props.battle.id);
 
   const [fightingAnimations, setFightingAnimations] = useState([]);
 
@@ -91,7 +91,7 @@ export default function Battle(props) {
       },
     ]);
 
-    playMoveSound(calculateMyAttack.type);
+    props.childPlaySound(calculateMyAttack.type);
     return;
 
     setMyBattlePokemon((pokemon) =>
@@ -114,59 +114,6 @@ export default function Battle(props) {
       })
     );
   };
-
-  function playMoveSound(type) {
-    switch (type) {
-      case "Bug":
-        props.childPlaySound("/assets/moves/pin_missle.mp3");
-        break;
-      case "Dragon":
-        props.childPlaySound("/assets/moves/dragon_breathe.mp3");
-        break;
-      case "Electric":
-        props.childPlaySound("/assets/moves/spark.mp3");
-        break;
-      case "Fighting":
-        props.childPlaySound("/assets/moves/karate_chop.mp3");
-        break;
-      case "Fire":
-        props.childPlaySound("/assets/moves/ember.mp3");
-        break;
-      case "Flying":
-        props.childPlaySound("/assets/moves/aeroblast-trimmed.mp3");
-        break;
-      case "Ghost":
-        props.childPlaySound("/assets/moves/shadow_ball.mp3");
-        break;
-      case "Grass":
-        props.childPlaySound("/assets/moves/razor_leaf.mp3");
-        break;
-      case "Ground":
-        props.childPlaySound("/assets/moves/mud_shot.mp3");
-        break;
-      case "Ice":
-        props.childPlaySound("/assets/moves/aurora_beam.mp3");
-        break;
-      case "Normal":
-        props.childPlaySound("/assets/moves/swift.mp3");
-        break;
-      case "Poison":
-        props.childPlaySound("/assets/moves/sludge.mp3");
-        break;
-      case "Psychic":
-        props.childPlaySound("/assets/moves/psycho_boost.mp3");
-        break;
-      case "Rock":
-        props.childPlaySound("/assets/moves/ancient_power.mp3");
-        break;
-      case "Steel":
-        props.childPlaySound("/assets/moves/shadow_ball.mp3");
-        break;
-      case "Water":
-        props.childPlaySound("/assets/moves/bubble-trimmed.mp3");
-        break;
-    }
-  }
 
   const handleMyFightingUpdate = (battler, battlePokemon) => {
     let { id, status } = battler;
@@ -309,16 +256,19 @@ export default function Battle(props) {
   const enemyCurrentPokemon = enemyBattlePokemon.find((p) => p.id === enemyCurrentBattler.id);
 
   return (
-    <div className={`${backgroundType.current.class} w-screen h-screen`}>
+    <div className={`${backgroundType.class} w-screen h-screen`}>
       <div className="fadeFromBlack" />
       <div className="flex flex-col p-4 ">
-        <div className="sm:flex justify-center items-center sm:gap-8 md:gap-16 lg:gap-32">
+        <div className="sm:flex justify-center items-center sm:gap-8 md:gap-16 lg:gap-32 relative">
           <PokeBalls flip pokemonTeam={myBattlePokemon} />
           <PokeBalls flip={false} pokemonTeam={enemyBattlePokemon} />
+          <div className="absolute right-0 top-0">
+            <SoundPopover musicSlider={props.musicSlider} soundSlider={props.soundSlider} />
+          </div>
         </div>
         <div className="flex mt-[10vh] justify-center gap-8 md:gap-16 lg:gap-32">
           <div ref={myTeamRef} data-my-team="true" className="w-40 md:w-48 relative">
-            <Platform image={backgroundType.current.platformImage} />
+            <Platform image={backgroundType.platformImage} />
             {myCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={myCurrentPokemon}
@@ -333,7 +283,7 @@ export default function Battle(props) {
           </div>
 
           <div ref={enemyTeamRef} data-my-team="false" className="w-40 md:w-48 relative">
-            <Platform image={backgroundType.current.platformImage} />
+            <Platform image={backgroundType.platformImage} />
             {enemyCurrentPokemon && (
               <BattlePokemon
                 battlePokemon={enemyCurrentPokemon}

@@ -40,7 +40,7 @@ export default function Pokemon({
     if (isFighting) {
       classes.push(...["w-32", "h-32"]);
     } else {
-      classes.push(...["w-[88px]", "h-[88px]", "md:w-32", "md:h-32"]);
+      classes.push(...["w-[88px]", "h-[88px]", "sm:w-32", "sm:h-32"]);
     }
 
     return classes.join(" ");
