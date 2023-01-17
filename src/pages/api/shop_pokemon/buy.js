@@ -8,6 +8,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { GetCurrentGame } from "prisma/queries/getCurrentGame";
 import { purchasePokemonCost } from "constants/gameConfig";
+import TransformGamePokemonRecord from "prisma/methods/transformGamePokemonRecord";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
 
@@ -30,6 +31,8 @@ async function handler(req, res) {
   if (req.method === "POST") {
     game = await DecreaseGameGold(prisma, game.id);
     await handleNewPokemonPurchase(game, prisma, body);
+    const gamePokemon = await GetGamePokemon(prisma, game.id);
+    res.status(200).json({ gamePokemon, gold: game.gold });
   } else if (req.method === "PATCH") {
     let gamePokemon = await prisma.gamePokemon.findUnique({
       where: { id: parseInt(body.gamePokemonId) },
@@ -46,12 +49,9 @@ async function handler(req, res) {
       return;
     }
     game = await DecreaseGameGold(prisma, game.id);
-    await handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant, shopPokemon);
+    const upgradedPokemon = await handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant, shopPokemon);
+    res.status(200).json({ gamePokemon: upgradedPokemon, gold: game.gold });
   }
-
-  const gamePokemon = await GetGamePokemon(prisma, game.id);
-
-  res.status(200).json({ gamePokemon, gold: game.gold });
 }
 
 async function handleNewPokemonPurchase(game, prisma, body) {
@@ -93,7 +93,7 @@ async function handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant
     where: { id: shopPokemon.id },
   });
 
-  await prisma.gamePokemon.update({
+  const updatedGamePokemon = await prisma.gamePokemon.update({
     where: {
       id: gamePokemon.id,
     },
@@ -104,4 +104,6 @@ async function handleUpgradePokemonPurchase(prisma, gamePokemon, pokemonConstant
       level: newLevel,
     },
   });
+
+  return TransformGamePokemonRecord(updatedGamePokemon);
 }

@@ -92,7 +92,7 @@ export default function Battle(props) {
     ]);
 
     props.childPlaySound(calculateMyAttack.type);
-    return;
+    // return;
 
     setMyBattlePokemon((pokemon) =>
       pokemon.map((p) => {

@@ -201,9 +201,6 @@ export default function MusicPlayer({ Component, pageProps }) {
           },
           { once: true }
         );
-
-        musicSliderInput.addEventListener("change", changeVolume);
-        soundSliderInput.addEventListener("change", changeSoundVolume);
       }
     } catch (e) {
       console.log("heyo", e);
@@ -239,7 +236,6 @@ export default function MusicPlayer({ Component, pageProps }) {
 
   function getInitialSoundVolume() {
     if (typeof localStorage !== "undefined") {
-      console.log(localStorage.getItem("sound"));
       return localStorage.getItem("sound") || "50";
     }
 
@@ -287,11 +283,27 @@ export default function MusicPlayer({ Component, pageProps }) {
   };
 
   const musicSlider = (
-    <input defaultValue={getInitialVolume()} type="range" min="0" max="100" step="1" id="music-slider" />
+    <input
+      onChange={changeVolume}
+      defaultValue={getInitialVolume()}
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      id="music-slider"
+    />
   );
 
   const soundSlider = (
-    <input defaultValue={getInitialSoundVolume()} type="range" min="0" max="100" step="1" id="sound-slider" />
+    <input
+      onChange={changeSoundVolume}
+      defaultValue={getInitialSoundVolume()}
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      id="sound-slider"
+    />
   );
 
   const allProps = { ...pageProps, childPlaySound, childPlaySong, spawnPokemonSound, musicSlider, soundSlider };

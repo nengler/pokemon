@@ -21,7 +21,7 @@ export default function SoundPopover({ musicSlider, soundSlider }) {
         </svg>
       </Popover.Button>
 
-      <Popover.Panel unmount={false} className="absolute z-10 bg-white rounded-md p-5 right-0">
+      <Popover.Panel unmount={false} className="absolute z-10 bg-white rounded-md p-5 right-0 shadow">
         <div>
           music
           {musicSlider}

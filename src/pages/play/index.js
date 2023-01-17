@@ -102,24 +102,6 @@ export default function Home(props) {
     props.spawnPokemonSound(pokemonId);
   };
 
-  const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
-    disallowPerformAction();
-    const body = {
-      shopPokemonId: shopPokemonId,
-      gameId: game.id,
-      gamePokemonId: gamePokemonId,
-    };
-    const upgradeRes = await fetch("/api/shop_pokemon/buy", {
-      method: "PATCH",
-      body: JSON.stringify(body),
-    });
-    const upgradeData = await upgradeRes.json();
-    setMyPokemon(upgradeData.gamePokemon);
-    setGame({ ...game, gold: upgradeData.gold });
-    updateShopPokemon(shopPokemonId);
-    allowPerformAction();
-  };
-
   const sellPokemon = async (gamePokemonId) => {
     disallowPerformAction();
     const body = { gamePokemonId: gamePokemonId };
@@ -138,6 +120,32 @@ export default function Home(props) {
     setMyPokemon(newPokemonOrder);
   };
 
+  const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
+    disallowPerformAction();
+    const body = {
+      shopPokemonId: shopPokemonId,
+      gameId: game.id,
+      gamePokemonId: gamePokemonId,
+    };
+    const upgradeRes = await fetch("/api/shop_pokemon/buy", {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+    const upgradeData = await upgradeRes.json();
+    setMyPokemon((pokemon) =>
+      pokemon.map((p) => {
+        if (p.id === upgradeData.gamePokemon.id) {
+          return { ...upgradeData.gamePokemon, orderNum: p.orderNum };
+        } else {
+          return p;
+        }
+      })
+    );
+    setGame({ ...game, gold: upgradeData.gold });
+    updateShopPokemon(shopPokemonId);
+    allowPerformAction();
+  };
+
   const evolvePokemon = async (gamePokemonId, newPokemonId) => {
     disallowPerformAction();
     const body = { gamePokemonId: gamePokemonId, newPokemonId: newPokemonId };
@@ -149,7 +157,7 @@ export default function Home(props) {
     setMyPokemon((pokemon) =>
       pokemon.map((p) => {
         if (p.id === evolveData.gamePokemon.id) {
-          return evolveData.gamePokemon;
+          return { ...evolveData.gamePokemon, orderNum: p.orderNum };
         } else {
           return p;
         }
