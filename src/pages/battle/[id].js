@@ -331,11 +331,12 @@ function PostGameScreen({ game, battle }) {
 
   const getHeaderText = () => {
     if (didWin) {
-      return beatGame ? "you beat the game" : "you won";
+      return beatGame ? "you beat the game" : `you won. ${game.wins}/10 wins`;
     } else if (battle.isDraw) {
       return "its a draw";
     } else {
-      return "you lost";
+      const livesText = game.lives === 1 ? "live" : "lives";
+      return `you lost. ${game.lives} ${livesText} left`;
     }
   };
 
@@ -353,7 +354,7 @@ function PostGameScreen({ game, battle }) {
     <>
       <div className="text-center mt-5">
         <h3 className="text-xl">{getHeaderText()}</h3>
-        <button onClick={handleClick} className="text-indigo-500">
+        <button onClick={handleClick} className="text-indigo-500 text-lg">
           {getButtonText()}
         </button>
       </div>

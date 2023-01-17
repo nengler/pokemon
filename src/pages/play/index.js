@@ -256,13 +256,10 @@ export default function Home(props) {
       >
         <div className="flex justify-between">
           <div className="flex gap-4">
-            <div className="flex gap-1">
-              {game.gold}
-              <Image src="/assets/PokeCoin.png" height={25} width={25} />
-            </div>
+            <div className="flex gap-1">{game.gold} coins</div>
             <div>round: {game.round}</div>
             <div>lives: {game.lives}</div>
-            <div>wins: {game.wins}</div>
+            <div>wins: {game.wins}/10</div>
           </div>
 
           <SoundPopover musicSlider={props.musicSlider} soundSlider={props.soundSlider} />
@@ -293,7 +290,10 @@ export default function Home(props) {
             </div>
           </div>
 
-          <h4 className="text-lg mb-2">shop pokemon</h4>
+          <div className="mb-2 flex items-baseline gap-1">
+            <h4 className="text-lg">shop pokemon </h4>
+            <span>(3 coins)</span>
+          </div>
           <div className="flex justify-between sm:justify-center sm:gap-8">
             {shopLength.map((_, index) => {
               const shopMon = shopPokemon[index];
@@ -317,7 +317,7 @@ export default function Home(props) {
         </DndProvider>
         <div className="mt-10 gap-3 flex justify-end">
           <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
-            get new pokemon
+            get new pokemon (1 coin)
           </button>
 
           <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">

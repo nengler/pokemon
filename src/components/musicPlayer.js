@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import GetRandomElement from "util/getRandomElement";
 
 let isEventAdded = false;
 
@@ -16,6 +17,8 @@ export default function MusicPlayer({ Component, pageProps }) {
     { name: "tie", buffer: null, didFetch: false, url: "/assets/music/tie.mp3" },
     { name: "center", buffer: null, didFetch: false, url: "/assets/music/pokemon_center.mp3" },
     { name: "azalea", buffer: null, didFetch: false, url: "/assets/music/azalea_town.mp3" },
+    { name: "fushia", buffer: null, didFetch: false, url: "/assets/music/fushia_city.mp3" },
+    { name: "slateport", buffer: null, didFetch: false, url: "/assets/music/slateport_city.mp3" },
     { name: "gym_battle_1", buffer: null, didFetch: false, url: "/assets/music/gym_battle_1.mp3" },
     { name: "gym_battle_3", buffer: null, didFetch: false, url: "/assets/music/gym_battle_3.mp3" },
   ]);
@@ -156,7 +159,8 @@ export default function MusicPlayer({ Component, pageProps }) {
     if (url === "/") {
       return "center";
     } else if (url === "/how-to-play" || url === "/play") {
-      return "azalea";
+      const playSongs = ["azalea", "fushia", "slateport"];
+      return GetRandomElement(playSongs);
     }
   }
 
