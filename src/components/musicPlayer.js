@@ -26,7 +26,7 @@ export default function MusicPlayer({ Component, pageProps }) {
     { name: "Electric", buffer: null, url: "/assets/moves/spark.mp3" },
     { name: "Fighting", buffer: null, url: "/assets/moves/karate_chop.mp3" },
     { name: "Fire", buffer: null, url: "/assets/moves/ember.mp3" },
-    { name: "Flying", buffer: null, url: "/assets/moves/aeroblast-trimmed.mp3" },
+    { name: "Flying", buffer: null, url: "/assets/moves/aeroblast.mp3" },
     { name: "Ghost", buffer: null, url: "/assets/moves/shadow_ball.mp3" },
     { name: "Grass", buffer: null, url: "/assets/moves/razor_leaf.mp3" },
     { name: "Ground", buffer: null, url: "/assets/moves/mud_shot.mp3" },
@@ -36,7 +36,7 @@ export default function MusicPlayer({ Component, pageProps }) {
     { name: "Psychic", buffer: null, url: "/assets/moves/psycho_boost.mp3" },
     { name: "Rock", buffer: null, url: "/assets/moves/ancient_power.mp3" },
     { name: "Steel", buffer: null, url: "/assets/moves/shadow_ball.mp3" },
-    { name: "Water", buffer: null, url: "/assets/moves/bubble-trimmed.mp3" },
+    { name: "Water", buffer: null, url: "/assets/moves/bubble.mp3" },
   ]);
 
   function getMusicRange() {
