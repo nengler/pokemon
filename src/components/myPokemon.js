@@ -4,6 +4,7 @@ import Pokemon from "./pokemon";
 import GetHp from "util/getHp";
 import PokemonImage from "util/pokemonImage";
 import styles from "../styles/myPokemon.module.css";
+import Image from "next/image";
 
 export default function MyPokemon({
   gamePokemon,
@@ -17,6 +18,7 @@ export default function MyPokemon({
   evolvePokemon,
   canPerformAction,
   combinePokemon,
+  platformImage,
 }) {
   const clickOutside = useRef();
   const evolveButtonRef = useRef();
@@ -134,16 +136,19 @@ export default function MyPokemon({
   return (
     <div
       ref={gamePokemonDrop}
-      className={`${styles.width} mt-4 transition-colors ${
+      className={`${styles.width} sm:mt-4 transition-colors ${
         dragCollectables.isDragging || !canPerformAction ? "opacity-50" : ""
       } ${collectables.isOver ? "bg-green-500" : ""}`}
     >
       <div
         ref={drop}
-        className={`h-[125px] md:h-40 border-b border-gray-300 flex flex-col justify-end pb-1 transition-colors ${
+        className={`h-[34vw] md:h-40 flex flex-col justify-end transition-colors relative ${
           canDrop && isOver ? "bg-green-500" : ""
         } `}
       >
+        <div className="absolute bottom-10 w-full scale-y-150 md:scale-125">
+          <Image src={platformImage} width={256} height={70} />
+        </div>
         {gamePokemon !== undefined && (
           <div className="text-center w-full">
             {preview !== undefined && (

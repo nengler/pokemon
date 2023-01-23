@@ -21,12 +21,13 @@ export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction
   );
 
   return (
-    <div className={`${isDragging || !canPerformAction ? "opacity-25" : "opacity-100"} w-full text-center`}>
+    <div className={`${isDragging || !canPerformAction ? "opacity-50" : "opacity-100"} w-full text-center`}>
       <div className={`pb-1 rounded-lg ${isFrozen ? "bg-cyan-100" : ""}`}>
         {preview !== undefined && (
           <DragPreviewImage src={PokemonImage(shopPokemon.pokemonId, shopPokemon.isShiny)} connect={preview} />
         )}
         <Pokemon
+          isShopPokemon={true}
           connectDragSource={preview}
           pokemonRef={drag}
           name={shopPokemon.name}

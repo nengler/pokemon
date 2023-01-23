@@ -28,7 +28,7 @@ export default function SoundPopover({ musicSlider, soundSlider }) {
         </div>
 
         <div>
-          sound
+          sound effects
           {soundSlider}
         </div>
       </Popover.Panel>

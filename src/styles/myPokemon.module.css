@@ -1,9 +1,25 @@
 .width {
-  width: calc(33% - 12px);
+  width: calc(34vw - 24px);
+}
+
+.pokemonDimensions {
+  width: calc(34vw - 24px);
+  height: calc(34vw - 24px);
+}
+
+.shopPokemonDimensions {
+  width: 23vw;
+  height: 23vw;
 }
 
 @media (min-width: 768px) {
   .width {
     width: 8rem;
+  }
+
+  .pokemonDimensions,
+  .shopPokemonDimensions {
+    width: 128px;
+    height: 128px;
   }
 }

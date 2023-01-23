@@ -2,12 +2,14 @@ import PokemonImage from "util/pokemonImage";
 import PokemonType from "./pokemonType";
 import TextAnimation from "./battle/textComponent";
 import SpawnPokeball from "./battle/spawnPokeball";
+import styles from "../styles/myPokemon.module.css";
 
 export default function Pokemon({
   pokemonRef,
   level,
   name,
   pokedexId,
+  isShopPokemon = false,
   isShiny,
   hp,
   tempHp,
@@ -39,8 +41,10 @@ export default function Pokemon({
 
     if (isFighting) {
       classes.push(...["w-32", "h-32"]);
+    } else if (isShopPokemon) {
+      classes.push(styles.shopPokemonDimensions);
     } else {
-      classes.push(...["w-[88px]", "h-[88px]", "sm:w-32", "sm:h-32"]);
+      classes.push(styles.pokemonDimensions);
     }
 
     return classes.join(" ");

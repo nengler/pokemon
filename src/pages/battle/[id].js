@@ -10,8 +10,8 @@ import { BattlePokemon } from "components/battle/battlePokemon";
 import { battleStates } from "constants/gameConfig";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import styles from "../../styles/battle.module.css";
 import SoundPopover from "components/soundPopover";
+import getBackgroundType from "util/getBackgroundType";
 
 const animationCheck = {
   logic: "logic",
@@ -21,17 +21,6 @@ const animationCheck = {
 };
 
 let animationType = animationCheck.nextPokemon;
-
-function getBackgroundType(battleId) {
-  const backgroundOptions = [
-    { type: "grass", platformImage: "/assets/platforms/grass_platform.png", class: styles.grassBackground },
-    { type: "ground", platformImage: "/assets/platforms/ground_platform.png", class: styles.rockBackground },
-    { type: "normal", platformImage: "/assets/platforms/normal_platform.png", class: styles.whiteBackground },
-    { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]" },
-  ];
-
-  return backgroundOptions[battleId % backgroundOptions.length];
-}
 
 export default function Battle(props) {
   const [myBattlePokemon, setMyBattlePokemon] = useState(props.battlePokemon.filter((b) => b.gameId === props.game.id));

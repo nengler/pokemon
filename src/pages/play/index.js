@@ -19,14 +19,15 @@ import { maxTeamSize, shopPokemonNumber } from "constants/gameConfig";
 import WheelTransition from "components/play/wheelTransition";
 import RandomBlocksTransition from "components/play/randomBlocksTransition";
 import GetRandomElement from "util/getRandomElement";
-import Image from "next/image";
-import styles from "../../styles/play.module.css";
 import SoundPopover from "components/soundPopover";
+import Image from "next/image";
+import getBackgroundType from "util/getBackgroundType";
 
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
 
 export default function Home(props) {
+  const backgroundType = getBackgroundType(props.game.id * props.game.round);
   const pageAnimation = () => {
     const animations = [<WheelTransition />, <RandomBlocksTransition />];
     return GetRandomElement(animations);
@@ -249,14 +250,17 @@ export default function Home(props) {
   };
 
   return (
-    <div className={`${styles.background} w-screen h-screen`}>
+    <div className={`${backgroundType.class} min-w-screen min-h-screen`}>
+      <meta name="theme-color" content={backgroundType.color} />
       <div
         className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3 fadeInAnimation"
         style={{ "--fadeinduration": "750ms" }}
       >
         <div className="flex justify-between">
-          <div className="flex gap-4">
-            <div className="flex gap-1">{game.gold} coins</div>
+          <div className="flex gap-2 sm:gap-4">
+            <div className="flex gap-1">
+              {game.gold} coin{game.gold !== 1 && "s"}
+            </div>
             <div>round: {game.round}</div>
             <div>lives: {game.lives}</div>
             <div>wins: {game.wins}/10</div>
@@ -267,7 +271,7 @@ export default function Home(props) {
 
         <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
           <div className="mb-6">
-            <div className="flex flex-wrap justify-between sm:justify-center gap-3">
+            <div className="flex flex-wrap justify-between sm:justify-center gap-3 md:gap-8">
               {pokemonLength.map((_p, index) => {
                 const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
                 return (
@@ -284,6 +288,7 @@ export default function Home(props) {
                     evolvePokemon={evolvePokemon}
                     canPerformAction={canPerformAction}
                     combinePokemon={combinePokemon}
+                    platformImage={backgroundType.platformImage}
                   />
                 );
               })}
@@ -294,14 +299,17 @@ export default function Home(props) {
             <h4 className="text-lg">shop pokemon </h4>
             <span>(3 coins)</span>
           </div>
-          <div className="flex justify-between sm:justify-center sm:gap-8">
+          <div className="flex justify-between md:justify-center md:gap-8">
             {shopLength.map((_, index) => {
               const shopMon = shopPokemon[index];
               return (
                 <div
                   key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
-                  className="w-[88px] sm:w-32"
+                  className={`${!canPerformAction && "opacity-50"} w-[23vw] md:w-32 relative`}
                 >
+                  <div className="absolute bottom-16 w-full scale-y-150 md:scale-125">
+                    <Image src={backgroundType.platformImage} width={256} height={70} />
+                  </div>
                   {shopMon && Object.keys(shopMon).length !== 0 && (
                     <ShopPokemon
                       changeFrozenState={changeFrozenState}
