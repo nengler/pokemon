@@ -11,17 +11,22 @@ export default function getBackgroundType(numberID) {
     {
       type: "ground",
       platformImage: "/assets/platforms/ground_platform.png",
-      class: styles.rockBackground,
-      color: "#c4ad78",
+      class: styles.groundBackground,
+      color: "#bfa768",
     },
     {
       type: "normal",
       platformImage: "/assets/platforms/normal_platform.png",
-      class: styles.whiteBackground,
+      class: styles.normalBackground,
       color: "#e7e8e7",
     },
-    { type: "water", platformImage: "/assets/platforms/water_platform.png", class: "bg-[#f1f7f8]", color: "#f1f7f8" },
+    {
+      type: "water",
+      platformImage: "/assets/platforms/water_platform.png",
+      class: styles.waterBackground,
+      color: "#f1f7f8",
+    },
   ];
 
-  return backgroundOptions[3];
+  return backgroundOptions[numberID % backgroundOptions.length];
 }

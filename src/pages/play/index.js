@@ -33,15 +33,26 @@ export default function Home(props) {
     return GetRandomElement(animations);
   };
 
+  const actionStates = {
+    ALLOW_ACTION: "allow_action",
+    UPDATING_POKEMON: "updating_pokemon",
+    SEARCHING_FOR_BATTLE: "searching_for_battle",
+  };
+
   const router = useRouter();
   const [shopPokemon, setShopPokemon] = useState(props.shopPokemon);
   const [game, setGame] = useState(props.game);
   const [myPokemon, setMyPokemon] = useState(props.myPokemonRecords);
-  const [canPerformAction, setCanPerformAction] = useState(props.waitingForBattle ? false : true);
+  const [actionState, setActionState] = useState(
+    props.waitingForBattle ? actionStates.SEARCHING_FOR_BATTLE : actionStates.ALLOW_ACTION
+  );
   const [pageTransition, setPageTransition] = useState({ isRunning: false, timeout: 2500, animation: pageAnimation() });
 
-  const allowPerformAction = () => setCanPerformAction(true);
-  const disallowPerformAction = () => setCanPerformAction(false);
+  const canPerformAction = actionState === actionStates.ALLOW_ACTION;
+
+  const allowPerformAction = () => setActionState(actionStates.ALLOW_ACTION);
+  const updatingPokemon = () => setActionState(actionStates.UPDATING_POKEMON);
+  const searchingForBattle = () => setActionState(actionStates.SEARCHING_FOR_BATTLE);
 
   useEffect(() => {
     if (props.waitingForBattle?.id) {
@@ -57,7 +68,7 @@ export default function Home(props) {
   };
 
   const getNewPokemon = async () => {
-    disallowPerformAction();
+    updatingPokemon();
 
     const pokemonFetch = await fetch("api/shop_pokemon/new", {
       method: "POST",
@@ -82,7 +93,7 @@ export default function Home(props) {
   };
 
   const buyNewPokemon = async (order, shopPokemonId, pokemonId) => {
-    disallowPerformAction();
+    updatingPokemon();
     const body = {
       order: order,
       shopPokemonId: shopPokemonId,
@@ -104,7 +115,7 @@ export default function Home(props) {
   };
 
   const sellPokemon = async (gamePokemonId) => {
-    disallowPerformAction();
+    updatingPokemon();
     const body = { gamePokemonId: gamePokemonId };
     const sellRes = await fetch("/api/game_pokemon/sell", {
       method: "POST",
@@ -122,7 +133,7 @@ export default function Home(props) {
   };
 
   const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
-    disallowPerformAction();
+    updatingPokemon();
     const body = {
       shopPokemonId: shopPokemonId,
       gameId: game.id,
@@ -148,7 +159,7 @@ export default function Home(props) {
   };
 
   const evolvePokemon = async (gamePokemonId, newPokemonId) => {
-    disallowPerformAction();
+    updatingPokemon();
     const body = { gamePokemonId: gamePokemonId, newPokemonId: newPokemonId };
     const evolveRes = await fetch("/api/game_pokemon/evolve", {
       method: "POST",
@@ -169,7 +180,7 @@ export default function Home(props) {
   };
 
   const searchForBattle = async () => {
-    disallowPerformAction();
+    searchingForBattle();
     const body = {
       myPokemonOrder: myPokemon.map((m) => {
         return { id: m.id, orderNum: m.orderNum };
@@ -217,7 +228,7 @@ export default function Home(props) {
   }
 
   const combinePokemon = async (pokemonId1, pokemonId2) => {
-    disallowPerformAction();
+    updatingPokemon();
     const body = {
       pokemonId1,
       pokemonId2,
@@ -271,7 +282,7 @@ export default function Home(props) {
 
         <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
           <div className="mb-6">
-            <div className="flex flex-wrap justify-between sm:justify-center gap-3 md:gap-8">
+            <div className="flex flex-wrap justify-between gap-3 md:gap-8">
               {pokemonLength.map((_p, index) => {
                 const gamePokemon = myPokemon.filter((pokemon) => pokemon.orderNum === index)[0];
                 return (
@@ -305,7 +316,9 @@ export default function Home(props) {
               return (
                 <div
                   key={shopMon?.id ? `shop-${shopMon.id}-${shopMon.pokemonId}` : `shopUndefined-${index}`}
-                  className={`${!canPerformAction && "opacity-50"} w-[23vw] md:w-32 relative`}
+                  className={`${
+                    !canPerformAction ? "opacity-50" : ""
+                  } w-[23vw] h-[calc(23vw_+_52px)] md:w-32 md:h-[180px] relative`}
                 >
                   <div className="absolute bottom-16 w-full scale-y-150 md:scale-125">
                     <Image src={backgroundType.platformImage} width={256} height={70} />
@@ -323,14 +336,19 @@ export default function Home(props) {
             })}
           </div>
         </DndProvider>
-        <div className="mt-10 gap-3 flex justify-end">
-          <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
-            get new pokemon (1 coin)
-          </button>
+        <div className="mt-10">
+          {actionState === actionStates.SEARCHING_FOR_BATTLE && (
+            <div className="text-center text-indigo-500 underline">Searching for opponent</div>
+          )}
+          <div className=" gap-3 flex justify-end">
+            <button disabled={!canPerformAction || game.gold < 1} className="btn btn-secondary" onClick={getNewPokemon}>
+              get new pokemon (1 coin)
+            </button>
 
-          <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">
-            battle
-          </button>
+            <button disabled={!canPerformAction} onClick={searchForBattle} className="btn btn-primary">
+              battle
+            </button>
+          </div>
         </div>
       </div>
       {pageTransition.isRunning && pageTransition.animation}

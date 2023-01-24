@@ -246,6 +246,7 @@ export default function Battle(props) {
 
   return (
     <div className={`${backgroundType.class} w-screen h-screen`}>
+      <meta name="theme-color" content={backgroundType.color} />
       <div className="fadeFromBlack" />
       <div className="flex flex-col p-4 ">
         <div className="sm:flex justify-center items-center sm:gap-8 md:gap-16 lg:gap-32 relative">
