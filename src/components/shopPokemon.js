@@ -1,7 +1,8 @@
-import { DragPreviewImage, useDrag } from "react-dnd";
+import { useEffect } from "react";
+import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 import GetHp from "util/getHp";
 import GetNotHpStat from "util/getNotHpStat";
-import PokemonImage from "util/pokemonImage";
 import Pokemon from "./pokemon";
 
 export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction, changeFrozenState }) {
@@ -20,12 +21,13 @@ export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction
     [canPerformAction, canPurchase]
   );
 
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
+
   return (
     <div className={`${isDragging || !canPerformAction ? "opacity-50" : "opacity-100"} w-full text-center`}>
       <div className={`pb-1 rounded-lg ${isFrozen ? "bg-cyan-100" : ""}`}>
-        {preview !== undefined && (
-          <DragPreviewImage src={PokemonImage(shopPokemon.pokemonId, shopPokemon.isShiny)} connect={preview} />
-        )}
         <Pokemon
           isShopPokemon={true}
           connectDragSource={preview}

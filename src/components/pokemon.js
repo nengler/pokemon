@@ -95,10 +95,10 @@ function HpMeter({ tempHp, hp }) {
   }
 
   return (
-    <div className="min-w-[30px] relative px-1 h-6 flex justify-center items-center border border-green-300 rounded-lg overflow-hidden">
+    <div className="w-full relative px-1 h-6 flex justify-center items-center border border-green-300 rounded-lg overflow-hidden">
       <div
-        className={`absolute origin-bottom w-full left-0 z-0 bg-green-300 h-full transition-transform duration-300`}
-        style={{ transform: `scaleY(${hpMeter})` }}
+        className={`absolute origin-left w-full left-0 z-0 bg-green-300 h-full transition-transform duration-300`}
+        style={{ transform: `scaleX(${hpMeter})` }}
       />
       <span className="z-[1]">{tempHp < 0 ? 0 : tempHp}</span>
     </div>

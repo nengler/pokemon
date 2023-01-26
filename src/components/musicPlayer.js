@@ -193,18 +193,26 @@ export default function MusicPlayer({ Component, pageProps }) {
         createSource(musicGain);
       }
 
-      if (!isEventAdded) {
+      const screenClicked = () => {
+        localStorage.setItem("didClick", true);
+        startMusic();
+      };
+
+      const startMusic = () => {
+        const songToPlay = getSongFromUrl(router.pathname);
+        if (songToPlay) {
+          loadOrPlaySong(songToPlay);
+        }
+      };
+
+      const canStartMusic = localStorage.getItem("didClick");
+
+      if (canStartMusic) {
+        startMusic();
+      } else if (!isEventAdded) {
         isEventAdded = true;
-        document.querySelector("body").addEventListener(
-          "click",
-          function () {
-            const songToPlay = getSongFromUrl(router.pathname);
-            if (songToPlay) {
-              loadOrPlaySong(songToPlay);
-            }
-          },
-          { once: true }
-        );
+
+        document.querySelector("body").addEventListener("click", screenClicked, { once: true });
       }
     } catch (e) {
       console.log("heyo", e);

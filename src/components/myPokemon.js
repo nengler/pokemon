@@ -1,10 +1,10 @@
-import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
-import { useState, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { useState, useRef, useEffect } from "react";
 import Pokemon from "./pokemon";
 import GetHp from "util/getHp";
-import PokemonImage from "util/pokemonImage";
 import styles from "../styles/myPokemon.module.css";
 import Image from "next/image";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 export default function MyPokemon({
   gamePokemon,
@@ -133,6 +133,10 @@ export default function MyPokemon({
 
   const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level).length > 0;
 
+  useEffect(() => {
+    preview(getEmptyImage());
+  }, []);
+
   return (
     <div
       ref={gamePokemonDrop}
@@ -151,9 +155,6 @@ export default function MyPokemon({
         </div>
         {gamePokemon !== undefined && (
           <div className="text-center w-full">
-            {preview !== undefined && (
-              <DragPreviewImage src={PokemonImage(gamePokemon.pokemonId, gamePokemon.isShiny)} connect={preview} />
-            )}
             <Pokemon
               pokemonRef={drag}
               name={gamePokemon.name}

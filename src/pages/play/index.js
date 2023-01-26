@@ -22,9 +22,32 @@ import GetRandomElement from "util/getRandomElement";
 import SoundPopover from "components/soundPopover";
 import Image from "next/image";
 import getBackgroundType from "util/getBackgroundType";
+import { usePreview } from "react-dnd-preview";
+import PokemonImage from "util/pokemonImage";
+import styles from "../../styles/myPokemon.module.css";
 
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
+
+const MyPreview = ({}) => {
+  const preview = usePreview();
+
+  if (!preview.display) {
+    return null;
+  }
+  const { item, style } = preview;
+  return (
+    <div className="z-[2]" style={style}>
+      <div
+        className={`${styles.pokemonDimensions} -scale-x-100`}
+        style={{
+          backgroundImage: `url(${PokemonImage(item.pokemonId, false)})`,
+          backgroundSize: "100% 100%",
+        }}
+      />
+    </div>
+  );
+};
 
 export default function Home(props) {
   const backgroundType = getBackgroundType(props.game.id * props.game.round);
@@ -281,6 +304,7 @@ export default function Home(props) {
         </div>
 
         <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
+          <MyPreview />
           <div className="mb-6">
             <div className="flex flex-wrap justify-between gap-3 md:gap-8">
               {pokemonLength.map((_p, index) => {
