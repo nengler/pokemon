@@ -1,26 +1,28 @@
-export default function RearrangeGamePokemon(myPokemon, gamePokemonId, originalSpot, newOrderCol) {
-  const spotHasPokemonInIt = myPokemon.filter((p) => p.orderNum === newOrderCol)[0] !== undefined;
+export default function RearrangeGamePokemon(myPokemonSetter, gamePokemonId, originalSpot, newOrderCol) {
+  myPokemonSetter((myPokemon) => {
+    const spotHasPokemonInIt = myPokemon.filter((p) => p.orderNum === newOrderCol)[0] !== undefined;
 
-  if (spotHasPokemonInIt) {
-    const pokemonClone = structuredClone(myPokemon);
-    pokemonClone.filter((p) => p.id === gamePokemonId)[0].orderNum = newOrderCol;
+    if (spotHasPokemonInIt) {
+      const pokemonClone = structuredClone(myPokemon);
+      pokemonClone.filter((p) => p.id === gamePokemonId)[0].orderNum = newOrderCol;
 
-    if (newOrderCol === 5 || newOrderCol === 0) {
-      return handleEdges(pokemonClone, gamePokemonId, newOrderCol);
-    } else if (Math.abs(originalSpot - newOrderCol) === 1) {
-      return handleMoveOneSpot(pokemonClone, gamePokemonId, originalSpot, newOrderCol);
-    } else {
-      return handleAllOtherSorts(pokemonClone, gamePokemonId, originalSpot, newOrderCol);
-    }
-  } else {
-    return myPokemon.map((p) => {
-      if (p.id === gamePokemonId) {
-        return { ...p, orderNum: newOrderCol };
+      if (newOrderCol === 5 || newOrderCol === 0) {
+        return handleEdges(pokemonClone, gamePokemonId, newOrderCol);
+      } else if (Math.abs(originalSpot - newOrderCol) === 1) {
+        return handleMoveOneSpot(pokemonClone, gamePokemonId, originalSpot, newOrderCol);
       } else {
-        return p;
+        return handleAllOtherSorts(pokemonClone, gamePokemonId, originalSpot, newOrderCol);
       }
-    });
-  }
+    } else {
+      return myPokemon.map((p) => {
+        if (p.id === gamePokemonId) {
+          return { ...p, orderNum: newOrderCol };
+        } else {
+          return p;
+        }
+      });
+    }
+  });
 }
 
 function handleEdges(myPokemon, gamePokemonId, newOrderCol) {

@@ -22,7 +22,7 @@ export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction
   );
 
   useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
+    preview(getEmptyImage());
   }, []);
 
   return (
@@ -30,7 +30,6 @@ export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction
       <div className={`pb-1 rounded-lg ${isFrozen ? "bg-cyan-100" : ""}`}>
         <Pokemon
           isShopPokemon={true}
-          connectDragSource={preview}
           pokemonRef={drag}
           name={shopPokemon.name}
           level={shopPokemon.level}

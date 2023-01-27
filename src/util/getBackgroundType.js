@@ -18,7 +18,7 @@ export default function getBackgroundType(numberID) {
       type: "normal",
       platformImage: "/assets/platforms/normal_platform.png",
       class: styles.normalBackground,
-      color: "#e7e8e7",
+      color: "#dfe0df",
     },
     {
       type: "water",

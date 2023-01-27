@@ -4,7 +4,7 @@ import ShopPokemon from "components/shopPokemon";
 import GetShopPokemon from "prisma/queries/getShopPokemon";
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import MouseBackEnd from "react-dnd-mouse-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { useRouter } from "next/router";
 import { withIronSessionSsr } from "iron-session/next";
@@ -29,7 +29,7 @@ import styles from "../../styles/myPokemon.module.css";
 const pokemonLength = Array.apply(null, Array(maxTeamSize)).map(function () {});
 const shopLength = Array.apply(null, Array(shopPokemonNumber)).map(function () {});
 
-const MyPreview = ({}) => {
+const MyPreview = () => {
   const preview = usePreview();
 
   if (!preview.display) {
@@ -151,8 +151,7 @@ export default function Home(props) {
   };
 
   const rearrangeOrder = (gamePokemonId, originalSpot, newOrderCol) => {
-    const newPokemonOrder = RearrangeGamePokemon(myPokemon, gamePokemonId, originalSpot, newOrderCol);
-    setMyPokemon(newPokemonOrder);
+    RearrangeGamePokemon(setMyPokemon, gamePokemonId, originalSpot, newOrderCol);
   };
 
   const upgradePokemon = async (gamePokemonId, shopPokemonId) => {
@@ -285,7 +284,7 @@ export default function Home(props) {
 
   return (
     <div className={`${backgroundType.class} min-w-screen min-h-screen`}>
-      <meta name="theme-color" content={backgroundType.color} />
+      <meta name="theme-color" content={pageTransition.isRunning ? "#111827" : backgroundType.color} />
       <div
         className="max-w-screen-lg mx-auto py-3 lg:pt-12 px-3 fadeInAnimation"
         style={{ "--fadeinduration": "750ms" }}
@@ -303,7 +302,7 @@ export default function Home(props) {
           <SoundPopover musicSlider={props.musicSlider} soundSlider={props.soundSlider} />
         </div>
 
-        <DndProvider backend={props.isMobile ? TouchBackend : HTML5Backend}>
+        <DndProvider backend={props.isMobile ? TouchBackend : MouseBackEnd}>
           <MyPreview />
           <div className="mb-6">
             <div className="flex flex-wrap justify-between gap-3 md:gap-8">

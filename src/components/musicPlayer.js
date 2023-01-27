@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import GetRandomElement from "util/getRandomElement";
 
 let isEventAdded = false;
+let lastPlayedSong = null;
 
 export default function MusicPlayer({ Component, pageProps }) {
   const router = useRouter();
@@ -12,15 +13,14 @@ export default function MusicPlayer({ Component, pageProps }) {
   const musicSliderInput = getMusicRange();
   const soundSliderInput = getSoundRange();
   const audioSongs = useRef([
-    { name: "victory", buffer: null, didFetch: false, url: "/assets/music/victory.mp3" },
-    { name: "defeat", buffer: null, didFetch: false, url: "/assets/music/defeat.mp3" },
-    { name: "tie", buffer: null, didFetch: false, url: "/assets/music/tie.mp3" },
-    { name: "center", buffer: null, didFetch: false, url: "/assets/music/pokemon_center.mp3" },
     { name: "azalea", buffer: null, didFetch: false, url: "/assets/music/azalea_town.mp3" },
+    { name: "defeat", buffer: null, didFetch: false, url: "/assets/music/defeat.mp3" },
     { name: "fushia", buffer: null, didFetch: false, url: "/assets/music/fushia_city.mp3" },
-    { name: "slateport", buffer: null, didFetch: false, url: "/assets/music/slateport_city.mp3" },
     { name: "gym_battle_1", buffer: null, didFetch: false, url: "/assets/music/gym_battle_1.mp3" },
     { name: "gym_battle_3", buffer: null, didFetch: false, url: "/assets/music/gym_battle_3.mp3" },
+    { name: "slateport", buffer: null, didFetch: false, url: "/assets/music/slateport_city.mp3" },
+    { name: "tie", buffer: null, didFetch: false, url: "/assets/music/tie.mp3" },
+    { name: "victory", buffer: null, didFetch: false, url: "/assets/music/victory.mp3" },
   ]);
 
   const audioSounds = useRef([
@@ -54,12 +54,6 @@ export default function MusicPlayer({ Component, pageProps }) {
     }
   }
 
-  function createAudioContext() {
-    if (typeof window !== "undefined") {
-      return new AudioContext();
-    }
-  }
-
   function changeVolume(event) {
     if (!audioContext.current) {
       return;
@@ -82,30 +76,15 @@ export default function MusicPlayer({ Component, pageProps }) {
     localStorage.setItem("sound", newVolumne);
   }
 
-  async function loadSound(name, callback, url) {
-    const nameSearch = (element) => element.name === name;
-    const cacheAudioBuffer = audioSounds.current.find(nameSearch);
-    if (!cacheAudioBuffer || cacheAudioBuffer.buffer === null) {
-      const audioBuffer = await fetch(url)
-        .then((res) => res.arrayBuffer())
-        .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
-
-      const audioBufferObject = { name: name, buffer: audioBuffer, url: url };
-
-      if (!cacheAudioBuffer) {
-        audioSounds.current = [...audioSounds.current, audioBufferObject];
-      } else {
-        const audioBufferIndex = audioSounds.current.findIndex(nameSearch);
-        audioSounds.current[audioBufferIndex] = audioBufferObject;
-      }
-      callback(audioBuffer);
-    } else {
-      callback(cacheAudioBuffer.buffer);
+  function createAudioContext() {
+    if (typeof window !== "undefined") {
+      return new AudioContext();
     }
   }
 
   function createSource(gainNode) {
     if (sourceRef.current && audioContext.current.state === "running") {
+      sourceRef.current.disconnect();
       sourceRef.current.stop();
     }
 
@@ -132,16 +111,26 @@ export default function MusicPlayer({ Component, pageProps }) {
     return gainNodeRef.current;
   }
 
-  function playSong(buffer, shouldLoop = true) {
-    let { musicGain } = getOrCreateGain();
-    let source = createSource(musicGain);
+  async function loadSound(name, callback, url) {
+    const nameSearch = (element) => element.name === name;
+    const cacheAudioBuffer = audioSounds.current.find(nameSearch);
+    if (!cacheAudioBuffer || cacheAudioBuffer.buffer === null) {
+      const audioBuffer = await fetch(url)
+        .then((res) => res.arrayBuffer())
+        .then((ArrayBuffer) => audioContext.current.decodeAudioData(ArrayBuffer));
 
-    source.buffer = buffer;
+      const audioBufferObject = { name: name, buffer: audioBuffer, url: url };
 
-    source.loop = shouldLoop;
-    const currentVolume = parseInt(musicSliderInput.value);
-    musicGain.gain.setValueAtTime(currentVolume / 100, audioContext.current.currentTime);
-    source.start(0);
+      if (!cacheAudioBuffer) {
+        audioSounds.current = [...audioSounds.current, audioBufferObject];
+      } else {
+        const audioBufferIndex = audioSounds.current.findIndex(nameSearch);
+        audioSounds.current[audioBufferIndex] = audioBufferObject;
+      }
+      callback(audioBuffer);
+    } else {
+      callback(cacheAudioBuffer.buffer);
+    }
   }
 
   function playSound(buffer) {
@@ -155,12 +144,28 @@ export default function MusicPlayer({ Component, pageProps }) {
     source.start(0);
   }
 
+  function playSong(buffer, shouldLoop = true) {
+    let { musicGain } = getOrCreateGain();
+    let source = createSource(musicGain);
+
+    source.buffer = buffer;
+
+    source.loop = shouldLoop;
+    const currentVolume = parseInt(musicSliderInput.value);
+    musicGain.gain.setValueAtTime(currentVolume / 100, audioContext.current.currentTime);
+    source.start(0);
+  }
+
   function getSongFromUrl(url) {
-    if (url === "/") {
-      return "center";
-    } else if (url === "/how-to-play" || url === "/play") {
-      const playSongs = ["azalea", "fushia", "slateport"];
-      return GetRandomElement(playSongs);
+    if (url === "/" || url === "/how-to-play" || url === "/play") {
+      console.log("init", url);
+      let songs = ["azalea", "fushia", "slateport"];
+      if (lastPlayedSong !== null) {
+        songs = songs.filter((song) => song !== lastPlayedSong);
+      }
+      const songToPlay = GetRandomElement(songs);
+      lastPlayedSong = songToPlay;
+      return songToPlay;
     }
   }
 
@@ -186,42 +191,27 @@ export default function MusicPlayer({ Component, pageProps }) {
     });
   }
 
+  const startMusic = () => {
+    const songToPlay = getSongFromUrl(router.pathname);
+    if (songToPlay) {
+      loadOrPlaySong(songToPlay, true);
+    }
+  };
+
   useEffect(() => {
     try {
       if (!audioContext.current) {
         const { musicGain } = getOrCreateGain();
         createSource(musicGain);
       }
-
-      const screenClicked = () => {
-        localStorage.setItem("didClick", true);
-        startMusic();
-      };
-
-      const startMusic = () => {
-        const songToPlay = getSongFromUrl(router.pathname);
-        if (songToPlay) {
-          loadOrPlaySong(songToPlay);
-        }
-      };
-
-      const canStartMusic = localStorage.getItem("didClick");
-
-      if (canStartMusic) {
-        startMusic();
-      } else if (!isEventAdded) {
-        isEventAdded = true;
-
-        document.querySelector("body").addEventListener("click", screenClicked, { once: true });
-      }
     } catch (e) {
       console.log("heyo", e);
     }
 
     const handleRouteChange = (url) => {
-      const songToPlay = getSongFromUrl(url, playSong);
+      const songToPlay = getSongFromUrl(url);
       if (songToPlay) {
-        loadOrPlaySong(songToPlay);
+        loadOrPlaySong(songToPlay, true);
       }
     };
 
@@ -320,5 +310,36 @@ export default function MusicPlayer({ Component, pageProps }) {
 
   const allProps = { ...pageProps, childPlaySound, childPlaySong, spawnPokemonSound, musicSlider, soundSlider };
 
-  return <Component {...allProps} />;
+  return (
+    <>
+      <PlayMusicBanner startMusic={startMusic} />
+      <Component {...allProps} />
+    </>
+  );
+}
+
+function PlayMusicBanner({ startMusic }) {
+  const [showTouchbanner, setShowTouchBanner] = useState(true);
+
+  const bodyClicked = () => {
+    setShowTouchBanner(false);
+    startMusic();
+  };
+
+  useEffect(() => {
+    if (!isEventAdded) {
+      isEventAdded = true;
+      document.querySelector("body").addEventListener("click", bodyClicked, { once: true });
+    }
+  }, []);
+
+  if (!showTouchbanner) {
+    return null;
+  }
+
+  return (
+    <div className="cursor-pointer absolute p-2 z-[3] rounded-b-lg shadow-indigo-500 shadow bg-white left-1/2 -translate-x-2/4 top-0">
+      Touch anywhere to play sounds
+    </div>
+  );
 }

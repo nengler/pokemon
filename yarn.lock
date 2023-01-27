@@ -1928,12 +1928,10 @@ quick-lru@^5.1.1:
   resolved "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
-react-dnd-html5-backend@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.npmjs.org/react-dnd-html5-backend/-/react-dnd-html5-backend-16.0.1.tgz"
-  integrity sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==
-  dependencies:
-    dnd-core "^16.0.1"
+react-dnd-mouse-backend@^1.0.0-rc.2:
+  version "1.0.0-rc.2"
+  resolved "https://registry.npmjs.org/react-dnd-mouse-backend/-/react-dnd-mouse-backend-1.0.0-rc.2.tgz"
+  integrity sha512-mmbyXvg6YGKxdi7gx+ICFD0pFEMMiG1x7FBSu8ZYXBCqxVPkm8pkhrHfzd8AY89YmcWoUeqL3/DSU0u9lkwbsQ==
 
 react-dnd-preview@^8.0.0:
   version "8.0.0"
