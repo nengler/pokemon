@@ -1,11 +1,12 @@
 import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
+import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
-  const animationDuration = 0.45;
-  const hitDuration = 0.3;
-  const hitRotations = [45, 135, 225, 315];
+  const animationDuration = 0.55;
+  const hitDuration = 0.2;
+  const hitRotations = Array.apply(null, Array(4)).map(function () {});
 
   const beforeClasses =
     "before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:w-6 before:h-6 before:rounded-[50%] before:bg-[#5f0a68] before:-translate-x-1/2 before:-translate-y-1/2";
@@ -41,20 +42,23 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
     left: `calc(50% - 16px + ${distanceToMove}px)`,
   };
 
+  const randomInitial = () => Math.floor(Math.random() * 40) - 20;
+
   return (
     <>
       <motion.div
-        animate={{ x: distanceToMove, opacity: [0, 1, 0.5, 1, 0], y: [0, -15, 0, -15] }}
+        initial={{ y: 0 }}
+        animate={{ x: distanceToMove, opacity: [0, 1, 0.5, 1, 0], y: [-20, 0, -10, -20, 0, 10, -5, 0] }}
         transition={{
           x: { duration: animationDuration, type: "tween", ease: "linear" },
-          y: { type: "tween", ease: "linear" },
+          y: { duration: animationDuration },
           opacity: { duration: animationDuration, times: [0, 0.01, 0.5, 0.86, 1] },
         }}
-        className={`z-[1] absolute h-9 w-9 rounded-full bg-ghost-primary after:content-[''] ${beforeClasses} ${afterClasses}`}
+        className={`z-[1] blur-sm absolute h-9 w-9 rounded-full bg-ghost-primary after:content-[''] ${beforeClasses} ${afterClasses}`}
         style={styles}
       />
 
-      {hitRotations.map((hit, index) => {
+      {hitRotations.map((_hit, index) => {
         const positiveHorizontal = [0, 1];
         const xMovementFactor = positiveHorizontal.includes(index) ? 1 : -1;
 
@@ -65,17 +69,29 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
         const xMovement = 40 * xMovementFactor;
 
         return (
-          <motion.div
-            className="w-8 h-8 absolute z-[2] rounded-full border-4 border-transparent border-t-ghost-primary"
-            key={hit}
-            initial={{ rotate: hit, x: xMovement / 10, y: yMovement / 10, opacity: 0 }}
-            animate={{ y: yMovement, x: xMovement, opacity: 1 }}
-            style={hitStyles}
-            transition={{
-              default: { duration: hitDuration, delay: animationDuration },
-              opactiy: { delay: animationDuration, duration: 0 },
-            }}
-          />
+          <Fragment key={index}>
+            <motion.div
+              className="w-4 h-4 bg-ghost-primary blur-sm absolute z-[2] rounded-full"
+              initial={{ x: xMovement / 10, y: yMovement / Math.abs(randomInitial()), opacity: 0 }}
+              animate={{ y: yMovement + randomInitial(), x: xMovement, opacity: 1 }}
+              style={hitStyles}
+              transition={{
+                default: { duration: hitDuration, delay: animationDuration },
+                opactiy: { delay: animationDuration, duration: 0 },
+              }}
+            />
+
+            <motion.div
+              className="w-4 h-4 bg-ghost-primary blur-sm absolute z-[2] rounded-full"
+              initial={{ x: xMovement / 10, y: yMovement / Math.abs(randomInitial()), opacity: 0 }}
+              animate={{ y: yMovement + randomInitial(), x: xMovement, opacity: 1 }}
+              style={hitStyles}
+              transition={{
+                default: { duration: hitDuration, delay: animationDuration },
+                opactiy: { delay: animationDuration, duration: hitDuration },
+              }}
+            />
+          </Fragment>
         );
       })}
     </>
