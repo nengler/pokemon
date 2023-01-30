@@ -861,7 +861,7 @@ module.exports = {
   },
   87: {
     name: "Dewgong",
-    types: ["Water", "Ice"],
+    types: ["Ice"],
     baseStats: {
       attack: 70,
       defense: 95,

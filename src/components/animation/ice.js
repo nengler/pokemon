@@ -1,17 +1,17 @@
 import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
+import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
-import AuroraCircle from "./svg/auroraCircle";
 
 export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   if (teamLocation === undefined || enemyTeamLocation === undefined) {
     return;
   }
 
-  const beams = Array(25).fill(null);
-  const animationDuration = 0.25;
-  const animationDelay = 0.02;
-  const yStartingPosition = getImgCenter(-24);
+  const beams = Array(9).fill(null);
+  const animationDuration = 0.4;
+  const animationDelay = 0.05;
+  const yStartingPosition = getImgCenter(-16);
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
@@ -30,41 +30,74 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
   return (
     <>
       {beams.map((_beam, index) => {
-        let styles = {
-          left: "calc(50% - 24px)",
-          top: `${yStartingPosition}px`,
+        const topStyles = {
+          left: "calc(50% - 16px)",
+          top: `${yStartingPosition + 15}px`,
+        };
+
+        const bottomStyles = {
+          left: "calc(50% - 16px)",
+          top: `${yStartingPosition - 15}px`,
         };
 
         const delay = index * animationDelay;
 
         return (
-          <motion.div
-            key={index}
-            initial={{ scaleX: 0.5 }}
-            animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
-            transition={{
-              x: { duration: animationDuration, delay: delay, ease: "linear" },
-              opacity: {
-                delay: delay,
-                duration: animationDuration,
-                times: [0, 0.01, 0.99, 1],
-              },
-            }}
-            className="absolute w-12 opacity-0 z-10"
-            style={styles}
-          >
+          <Fragment key={index}>
             <motion.div
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ rotate: { duration: 0.2, repeat: Infinity } }}
+              animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
+              transition={{
+                x: { duration: animationDuration, delay: delay },
+                opacity: {
+                  delay: delay,
+                  duration: animationDuration,
+                  times: [0, 0.01, 0.7, 1],
+                },
+              }}
+              className={`absolute flex justify-center w-8 h-8 z-10`}
+              style={topStyles}
             >
-              <div style={{ transform: index >= beams.length / 1.5 ? "scale(1.5)" : "scale(1)" }}>
-                <AuroraCircle />
-              </div>
+              <IceBeamSVG />
             </motion.div>
-          </motion.div>
+
+            <motion.div
+              animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
+              transition={{
+                x: { duration: animationDuration, delay: delay },
+                opacity: {
+                  delay: delay,
+                  duration: animationDuration,
+                  times: [0, 0.01, 0.7, 1],
+                },
+              }}
+              className={`absolute flex justify-center w-8 h-8 z-10`}
+              style={bottomStyles}
+            >
+              <IceBeamSVG />
+            </motion.div>
+          </Fragment>
         );
       })}
     </>
+  );
+}
+
+function IceBeamSVG() {
+  return (
+    <svg
+      width="32"
+      height="32"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        fill: "#d5e3ea",
+        stroke: "#acbbe0",
+        strokeWidth: "1px",
+        transform: "scale(.75)",
+      }}
+    >
+      <path d="M0 16 L16 0 L32 16 L16 32 Z" />
+      <path d="M16 0 L17 16 L16 32" />
+      <path d="M0 16 L32 16" />
+    </svg>
   );
 }

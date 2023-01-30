@@ -4,7 +4,6 @@ import Pokemon from "./pokemon";
 import GetHp from "util/getHp";
 import styles from "../styles/myPokemon.module.css";
 import Image from "next/image";
-import { getEmptyImage } from "react-dnd-html5-backend";
 
 export default function MyPokemon({
   gamePokemon,
@@ -134,7 +133,7 @@ export default function MyPokemon({
   const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level).length > 0;
 
   useEffect(() => {
-    preview(getEmptyImage());
+    preview(<img />);
   }, []);
 
   return (

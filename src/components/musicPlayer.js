@@ -33,7 +33,7 @@ export default function MusicPlayer({ Component, pageProps }) {
     { name: "Ghost", buffer: null, url: "/assets/moves/shadow_ball.mp3" },
     { name: "Grass", buffer: null, url: "/assets/moves/razor_leaf.mp3" },
     { name: "Ground", buffer: null, url: "/assets/moves/mud_shot.mp3" },
-    { name: "Ice", buffer: null, url: "/assets/moves/aurora_beam.mp3" },
+    { name: "Ice", buffer: null, url: "/assets/moves/ice_beam.mp3" },
     { name: "Normal", buffer: null, url: "/assets/moves/swift.mp3" },
     { name: "Poison", buffer: null, url: "/assets/moves/sludge.mp3" },
     { name: "Psychic", buffer: null, url: "/assets/moves/psycho_boost.mp3" },

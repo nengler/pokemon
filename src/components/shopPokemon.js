@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDrag } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
 import GetHp from "util/getHp";
 import GetNotHpStat from "util/getNotHpStat";
 import Pokemon from "./pokemon";
@@ -22,7 +21,7 @@ export default function ShopPokemon({ shopPokemon, canPurchase, canPerformAction
   );
 
   useEffect(() => {
-    preview(getEmptyImage());
+    preview(<img />);
   }, []);
 
   return (

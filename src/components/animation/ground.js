@@ -7,10 +7,10 @@ export default function GroundAnimation({ teamLocation, enemyTeamLocation }) {
     return;
   }
 
-  const earthShots = Array(12).fill(null);
+  const earthShots = Array(10).fill(null);
   const yStartingPosition = getImgCenter(-10);
   const animationDuration = 0.35;
-  const animationDelay = 0.035;
+  const animationDelay = 0.045;
 
   const enemyCoordinates = getTeamLocation(enemyTeamLocation);
   const myCoordinates = getTeamLocation(teamLocation);
