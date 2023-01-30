@@ -6,9 +6,14 @@ export default function TransformGamePokemonRecord(gamePokemon) {
 
   return {
     ...gamePokemon,
-    evolutions: pokemonEvolution[gamePokemon.pokemonId] || [],
+    evolutions: (pokemonEvolution[gamePokemon.pokemonId] || []).map((a) => transformEvolution(a)),
     name,
     types,
     canAddToSelf,
   };
+}
+
+function transformEvolution({ into, minimumLevel }) {
+  const { name, baseStats, types } = pokemon[into];
+  return { into, minimumLevel, name, baseStats, types };
 }

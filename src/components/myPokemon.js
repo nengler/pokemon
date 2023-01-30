@@ -134,7 +134,8 @@ export default function MyPokemon({
     setShowEvolutionsFalse();
   };
 
-  const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level).length > 0;
+  const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level);
+  console.log(canEvolveInto);
 
   useEffect(() => {
     preview(<img />);
@@ -181,7 +182,7 @@ export default function MyPokemon({
             sell
           </button>
 
-          {canEvolveInto && (
+          {canEvolveInto.length > 0 && (
             <>
               <div className="relative inline-block ml-1">
                 <button ref={evolveButtonRef} onClick={checkEvolution} className="bg-green-600 text-green-50 btn sm">
@@ -190,7 +191,7 @@ export default function MyPokemon({
                 {showEvolutions && (
                   <div
                     ref={clickOutside}
-                    className="bg-white shadow-xl p-4 rounded-lg flex gap-2 absolute left-1/2 -translate-x-1/2 top-8"
+                    className="bg-white z-[2] shadow-xl p-4 rounded-lg flex gap-2 absolute left-1/2 -translate-x-1/2 top-8"
                   >
                     {canEvolveInto.map((e) => (
                       <div
@@ -199,15 +200,15 @@ export default function MyPokemon({
                         key={e.into}
                       >
                         <Pokemon
-                          name={e.EvolvesTo.name}
+                          name={e.name}
                           level={gamePokemon.level}
-                          hp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}
-                          attack={GetHp(e.EvolvesTo.baseAttack, gamePokemon.level)}
-                          defense={GetHp(e.EvolvesTo.baseDefense, gamePokemon.level)}
-                          pokedexId={e.EvolvesTo.pokedexId}
+                          hp={GetHp(e.baseStats.hp, gamePokemon.level)}
+                          attack={GetHp(e.baseStats.attack, gamePokemon.level)}
+                          defense={GetHp(e.baseStats.defense, gamePokemon.level)}
+                          pokedexId={e.into}
                           isShiny={gamePokemon.isShiny}
-                          tempHp={GetHp(e.EvolvesTo.baseHp, gamePokemon.level)}
-                          pokemonTypes={e.EvolvesTo.pokemonTypes}
+                          tempHp={GetHp(e.baseStats.hp, gamePokemon.level)}
+                          pokemonTypes={e.types}
                         />
                       </div>
                     ))}
