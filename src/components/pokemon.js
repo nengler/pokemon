@@ -51,7 +51,7 @@ export default function Pokemon({
   };
 
   return (
-    <div ref={pokemonRef} style={{ transform: "translateZ(0)" }}>
+    <div ref={pokemonRef}>
       <div className="flex justify-center relative overflow-hidden">
         <div className="z-[1] relative">
           <div className={`${flip ? "-scale-x-100" : ""}`}>

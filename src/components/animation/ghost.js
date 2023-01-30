@@ -1,12 +1,11 @@
 import { getImgCenter } from "constants/animationConfig";
 import { motion } from "framer-motion";
-import { Fragment } from "react";
 import { getDistanceBetweenElements, getPositionAtCenter, getTeamLocation } from "util/animationMethods";
 
 export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
   const animationDuration = 0.55;
   const hitDuration = 0.2;
-  const hitRotations = Array.apply(null, Array(4)).map(function () {});
+  const hitRotations = Array.apply(null, Array(6)).map(function () {});
 
   const beforeClasses =
     "before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:w-6 before:h-6 before:rounded-[50%] before:bg-[#5f0a68] before:-translate-x-1/2 before:-translate-y-1/2";
@@ -42,7 +41,23 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
     left: `calc(50% - 16px + ${distanceToMove}px)`,
   };
 
-  const randomInitial = () => Math.floor(Math.random() * 40) - 20;
+  const hitXFactor = {
+    0: 0.1,
+    1: 0.6,
+    2: 0.6,
+    3: 0,
+    4: -1.1,
+    5: -0.5,
+  };
+
+  const hitYFactor = {
+    0: -0.4,
+    1: -0.8,
+    2: 0.1,
+    3: 1,
+    4: 0.2,
+    5: -0.8,
+  };
 
   return (
     <>
@@ -58,40 +73,25 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
         style={styles}
       />
 
-      {hitRotations.map((_hit, index) => {
-        const positiveHorizontal = [0, 1];
-        const xMovementFactor = positiveHorizontal.includes(index) ? 1 : -1;
+      {hitRotations.map((hit, index) => {
+        //[10, 55, 100, 180, 250, 330]
 
-        const positiveVertical = [1, 2];
-        const yMovementFactor = positiveVertical.includes(index) ? 1 : -1;
+        const xMovement = 40 * hitXFactor[index];
+        const yMovement = 40 * hitYFactor[index];
 
-        const yMovement = 40 * yMovementFactor;
-        const xMovement = 40 * xMovementFactor;
+        console.log(xMovement, yMovement);
 
         return (
-          <Fragment key={index}>
-            <motion.div
-              className="w-4 h-4 bg-ghost-primary blur-sm absolute z-[2] rounded-full"
-              initial={{ x: xMovement / 10, y: yMovement / Math.abs(randomInitial()), opacity: 0 }}
-              animate={{ y: yMovement + randomInitial(), x: xMovement, opacity: 1 }}
-              style={hitStyles}
-              transition={{
-                default: { duration: hitDuration, delay: animationDuration },
-                opactiy: { delay: animationDuration, duration: 0 },
-              }}
-            />
-
-            <motion.div
-              className="w-4 h-4 bg-ghost-primary blur-sm absolute z-[2] rounded-full"
-              initial={{ x: xMovement / 10, y: yMovement / Math.abs(randomInitial()), opacity: 0 }}
-              animate={{ y: yMovement + randomInitial(), x: xMovement, opacity: 1 }}
-              style={hitStyles}
-              transition={{
-                default: { duration: hitDuration, delay: animationDuration },
-                opactiy: { delay: animationDuration, duration: hitDuration },
-              }}
-            />
-          </Fragment>
+          <motion.div
+            key={index}
+            className="w-4 h-4 bg-ghost-primary blur-sm absolute z-[2] rounded-full"
+            initial={{ x: xMovement / 10, y: yMovement / 10, opacity: 0 }}
+            animate={{ x: xMovement, y: yMovement, opacity: 1 }}
+            style={hitStyles}
+            transition={{
+              default: { duration: hitDuration, delay: animationDuration },
+            }}
+          />
         );
       })}
     </>
