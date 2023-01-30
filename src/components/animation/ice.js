@@ -47,7 +47,7 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
             <motion.div
               animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
               transition={{
-                x: { duration: animationDuration, delay: delay },
+                x: { duration: animationDuration, delay: delay, ease: "linear" },
                 opacity: {
                   delay: delay,
                   duration: animationDuration,
@@ -63,11 +63,11 @@ export default function IceAnimation({ teamLocation, enemyTeamLocation }) {
             <motion.div
               animate={{ x: distanceToMove * xFactor, opacity: [0, 1, 1, 0] }}
               transition={{
-                x: { duration: animationDuration, delay: delay },
+                x: { duration: animationDuration, delay: delay, ease: "linear" },
                 opacity: {
                   delay: delay,
                   duration: animationDuration,
-                  times: [0, 0.01, 0.7, 1],
+                  times: [0, 0.01, 0.9, 1],
                 },
               }}
               className={`absolute flex justify-center w-8 h-8 z-10`}
@@ -91,13 +91,11 @@ function IceBeamSVG() {
       style={{
         fill: "#d5e3ea",
         stroke: "#acbbe0",
-        strokeWidth: "1px",
+        strokeWidth: "2px",
         transform: "scale(.75)",
       }}
     >
       <path d="M0 16 L16 0 L32 16 L16 32 Z" />
-      <path d="M16 0 L17 16 L16 32" />
-      <path d="M0 16 L32 16" />
     </svg>
   );
 }

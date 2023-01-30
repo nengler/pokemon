@@ -5,6 +5,7 @@ import SpawnPokeball from "./battle/spawnPokeball";
 import styles from "../styles/myPokemon.module.css";
 
 export default function Pokemon({
+  evolvesAt = null,
   pokemonRef,
   level,
   name,
@@ -66,7 +67,9 @@ export default function Pokemon({
               }}
             />
           </div>
-          <div className={`leading-4 absolute top-0 ${flip ? "left-0" : "right-0"}`}>lv. {level}</div>
+          <div className={`leading-4 absolute top-0 ${flip ? "left-0" : "right-0"}`}>
+            lv. {level} {evolvesAt !== null && `(${evolvesAt})`}
+          </div>
           <div className={`absolute top-0 z-0 ${flip ? "right-0" : "left-0"}`}>
             {pokemonTypes.map((pokemonType, index) => (
               <PokemonType key={pokemonType} index={index} pokemonType={pokemonType} shorten />

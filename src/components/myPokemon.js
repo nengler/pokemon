@@ -21,6 +21,8 @@ export default function MyPokemon({
 }) {
   const clickOutside = useRef();
   const evolveButtonRef = useRef();
+  const gamePokemonId = gamePokemon?.id;
+  const pokemonId = gamePokemon?.pokemonId;
 
   const handleOutsideClicks = (event) => {
     if (!clickOutside.current?.contains(event.target) && evolveButtonRef.current !== event.target) {
@@ -53,19 +55,20 @@ export default function MyPokemon({
     return gold >= 3 && (gamePokemon === undefined || gamePokemon?.canAddToSelf?.includes(pokemonId));
   };
 
-  const gamePokemonDropped = ({ gamePokemonId, pokemonId, originalSpot }) => {
-    if (originalSpot === order) {
+  const gamePokemonDropped = (props) => {
+    const { gamePokemonId: gamePokemonIdDropped, pokemonId: pokemonIdDropped, originalSpot } = props;
+    if (gamePokemonIdDropped === gamePokemonId) {
       return;
     }
 
     if (!gamePokemon) {
-      rearrangeOrder(gamePokemonId, originalSpot, order);
+      rearrangeOrder(gamePokemonIdDropped, originalSpot, order);
       return;
-    } else if (gamePokemon.canAddToSelf.includes(pokemonId)) {
-      combinePokemon(gamePokemon.id, gamePokemonId);
+    } else if (gamePokemon.canAddToSelf.includes(pokemonIdDropped)) {
+      combinePokemon(gamePokemonId, gamePokemonIdDropped);
       return;
     }
-    rearrangeOrder(gamePokemonId, originalSpot, order);
+    rearrangeOrder(gamePokemonIdDropped, originalSpot, order);
   };
 
   const sellGamePokemon = () => {
@@ -87,18 +90,19 @@ export default function MyPokemon({
     [allPokemon]
   );
 
-  const gamePokemonId = gamePokemon?.id;
-  const pokemonId = gamePokemon?.pokemonId;
-  const [dragCollectables, drag, preview] = useDrag(() => ({
-    type: "GamePokemon",
-    item: { gamePokemonId, pokemonId, originalSpot: order },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+  const [dragCollectables, drag, preview] = useDrag(
+    () => ({
+      type: "GamePokemon",
+      item: { gamePokemonId, pokemonId, originalSpot: order },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      canDrag: () => {
+        return canPerformAction;
+      },
     }),
-    canDrag: () => {
-      return canPerformAction;
-    },
-  }));
+    [allPokemon, canPerformAction]
+  );
 
   const [collectables, gamePokemonDrop] = useDrop(
     () => ({
@@ -155,6 +159,7 @@ export default function MyPokemon({
         {gamePokemon !== undefined && (
           <div className="text-center w-full">
             <Pokemon
+              evolvesAt={gamePokemon.evolutions[0]?.minimumLevel}
               pokemonRef={drag}
               name={gamePokemon.name}
               level={gamePokemon.level}

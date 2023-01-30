@@ -188,3 +188,18 @@
     opacity: 0;
   }
 }
+
+.flyingAnimationHelper {
+  animation-duration: 250ms;
+  animation-delay: var(--animationDelay);
+  animation-name: flyingAnimation;
+}
+
+@keyframes flyingAnimation {
+  0% {
+    transform: rotate(var(--startingRotation));
+  }
+  100% {
+    transform: rotate(var(--endingRotation));
+  }
+}

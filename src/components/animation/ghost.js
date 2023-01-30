@@ -43,7 +43,7 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
 
   const hitXFactor = {
     0: 0.1,
-    1: 0.6,
+    1: 0.8,
     2: 0.6,
     3: 0,
     4: -1.1,
@@ -51,10 +51,10 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
   };
 
   const hitYFactor = {
-    0: -0.4,
-    1: -0.8,
+    0: -1.1,
+    1: -0.4,
     2: 0.1,
-    3: 1,
+    3: 0.6,
     4: 0.2,
     5: -0.8,
   };

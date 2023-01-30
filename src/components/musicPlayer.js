@@ -158,7 +158,6 @@ export default function MusicPlayer({ Component, pageProps }) {
 
   function getSongFromUrl(url) {
     if (url === "/" || url === "/how-to-play" || url === "/play") {
-      console.log("init", url);
       let songs = ["azalea", "fushia", "slateport"];
       if (lastPlayedSong !== null) {
         songs = songs.filter((song) => song !== lastPlayedSong);

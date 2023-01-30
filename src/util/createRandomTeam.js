@@ -99,7 +99,7 @@ function getMostEvolvedPokemon(pokemonId, level) {
     return pokemonId;
   }
 
-  const randomEvolution = canEvolveInto.length === 1 ? GetRandomElement(canEvolveInto) : canEvolveInto[0];
+  const randomEvolution = GetRandomElement(canEvolveInto);
   return getMostEvolvedPokemon(randomEvolution.into, level);
 }
 
