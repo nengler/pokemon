@@ -50,7 +50,7 @@ export default function GrassAnimation({ teamLocation, enemyTeamLocation }) {
             animate={{
               opacity: [0, 1, 1, 0],
               rotate: 1080,
-              x: distanceToMove + distanceToMove / 2,
+              x: distanceToMove + distanceToMove / 3,
               y: [0, 60 * leafYMultiplier, 0, 30 * leafYMultiplier * -1],
             }}
             transition={{

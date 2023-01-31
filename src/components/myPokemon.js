@@ -135,7 +135,6 @@ export default function MyPokemon({
   };
 
   const canEvolveInto = gamePokemon?.evolutions.filter((e) => e.minimumLevel <= gamePokemon.level);
-  console.log(canEvolveInto);
 
   useEffect(() => {
     preview(<img />);

@@ -74,12 +74,8 @@ export default function GhostAnimation({ teamLocation, enemyTeamLocation }) {
       />
 
       {hitRotations.map((hit, index) => {
-        //[10, 55, 100, 180, 250, 330]
-
         const xMovement = 40 * hitXFactor[index];
         const yMovement = 40 * hitYFactor[index];
-
-        console.log(xMovement, yMovement);
 
         return (
           <motion.div

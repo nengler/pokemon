@@ -246,7 +246,6 @@ export default function Battle(props) {
 
   return (
     <div className={`${backgroundType.class} w-screen h-screen`}>
-      <meta name="theme-color" content={backgroundType.color} />
       <div className="fadeFromBlack" />
       <div className="flex flex-col p-4 ">
         <div className="sm:flex justify-center items-center sm:gap-8 md:gap-16 lg:gap-32 relative">
@@ -287,7 +286,12 @@ export default function Battle(props) {
           </div>
         </div>
       </div>
-      {!isFighting && <PostGameScreen battle={props.battle} game={props.game} />}
+
+      {isFighting ? (
+        <meta name="theme-color" content={backgroundType.color} />
+      ) : (
+        <PostGameScreen battle={props.battle} game={props.game} />
+      )}
     </div>
   );
 }
@@ -342,6 +346,7 @@ function PostGameScreen({ game, battle }) {
 
   return (
     <>
+      <meta name="theme-color" content="#ffffff" />
       <div className="text-center mt-5">
         <h3 className="text-xl">{getHeaderText()}</h3>
         <button onClick={handleClick} className="text-indigo-500 text-lg">
@@ -394,6 +399,15 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
       userId: userId,
     },
   });
+
+  if (game === null) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   let battlePokemon = await prisma.battleTeam.findMany({
     where: {
